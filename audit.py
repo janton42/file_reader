@@ -22,7 +22,7 @@ def main():
 	if file_purpose == 'yes':
 
 		test_group = {}
-		test_group_counter_raw = input("Enter group number to audit (1-5): ")
+		test_group_counter_raw = input("Enter group number to audit (1-8): ")
 		test_group_counter = int(test_group_counter_raw)
 
 		for contract in output:
@@ -31,32 +31,49 @@ def main():
 				while test_group_counter < 7:
 					test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
 					test_group_counter += 1
+				test_group_counter += 4
 			elif test_group_counter == 2:
-				test_group_counter = 10
-				while test_group_counter <= 17:
-					test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
+				test_group_counter = 6
+				while test_group_counter <= 10:
+					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
 					test_group_counter += 1
 			elif test_group_counter == 3:
-				test_group_counter = 18
-				while test_group_counter <= 25:
-					test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
+				test_group_counter = 11
+				while test_group_counter <= 15:
+					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
 					test_group_counter += 1
 			elif test_group_counter == 4:
-				test_group_counter = 26
-				while test_group_counter <= 33:
-					test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
+				test_group_counter = 16
+				while test_group_counter <= 20:
+					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
 					test_group_counter += 1
 			elif test_group_counter == 5:
-				test_group_counter = 26
-				while test_group_counter <= 33:
-					test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
+				test_group_counter = 21
+				while test_group_counter <= 25:
+					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
 					test_group_counter += 1
+			elif test_group_counter == 6:
+				test_group_counter = 26
+				while test_group_counter <= 30:
+					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+					test_group_counter += 1
+			elif test_group_counter == 7:
+				test_group_counter = 31
+				while test_group_counter <= 35:
+					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+					test_group_counter += 1
+			elif test_group_counter == 8:
+				test_group_counter = 36
+				while test_group_counter <= 40:
+					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+					test_group_counter += 1
+	
 
-		for contract in test_group:
-			contract_id = test_group[contract]
+		# for contract in test_group:
+		# 	contract_id = test_group[contract]
 
-			url = url_builder(contract_id)
-			open_url(url)
+		# 	url = url_builder(contract_id)
+		# 	open_url(url)
 
 		print(test_group)
 
