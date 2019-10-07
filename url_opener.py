@@ -4,8 +4,7 @@ import webbrowser
 
 
 def url_builder(contract_id):
-	
-	
+
 	url = 'https://www.upwork.com/ab/c/2315977/contracts/' + contract_id + '#terms'
 
 	return url

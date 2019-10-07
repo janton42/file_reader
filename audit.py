@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
 # from csv_reader import get_active_users, get_audit_users, audit_status_changer
-from url_opener import open_url, url_builder
+
 
 from csv_reader import FileHandler
 
 def main():
 
-	file_name = ''
 	output = ''
 
 	file_purpose = input("Is this for an external audit (yes/no)? ")
@@ -15,77 +14,28 @@ def main():
 	if file_purpose == 'yes':
 		file_name = 'moss_adams_sample'
 		output = FileHandler.get_audit_users('./static/' + file_name + '.csv')
+		FileHandler.audit(output)
+
 	elif file_purpose == 'no':
-		file_name = 'user_data'
-		output = FileHandler.get_active_users('./static/' + file_name + '.csv')
+		users_file_name = input('Enter the user list file name: ')
+		contracts_file_name = input('Enter the contract list file name: ')
+		active_users = FileHandler.get_active_users('./static/' + users_file_name + '.csv')
+		active_contract = FileHandler.get_active_contracts()
+		print('There are ', len(output), 'TIP users with systems access')
 
-	if file_purpose == 'yes':
+	else:
+		print('Please enter "yes" or "no" (case sensitive).')
+		main()
+		
+	continue_audits = input('Would you like to run another audit (yes/no)? ')
 
-		test_group = {}
-		test_group_counter_raw = input("Enter group number to audit (1-8): ")
-		test_group_counter = int(test_group_counter_raw)
-
-		for contract in output:
-			if test_group_counter == 1:
-				test_group_counter += 1	
-				while test_group_counter < 7:
-					test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
-					test_group_counter += 1
-				test_group_counter += 4
-			elif test_group_counter == 2:
-				test_group_counter = 6
-				while test_group_counter <= 10:
-					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-					test_group_counter += 1
-			elif test_group_counter == 3:
-				test_group_counter = 11
-				while test_group_counter <= 15:
-					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-					test_group_counter += 1
-			elif test_group_counter == 4:
-				test_group_counter = 16
-				while test_group_counter <= 20:
-					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-					test_group_counter += 1
-			elif test_group_counter == 5:
-				test_group_counter = 21
-				while test_group_counter <= 25:
-					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-					test_group_counter += 1
-			elif test_group_counter == 6:
-				test_group_counter = 26
-				while test_group_counter <= 30:
-					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-					test_group_counter += 1
-			elif test_group_counter == 7:
-				test_group_counter = 31
-				while test_group_counter <= 35:
-					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-					test_group_counter += 1
-			elif test_group_counter == 8:
-				test_group_counter = 36
-				while test_group_counter <= 40:
-					test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-					test_group_counter += 1
-	
-
-		# for contract in test_group:
-		# 	contract_id = test_group[contract]
-
-		# 	url = url_builder(contract_id)
-		# 	open_url(url)
-
-		print(test_group)
-
-		next_group = input("Would you like to audit another group (yes/no)? ")
-		if next_group == 'yes':
-			main()
-		else:
-			print('Goodbye!','\n','*****************')
-
-
-
-
+	if continue_audits == 'yes':
+		main()
+	elif continue_audits == 'no':
+		print('Goodbye!','\n','\n')
+	else:
+		print('Response invalid - starting over')
+		main()
 
 if __name__ == '__main__':
 	main()
