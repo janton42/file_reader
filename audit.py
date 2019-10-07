@@ -19,9 +19,9 @@ def main():
 	elif file_purpose == 'no':
 		# internal_audit_type = input('What would you like to audit (enter a number)?\n 1 = Active Users with Systems Access\n 2 = Active Contracts')
 		# if internal_audit_type == 1:
-			
-		# users_file_name = input('Enter the user list file name: ')
-		# contracts_file_name = input('Enter the contract list file name: ')
+
+		users_file_name = input('Enter the user list file name: ')
+		contracts_file_name = input('Enter the contract list file name: ')
 		active_users = FileHandler.get_active_users('./static/' + users_file_name + '.csv')
 		active_contract = FileHandler.get_active_contracts()
 		print('There are ', len(output), 'TIP users with systems access')
@@ -39,6 +39,8 @@ def main():
 	else:
 		print('Response invalid - starting over')
 		main()
+
+	
 
 if __name__ == '__main__':
 	main()

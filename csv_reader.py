@@ -182,11 +182,11 @@ class FileHandler(object):
 
 			print(test_group)
 
-		# for contract in test_group:
-		# 	contract_id = test_group[contract]
+		for contract in test_group:
+			contract_id = test_group[contract]
 
-		# 	url = url_builder(contract_id)
-		# 	open_url(url)
+			url = url_builder(contract_id)
+			open_url(url)
 
 	def get_active_contracts(file_location):
 
@@ -202,32 +202,32 @@ class FileHandler(object):
 		   user_list[key] = v
 		   key += 1
 
-		all_data = {}
-		user_detail_counter = 0
+		# all_data = {}
+		# user_detail_counter = 0
 
 
-		for user in user_list:
+		# for user in user_list:
 
-			user_details = {}
+		# 	user_details = {}
 
-			ind_contract_detail = user_list.get(user)[0]
-			detail_list = ind_contract_detail.split(';')
+		# 	ind_contract_detail = user_list.get(user)[0]
+		# 	# detail_list = ind_contract_detail.split(';')
 
-			user_details['User Details'] = detail_list
+		# 	user_details['Contract Details'] = ind_contract_detail
 
-			user_detail_counter += 1
+		# 	user_detail_counter += 1
 
-			all_data[user_detail_counter] = user_details
+		# 	all_data[user_detail_counter] = user_details
 		
-		# the length of the headers list is always 24
-		headers = all_data[1]['User Details']
+		# # the length of the headers list is always 24
+		headers = user_list[0]
 
 		
 
-		for data in all_data:
+		for data in user_list:
 			pair = {}
 			i = 1
-			tester = all_data[data]['User Details']
+			tester = user_list[data]
 
 			while i < len(tester):
 				k = headers[i]
