@@ -22,8 +22,22 @@ def main():
 
 	elif file_purpose == 'no':
 		internal_audit_type = input('What would you like to audit (enter a number)?\n 1 = Active Users with Systems Access\n 2 = Active Contracts\n 3 = End Dates\n ')
-		
-		if internal_audit_type == '3':
+		if internal_audit_type == '1':
+			users_file_name = 'user_data'
+			
+			auwa = FileHandler.get_active_users('./static/' + users_file_name + '.csv')
+
+			print('There are ', len(auwa), ' active users with access.\n')
+
+		elif internal_audit_type == '2':
+
+			contracts_file_name = 'contracts'
+
+			active_contracts = FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv')
+
+			print('There are ', len(active_contracts), ' active contracts.\n')
+
+		elif internal_audit_type == '3':
 
 			contracts_file_name = 'contracts'
 			action_items = {}
@@ -91,92 +105,63 @@ def main():
 
 					action_items[c] = next_14
 
-				# end_year_raw = active_contracts[c]['End Date'][0:4]
-				# # end_year = 0
+				# Untest contingincies (months with 30 days, February, December)
 
-				# if end_year_raw == 'End ' or end_year_raw == '':
-				# 	end_year = 0
-				# else:
-				# 	end_year = int(end_year_raw)
+				# Months with 30 days (April, June, September, November)
 
-				# 	# end_month = int(active_contracts[c]['End Date'][5:7])
-				# 	# end_day = int(active_contracts[c]['End Date'][8:10])
-				# # else:
-				# # 	end_year = 1000000000
-				# # 	end_month = 1000000000
-				# # 	end_day = 1000000000
+				if now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11 and now.day > 16:
+					if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 30):
+						action_items_counter += 1
+						next_14['Contract ID'] = active_contracts[c]['Contract ID']
+						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
+						next_14['End Date'] = active_contracts[c]['End Date'][0:10]
+						next_14['Contract Status'] = active_contracts[c]['Status']
+						next_14['Expired'] = 'No'
+						next_14['Expires Today'] = 'No'
+
+						action_items[c] = next_14
+
+				# February
+
+				elif now.month == 2 and now.day > 15:
+					if now.year == 2020 or now.year == 2024:
+						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
+							action_items_counter += 1
+							next_14['Contract ID'] = active_contracts[c]['Contract ID']
+							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
+							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
+							next_14['Contract Status'] = active_contracts[c]['Status']
+							next_14['Expired'] = 'No'
+							next_14['Expires Today'] = 'No'
+					else:
+						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
+							action_items_counter += 1
+							next_14['Contract ID'] = active_contracts[c]['Contract ID']
+							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
+							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
+							next_14['Contract Status'] = active_contracts[c]['Status']
+							next_14['Expired'] = 'No'
+							next_14['Expires Today'] = 'No'
+
+						action_items[c] = next_14
+
+				#December
+
+				elif now.month == 12 and now.day > 17:
+					if end_year == now.year + 1 and end_month == 1 and end_day < (now.day + 14 - 31):
+						action_items_counter += 1
+						next_14['Contract ID'] = active_contracts[c]['Contract ID']
+						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
+						next_14['End Date'] = active_contracts[c]['End Date'][0:10]
+						next_14['Contract Status'] = active_contracts[c]['Status']
+						next_14['Expired'] = 'No'
+						next_14['Expires Today'] = 'No'
+
+						action_items[c] = next_14
 
 
-				# if end_year < now.year:
-				# 	needs_action['Contract ID'] = active_contracts[c]['Contract ID']
-				# 	needs_action['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 	needs_action['Freelancer User ID'] = active_contracts[c]['Freelancer User ID']
-				# 	needs_action['End Date'] = active_contracts[c]['End Date']
+			# Output
 
-				# 	action_items_counter += 1
-				# 	action_items[action_items_counter] = needs_action
-
-				# elif now.month == 12:
-				# 	if end_year == now.year + 1 and end_month == 1:
-				# 		if now.day >= 16:
-				# 			if end_date <= now.day + 14 - 30:
-				# 				needs_action['Contract ID'] = active_contracts[c]['Contract ID']
-				# 				needs_action['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 				needs_action['Freelancer User ID'] = active_contracts[c]['Freelancer User ID']
-				# 				needs_action['End Date'] = active_contracts[c]['End Date']
-
-				# 				action_items_counter += 1
-				# 				action_items[action_items_counter] = needs_action
-
-				# elif end_year == now.year:
-				# 	if end_month < now.month:
-				# 		needs_action['Contract ID'] = active_contracts[c]['Contract ID']
-				# 		needs_action['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 		needs_action['Freelancer User ID'] = active_contracts[c]['Freelancer User ID']
-				# 		needs_action['End Date'] = active_contracts[c]['End Date']
-
-				# 		action_items_counter += 1
-				# 		action_items[action_items_counter] = needs_action
-
-				# 	elif end_month == now.month:
-				# 		if end_day < now.day or end_day <= now.day + 14:
-				# 			needs_action['Contract ID'] = active_contracts[c]['Contract ID']
-				# 			needs_action['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 			needs_action['Freelancer User ID'] = active_contracts[c]['Freelancer User ID']
-				# 			needs_action['End Date'] = active_contracts[c]['End Date']
-
-				# 			action_items_counter += 1
-				# 			action_items[action_items_counter] = needs_action
-
-				# 	elif end_month == now.month + 1:
-				# 		if now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11:
-				# 			if end_date <= now.day + 14 - 30:
-				# 				needs_action['Contract ID'] = active_contracts[c]['Contract ID']
-				# 				needs_action['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 				needs_action['Freelancer User ID'] = active_contracts[c]['Freelancer User ID']
-				# 				needs_action['End Date'] = active_contracts[c]['End Date']
-
-				# 				action_items_counter += 1
-				# 				action_items[action_items_counter] = needs_action
-
-				# 		elif now.month == 2:
-				# 			if end_date <= now.day + 14 - 28:
-				# 				needs_action['Contract ID'] = active_contracts[c]['Contract ID']
-				# 				needs_action['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 				needs_action['Freelancer User ID'] = active_contracts[c]['Freelancer User ID']
-				# 				needs_action['End Date'] = active_contracts[c]['End Date']
-
-				# 				action_items_counter += 1
-				# 				action_items[action_items_counter] = needs_action
-				# 		else:
-				# 			if end_date <= now.day + 14 -31:
-				# 				needs_action['Contract ID'] = active_contracts[c]['Contract ID']
-				# 				needs_action['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 				needs_action['Freelancer User ID'] = active_contracts[c]['Freelancer User ID']
-				# 				needs_action['End Date'] = active_contracts[c]['End Date']
-
-				# 				action_items_counter += 1
-				# 				action_items[action_items_counter] = needs_action
 			print('There are ', len(active_contracts), ' active contracts.\n')
 			if len(action_items) == 1:
 				print('There is 1 action item.\n')
