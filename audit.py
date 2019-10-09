@@ -52,33 +52,35 @@ def main():
 
 				# Expired contracts
 
-				# if end_year == now.year -1 or end_year == now.year -2 or end_year == now.year and end_month == now.month and end_day < now.day:
-				# 	action_items_counter += 1
-				# 	expired['Contract ID'] = active_contracts[c]['Contract ID']
-				# 	expired['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 	expired['End Date'] = active_contracts[c]['End Date'][0:10]
-				# 	expired['Contract Status'] = active_contracts[c]['Status']
-				# 	expired['Expired'] = 'Yes'
-				#	expired['Expires Today'] = 'No'
+				if end_year == now.year -1 or end_year == now.year -2 or end_year == now.year and end_month == now.month and end_day < now.day:
+					action_items_counter += 1
+					expired['Contract ID'] = active_contracts[c]['Contract ID']
+					expired['Freelancer Name'] = active_contracts[c]['Freelancer Name']
+					expired['End Date'] = active_contracts[c]['End Date'][0:10]
+					expired['Contract Status'] = active_contracts[c]['Status']
+					expired['Expired'] = 'Yes'
+					expired['Expires Today'] = 'No'
 
 				
-				# 	action_items[c] = expired
+					action_items[c] = expired
 
 
 				# Contracts ending today
 
-				# if end_year == now.year and end_month == now.month and end_day == now.day:
-				# 	action_items_counter += 1
-				# 	expires_today['Contract ID'] = active_contracts[c]['Contract ID']
-				# 	expires_today['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				# 	expires_today['End Date'] = active_contracts[c]['End Date'][0:10]
-				# 	expires_today['Contract Status'] = active_contracts[c]['Status']
-				# 	expires_today['Expired'] = 'No'
-				# 	expires_today['Expires Today'] = 'Yes'
+				elif end_year == now.year and end_month == now.month and end_day == now.day:
+					action_items_counter += 1
+					expires_today['Contract ID'] = active_contracts[c]['Contract ID']
+					expires_today['Freelancer Name'] = active_contracts[c]['Freelancer Name']
+					expires_today['End Date'] = active_contracts[c]['End Date'][0:10]
+					expires_today['Contract Status'] = active_contracts[c]['Status']
+					expires_today['Expired'] = 'No'
+					expires_today['Expires Today'] = 'Yes'
 
-				# 	action_items[c] = expires_today
+					action_items[c] = expires_today
 
-				if end_year == now.year and end_month == now.month and end_day > now.day and end_day < (now.day + 14):
+				# Contracts ending this month in the next 14 days (starting tomorrow)
+
+				elif end_year == now.year and end_month == now.month and end_day > now.day and end_day < (now.day + 14):
 					action_items_counter += 1
 					next_14['Contract ID'] = active_contracts[c]['Contract ID']
 					next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
@@ -182,27 +184,45 @@ def main():
 				print('There are ', len(action_items), ' action items.\n')
 			total_expired = 0
 			total_expiring_today = 0
+			total_expiring_next_14 = 0
 
 			for item in action_items:
 				if action_items[item]['Expired'] == 'Yes':
 					total_expired += 1
 				if action_items[item]['Expires Today'] == 'Yes':
 					total_expiring_today += 1
+				if action_items[item]['Expired'] == 'No' and action_items[item]['Expires Today'] == 'No':
+					total_expiring_next_14 += 1
 
 			if total_expired == 1:
 				print(total_expired, ' contract is expired.\n')
 			else:
 				print(total_expired, ' contracts are expired.\n' )
 
+			for item in action_items:
+				if action_items[item]['Expired'] == 'Yes':
+					print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
+			print()
+
 			if total_expiring_today == 1:
 				print(total_expiring_today, ' contract is expiring today.\n')
 			else:
 				print(total_expiring_today, ' contracts are expiring today.\n' )
 
+			for item in action_items:
+				if action_items[item]['Expires Today'] == 'Yes':
+					print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
+			print()
+
+			if total_expiring_next_14 == 1:
+				print('1 contract is expiring in the next 14 days.\n')
+			else:
+				print(total_expiring_next_14, ' contracts are expiring in the next 14 days.\n')
 
 
 			for item in action_items:
-				print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
+				if action_items[item]['Expires Today'] == 'No' and action_items[item]['Expired'] == 'No':
+					print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
 			print()
 
 		else:
