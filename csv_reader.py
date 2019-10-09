@@ -230,8 +230,8 @@ class FileHandler(object):
 			tester = user_list[data]
 
 			while i < len(tester):
-				k = headers[i]
-				v = tester[i]
+				k = headers[i-1]
+				v = tester[i-1]
 				i += 1
 				pair[k] = v
 			complete_list_counter += 1
