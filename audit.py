@@ -37,11 +37,11 @@ def main():
 
 			tip_contracts = FileHandler.team_filter(active_contracts)
 
-			# print('There are ', len(tip_contracts), ' active TIP contracts.\n')
+			print('There are ', len(tip_contracts), ' active TIP contracts.\n')
 			# print(len(active_contracts))
 			
-			for i in active_contracts:
-				print(active_contracts[i]['Contract ID'], active_contracts[i]['Freelancer Name'], tip_contracts[i]['Team Name'])
+			# for i in active_contracts:
+			# 	print(active_contracts[i]['Contract ID'], active_contracts[i]['Freelancer Name'], tip_contracts[i]['Team Name'])
 
 		elif internal_audit_type == '3':
 
