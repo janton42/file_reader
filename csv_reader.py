@@ -12,6 +12,8 @@ from url_opener import open_url, url_builder
 		
 class FileHandler(object):
 	"""docstring for FileHandler"""
+	
+	
 
 	
 
@@ -56,9 +58,12 @@ class FileHandler(object):
 			i = 1
 			tester = all_data[data]['User Details']
 
-			while i < len(tester):
-				k = headers[i]
-				v = tester[i]
+			while i < len(headers):
+				k = headers[i-1]
+				if i < len(tester):
+					v = tester[i-1]
+				else:
+					v = ''
 				i += 1
 				pair[k] = v
 			complete_list_counter += 1
@@ -189,12 +194,10 @@ class FileHandler(object):
 			open_url(url)
 
 	def get_active_contracts(file_location):
-
 		compiled_list = csv.reader(open(file_location, 'r'))
-		
+
 		complete_list = {}
 		complete_list_counter = 0
-
 		user_list = {}
 		key = 0
 		
@@ -239,6 +242,25 @@ class FileHandler(object):
 
 
 		return complete_list
+
+
+	def team_filter(complete_list):
+
+		filtered_contracts = {}
+		filter_counter = 0
+		
+		for c in complete_list:	
+			
+			parts = complete_list[c]['Team Name'].split('::')
+
+			if len(parts) > 1:
+				subteam = parts[1]
+				if len(subteam) > 3:
+					if subteam[0:4] != 'GTNP':
+						filter_counter += 1
+						filtered_contracts[filter_counter] = complete_list[c]
+
+		return filtered_contracts
 
 
 	def __init__(self, arg):
