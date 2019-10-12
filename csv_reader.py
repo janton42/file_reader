@@ -262,6 +262,29 @@ class FileHandler(object):
 
 		return filtered_contracts
 
+	def fte_filter(complete_list):
+		filtered_users = {}
+		filtered_counter = 0
+
+		for u in complete_list:
+			parts = complete_list[u]['upwork_email'].split('@')
+			if len(parts) > 1:
+				domain = parts[1]
+				if domain != 'upwork.com':
+					filtered_counter += 1
+					filtered_users[filtered_counter] = complete_list[u]
+
+		return filtered_users
+
+	def uid_compare(contract_list, user_list):
+		users_with_contracts = {}
+		users_with_contracts_counter = 0
+		for c in contract_list:
+			for u in user_list:
+				if contract_list[c]['Freelancer User ID'] in user_list[u].values():
+					users_with_contracts_counter += 1
+					users_with_contracts[users_with_contracts_counter] = contract_list[c]
+
 
 	def __init__(self, arg):
 		super(FileHandler, self).__init__()
