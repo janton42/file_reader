@@ -24,10 +24,29 @@ def main():
 		internal_audit_type = input('What would you like to audit (enter a number)?\n 1 = Active Users with Systems Access\n 2 = Active Contracts\n 3 = End Dates\n ')
 		if internal_audit_type == '1':
 			users_file_name = 'user_data'
+			contracts_file_name = 'contracts'
+			auwa = FileHandler.fte_filter(FileHandler.get_active_users('./static/' + users_file_name + '.csv'))
+			active_contracts = FileHandler.team_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))
 			
-			auwa = FileHandler.get_active_users('./static/' + users_file_name + '.csv')
-
 			print('There are ', len(auwa), ' active users with access.\n')
+			print('There are ', len(active_contracts), ' active contracts')
+			
+			print(auwa[1])
+			contracts_and_users = {}
+			contracts_and_users_counter = 0
+			for u in auwa:	
+				for c in active_contracts:
+					if auwa[u]['worker_user_id'] in active_contracts[c].values():
+						contracts_and_users_counter += 1
+						contracts_and_users[contracts_and_users_counter] = active_contracts[c]
+
+			print(len(contracts_and_users))
+			# print('jesse-ratner' in auwa[1].values())
+			# compared = FileHandler.uid_compare(active_contracts, auwa)
+			
+			# return(len(compared))
+
+
 
 		elif internal_audit_type == '2':
 
