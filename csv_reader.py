@@ -279,11 +279,11 @@ class FileHandler(object):
 	def uid_compare(contract_list, user_list):
 		users_with_contracts = {}
 		users_with_contracts_counter = 0
-		for c in contract_list:
-			for u in user_list:
-				if contract_list[c]['Freelancer User ID'] in user_list[u].values():
-					users_with_contracts_counter += 1
-					users_with_contracts[users_with_contracts_counter] = contract_list[c]
+
+		uids = filter(lambda x: x['worker_user_id'] not in contract_list, user_list)
+
+		# for u in user_list:
+		return uids
 
 
 	def __init__(self, arg):

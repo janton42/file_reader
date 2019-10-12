@@ -28,19 +28,30 @@ def main():
 			auwa = FileHandler.fte_filter(FileHandler.get_active_users('./static/' + users_file_name + '.csv'))
 			active_contracts = FileHandler.team_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))
 			
-			print('There are ', len(auwa), ' active users with access.\n')
-			print('There are ', len(active_contracts), ' active contracts')
-			
-			print(auwa[1])
-			contracts_and_users = {}
-			contracts_and_users_counter = 0
-			for u in auwa:	
-				for c in active_contracts:
-					if auwa[u]['worker_user_id'] in active_contracts[c].values():
-						contracts_and_users_counter += 1
-						contracts_and_users[contracts_and_users_counter] = active_contracts[c]
+			cids = {}
+			cid_counter = 0
 
-			print(len(contracts_and_users))
+			for c in active_contracts:
+				cid_counter += 1
+				cids[cid_counter] = active_contracts[c]['Contract ID']
+
+
+			# print('There are ', len(auwa), ' active users with access.\n')
+			# print('There are ', len(active_contracts), ' active contracts')
+			
+			# print(auwa[1])
+			# contracts_and_users = {}
+			# contracts_and_users_counter = 0
+			# for u in auwa:	
+			# 	for c in active_contracts:
+			# 		if auwa[u]['worker_user_id'] in active_contracts[c].values():
+			# 			contracts_and_users_counter += 1
+			# 			contracts_and_users[contracts_and_users_counter] = active_contracts[c]
+
+			# print(len(contracts_and_users))
+
+			for c in cids:
+				print(cids[c])
 			# print('jesse-ratner' in auwa[1].values())
 			# compared = FileHandler.uid_compare(active_contracts, auwa)
 			
