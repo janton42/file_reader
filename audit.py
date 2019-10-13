@@ -22,80 +22,18 @@ def main():
 
 	elif file_purpose == 'no':
 		internal_audit_type = input('What would you like to audit (enter a number)?\n 1 = Active Users with Systems Access\n 2 = Active Contracts\n 3 = End Dates\n ')
+		
 		if internal_audit_type == '1':
+			
 			users_file_name = 'user_data'
 			contracts_file_name = 'contracts'
+
 			auwa = FileHandler.fte_filter(FileHandler.get_active_users('./static/' + users_file_name + '.csv'))
 			active_contracts = FileHandler.team_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))
-			
-			uids_contracts = []
-			uids_users = []
 
-			names_contracts = []
-			names_users = []
+			output = FileHandler.find_users_without_contracts(active_contracts,auwa)
 
-			for c in active_contracts:
-				uids_contracts.append(active_contracts[c]['Freelancer User ID'])
-				names_contracts.append(active_contracts[c]['Freelancer Name'])
-
-			for u in auwa:
-				uids_users.append(auwa[u]['worker_user_id'])
-				names_users.append(auwa[u]['full_name'])
-
-			filtered_by_uid = FileHandler.list_compare(uids_contracts,uids_users)
-			filtered_by_name = FileHandler.list_compare(names_contracts,names_users)
-
-			details = {}
-			details_counter = 0
-
-			for u in filtered_by_uid:
-				for au in auwa:
-					uid = auwa[au]['worker_user_id']
-					if u == uid:
-						details_counter += 1
-						details[details_counter] = auwa[au]
-			
-			filtered_by_name_and_cid = {}
-			filtered_by_name_and_cid_counter = 0
-
-			for u in filtered_by_name:
-				for au in details:
-					u_name = details[au]['full_name']
-					if u == u_name:
-						filtered_by_name_and_cid_counter += 1
-						filtered_by_name_and_cid[filtered_by_name_and_cid_counter] = details[au]
-
-
-
-			for i in filtered_by_name_and_cid:
-				print(filtered_by_name_and_cid[i]['full_name'])
-			# print('There are ', len(auwa), ' active users with access.\n')
-			# print('There are ', len(active_contracts), ' active contracts')
-			
-			# print(auwa[1])
-			# contracts_and_users = {}
-			# contracts_and_users_counter = 0
-			# for u in auwa:	
-			# 	for c in active_contracts:
-			# 		if auwa[u]['worker_user_id'] in active_contracts[c].values():
-			# 			contracts_and_users_counter += 1
-			# 			contracts_and_users[contracts_and_users_counter] = active_contracts[c]
-
-			# print(len(contracts_and_users))
-
-			# no_contract_counter = 0
-
-			# for u in auwa:
-			# 	if auwa[u]['contract_id'] == '':
-			# 		no_contract_counter += 1
-
-
-			# print('jesse-ratner' in auwa[1].values())
-			# compared = FileHandler.uid_compare(active_contracts, auwa)
-			
-			# return(len(compared))
-
-
+			print(output)
 
 		elif internal_audit_type == '2':
 

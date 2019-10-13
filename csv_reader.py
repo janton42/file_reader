@@ -225,6 +225,49 @@ class FileHandler(object):
 			open_url(url)
 
 	
+	def find_users_without_contracts(active_contracts, auwa):
+
+		uids_contracts = []
+		uids_users = []
+
+		names_contracts = []
+		names_users = []
+
+		for c in active_contracts:
+			uids_contracts.append(active_contracts[c]['Freelancer User ID'])
+			names_contracts.append(active_contracts[c]['Freelancer Name'])
+
+		for u in auwa:
+			uids_users.append(auwa[u]['worker_user_id'])
+			names_users.append(auwa[u]['full_name'])
+
+		filtered_by_uid = FileHandler.list_compare(uids_contracts,uids_users)
+		filtered_by_name = FileHandler.list_compare(names_contracts,names_users)
+
+		details = {}
+		details_counter = 0
+
+		for u in filtered_by_uid:
+			for au in auwa:
+				uid = auwa[au]['worker_user_id']
+				if u == uid:
+					details_counter += 1
+					details[details_counter] = auwa[au]
+		
+		filtered_by_name_and_cid = {}
+		filtered_by_name_and_cid_counter = 0
+
+		for u in filtered_by_name:
+			for au in details:
+				u_name = details[au]['full_name']
+				if u == u_name:
+					filtered_by_name_and_cid_counter += 1
+					filtered_by_name_and_cid[filtered_by_name_and_cid_counter] = details[au]
+
+
+
+		for i in filtered_by_name_and_cid:
+			print(filtered_by_name_and_cid[i]['full_name'])
 
 	def team_filter(complete_list):
 
