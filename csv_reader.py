@@ -11,8 +11,10 @@ from url_opener import open_url, url_builder
 # 		self.arg = arg
 		
 class FileHandler(object):
+
 	"""docstring for FileHandler"""
-	
+	complete_list = {}
+	complete_list_counter = 0	
 	
 
 	def create_dict(file_location):
@@ -31,8 +33,9 @@ class FileHandler(object):
 	def get_active_users(file_location):
 	
 		user_list = FileHandler.create_dict(file_location)
-		complete_list = {}
-		complete_list_counter = 0
+
+		a = FileHandler.complete_list
+		b = FileHandler.complete_list_counter
 
 		all_data = {}
 		user_detail_counter = 0
@@ -69,16 +72,16 @@ class FileHandler(object):
 					v = ''
 				i += 1
 				pair[k] = v
-			complete_list_counter += 1
-			complete_list[complete_list_counter] = pair
+			b += 1
+			a[b] = pair
 
 
-		return complete_list
+		return a
 
 	def get_audit_users(file_location):
 
-		complete_list = {}
-		complete_list_counter = 0
+		a = FileHandler.complete_list
+		b = FileHandler.complete_list_counter
 
 		user_list = FileHandler.create_dict(file_location)
 
@@ -102,7 +105,8 @@ class FileHandler(object):
 		
 		headers = all_data[1]['User Details']
 		del headers[-1]
-		headers.append('Audited')
+		
+		# headers.append('Audited')
 
 		
 
@@ -116,18 +120,48 @@ class FileHandler(object):
 				v = tester[i]
 				i += 1
 				pair[k] = v
-			complete_list_counter += 1
-			complete_list[complete_list_counter] = pair
+			b += 1
+			a[b] = pair
 
 
-		return complete_list
+		return a
 
-	def audit_status_changer(contract):
-		if contract['Audited'] == False:
-			contract['Audited'] = True
+	def get_active_contracts(file_location):
 
-		elif contract['Audited'] == True:
-			contract['Audited'] = False
+		# complete_list = {}
+		# complete_list_counter = 0
+
+		user_list = FileHandler.create_dict(file_location)
+
+		headers = user_list[0]
+
+		a = FileHandler.complete_list
+		b = FileHandler.complete_list_counter
+		
+
+		for data in user_list:
+			pair = {}
+			i = 1
+			tester = user_list[data]
+
+			while i < len(tester):
+				k = headers[i-1]
+				v = tester[i-1]
+				i += 1
+				pair[k] = v
+			b += 1
+			a[b] = pair
+
+
+		return a
+
+	# def audit_status_changer(contract):
+
+	# 	if contract['Audited'] == False:
+	# 		contract['Audited'] = True
+
+	# 	elif contract['Audited'] == True:
+	# 		contract['Audited'] = False
 
 	def audit(output):
 	
@@ -190,51 +224,7 @@ class FileHandler(object):
 			url = url_builder(contract_id)
 			open_url(url)
 
-	def get_active_contracts(file_location):
-
-		complete_list = {}
-		complete_list_counter = 0
-
-		user_list = FileHandler.create_dict(file_location)
-
-		# all_data = {}
-		# user_detail_counter = 0
-
-
-		# for user in user_list:
-
-		# 	user_details = {}
-
-		# 	ind_contract_detail = user_list.get(user)[0]
-		# 	# detail_list = ind_contract_detail.split(';')
-
-		# 	user_details['Contract Details'] = ind_contract_detail
-
-		# 	user_detail_counter += 1
-
-		# 	all_data[user_detail_counter] = user_details
-		
-		# # the length of the headers list is always 24
-		headers = user_list[0]
-
-		
-
-		for data in user_list:
-			pair = {}
-			i = 1
-			tester = user_list[data]
-
-			while i < len(tester):
-				k = headers[i-1]
-				v = tester[i-1]
-				i += 1
-				pair[k] = v
-			complete_list_counter += 1
-			complete_list[complete_list_counter] = pair
-
-
-		return complete_list
-
+	
 
 	def team_filter(complete_list):
 
