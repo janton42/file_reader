@@ -31,14 +31,19 @@ def main():
 			uids_contracts = []
 			uids_users = []
 
+			names_contracts = []
+			names_users = []
+
 			for c in active_contracts:
 				uids_contracts.append(active_contracts[c]['Freelancer User ID'])
+				names_contracts.append(active_contracts[c]['Freelancer Name'])
 
 			for u in auwa:
 				uids_users.append(auwa[u]['worker_user_id'])
+				names_users.append(auwa[u]['full_name'])
 
 			filtered_by_uid = FileHandler.list_compare(uids_contracts,uids_users)
-
+			filtered_by_name = FileHandler.list_compare(names_contracts,names_users)
 
 			details = {}
 			details_counter = 0
@@ -49,14 +54,21 @@ def main():
 					if u == uid:
 						details_counter += 1
 						details[details_counter] = auwa[au]
-
 			
+			filtered_by_name_and_cid = {}
+			filtered_by_name_and_cid_counter = 0
 
-			print(auwa[1]['full_name'])
+			for u in filtered_by_name:
+				for au in details:
+					u_name = details[au]['full_name']
+					if u == u_name:
+						filtered_by_name_and_cid_counter += 1
+						filtered_by_name_and_cid[filtered_by_name_and_cid_counter] = details[au]
 
-			print(details[1]['full_name'])
 
-			print(active_contracts[1]['Freelancer Name'])
+
+			for i in filtered_by_name_and_cid:
+				print(filtered_by_name_and_cid[i]['full_name'])
 			# print('There are ', len(auwa), ' active users with access.\n')
 			# print('There are ', len(active_contracts), ' active contracts')
 			
@@ -78,8 +90,6 @@ def main():
 			# 		no_contract_counter += 1
 
 
-
-			print(len(details))
 			# print('jesse-ratner' in auwa[1].values())
 			# compared = FileHandler.uid_compare(active_contracts, auwa)
 			
