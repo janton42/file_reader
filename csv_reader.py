@@ -15,14 +15,8 @@ class FileHandler(object):
 	
 	
 
-	
-
-	def get_active_users(file_location):
-	
+	def create_dict(file_location):
 		compiled_list = csv.reader(open(file_location, 'r'))
-		
-		complete_list = {}
-		complete_list_counter = 0
 
 		user_list = {}
 		key = 0
@@ -30,6 +24,15 @@ class FileHandler(object):
 		for v in compiled_list:
 		   user_list[key] = v
 		   key += 1
+
+		return user_list
+
+
+	def get_active_users(file_location):
+	
+		user_list = FileHandler.create_dict(file_location)
+		complete_list = {}
+		complete_list_counter = 0
 
 		all_data = {}
 		user_detail_counter = 0
@@ -74,16 +77,10 @@ class FileHandler(object):
 
 	def get_audit_users(file_location):
 
-		compiled_list = csv.reader(open(file_location, 'r'))
 		complete_list = {}
 		complete_list_counter = 0
 
-		user_list = {}
-		key = 0
-		
-		for v in compiled_list:
-		   user_list[key] = v
-		   key += 1
+		user_list = FileHandler.create_dict(file_location)
 
 		all_data = {}
 		user_detail_counter = 0
@@ -194,16 +191,11 @@ class FileHandler(object):
 			open_url(url)
 
 	def get_active_contracts(file_location):
-		compiled_list = csv.reader(open(file_location, 'r'))
 
 		complete_list = {}
 		complete_list_counter = 0
-		user_list = {}
-		key = 0
-		
-		for v in compiled_list:
-		   user_list[key] = v
-		   key += 1
+
+		user_list = FileHandler.create_dict(file_location)
 
 		# all_data = {}
 		# user_detail_counter = 0
