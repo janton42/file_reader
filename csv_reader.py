@@ -155,14 +155,6 @@ class FileHandler(object):
 
 		return a
 
-	# def audit_status_changer(contract):
-
-	# 	if contract['Audited'] == False:
-	# 		contract['Audited'] = True
-
-	# 	elif contract['Audited'] == True:
-	# 		contract['Audited'] = False
-
 	def audit(output):
 	
 		test_group = {}
@@ -224,7 +216,6 @@ class FileHandler(object):
 			url = url_builder(contract_id)
 			open_url(url)
 
-	
 	def find_users_without_contracts(active_contracts, auwa):
 
 		uids_contracts = []

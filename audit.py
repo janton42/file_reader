@@ -44,21 +44,18 @@ def main():
 			tip_contracts = FileHandler.team_filter(active_contracts)
 
 			print('There are ', len(tip_contracts), ' active TIP contracts.\n')
-			# print(len(active_contracts))
 			
-			# for i in active_contracts:
-			# 	print(active_contracts[i]['Contract ID'], active_contracts[i]['Freelancer Name'], tip_contracts[i]['Team Name'])
-
 		elif internal_audit_type == '3':
 
 			contracts_file_name = 'contracts'
+
+			active_contracts = FileHandler.team_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))
+
 			action_items = {}
 			action_items_counter = 0
 			now = datetime.datetime.now()
 
 			date = now.strftime('%Y/%m/%d')
-
-			active_contracts = FileHandler.team_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))
 
 			for c in active_contracts:
 				expired = {}
