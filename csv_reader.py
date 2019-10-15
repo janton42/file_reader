@@ -260,7 +260,7 @@ class FileHandler(object):
 
 
 		for i in filtered_by_name_and_cid:
-			print(filtered_by_name_and_cid[i]['full_name'])
+			print(filtered_by_name_and_cid[i])
 
 	def find_end_dates(active_contracts):
 		action_items = {}
@@ -482,7 +482,6 @@ class FileHandler(object):
 		super(FileHandler, self).__init__()
 		self.arg = arg
 		
-
-
+		
 
 
