@@ -36,8 +36,9 @@ def main():
 			output = FileHandler.find_users_without_contracts(active_contracts,auwa)
 
 			print(output)
+			
 
-			# FileHandler.create_action_list(output)
+			FileHandler.create_action_list(output)
 
 			continue_audits = input('Would you like to run another audit (yes/no)? ')
 
@@ -79,7 +80,9 @@ def main():
 
 			output = FileHandler.find_end_dates(active_contracts)
 
-			print(output)
+			FileHandler.create_action_list(output)
+
+			print("Success!")
 
 			continue_audits = input('Would you like to run another audit (yes/no)? ')
 
