@@ -26,6 +26,7 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from passwords import emailer
 
 from comparison import generate_affected_list
 
@@ -35,9 +36,11 @@ class Emailer(object):
 
 	def send_email(subject, body):
 
-		sender_email = "stocksandbox@gmail.com"
+		sender_email = "tip.autoreports@gmail.com"
 		receiver_email = "jantonstock@gmail.com"
-		password = getpass.getpass()
+		
+
+		#password = getpass.getpass()
 
 		# Create a multipart message and set headers
 		message = MIMEMultipart()
@@ -74,7 +77,7 @@ class Emailer(object):
 		# Log in to server using secure context and send email
 		context = ssl.create_default_context()
 		with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-		    server.login(sender_email, password)
+		    server.login(sender_email, emailer)
 		    server.sendmail(sender_email, receiver_email, text)
 
 		def __init__(self, arg):
