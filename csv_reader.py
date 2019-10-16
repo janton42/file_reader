@@ -30,11 +30,11 @@ class FileHandler(object):
 		return user_list
 
 	def get_active_users(file_location):
-	
-		user_list = FileHandler.create_dict(file_location)
 
 		a = FileHandler.complete_list
 		b = FileHandler.complete_list_counter
+
+		user_list = FileHandler.create_dict(file_location)
 
 		all_data = {}
 		user_detail_counter = 0
