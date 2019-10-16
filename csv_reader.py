@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 import csv
-
 from url_opener import open_url, url_builder
-
 import datetime
 
 # class Reader(object):
@@ -30,7 +28,6 @@ class FileHandler(object):
 		   key += 1
 
 		return user_list
-
 
 	def get_active_users(file_location):
 	
@@ -259,8 +256,7 @@ class FileHandler(object):
 
 
 
-		for i in filtered_by_name_and_cid:
-			print(filtered_by_name_and_cid[i])
+		return filtered_by_name_and_cid
 
 	def find_end_dates(active_contracts):
 		action_items = {}
@@ -476,6 +472,12 @@ class FileHandler(object):
 
 		# for u in user_list:
 		return users_without_contract
+
+	def create_action_list(generator):
+
+	    with open('./static/action_items.csv', 'w') as csvFile:
+	        writer = csv.writer(csvFile)
+	        writer.writerows(generator)
 
 
 	def __init__(self, arg):
