@@ -254,9 +254,16 @@ class FileHandler(object):
 					filtered_by_name_and_cid_counter += 1
 					filtered_by_name_and_cid[filtered_by_name_and_cid_counter] = details[au]
 
+		output = [['worker_user_id','full_name','upwork_email']]
 
+		for i in filtered_by_name_and_cid:
+			action_item = []
+			action_item.append(filtered_by_name_and_cid[i]['worker_user_id'])
+			action_item.append(filtered_by_name_and_cid[i]['full_name'])
+			action_item.append(filtered_by_name_and_cid[i]['upwork_email'])
+			output.append(action_item)
 
-		return filtered_by_name_and_cid
+		return output
 
 	def find_end_dates(active_contracts):
 		action_items = {}
@@ -427,6 +434,17 @@ class FileHandler(object):
 				print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
 		print()
 
+		output = [['Contract ID','Freelancer Name','End Date']]
+
+		for i in action_items:
+			action_item = []
+			action_item.append(action_items[i]['Contract ID'])
+			action_item.append(action_items[i]['Freelancer Name'])
+			action_item.append(action_items[i]['End Date'])
+			output.append(action_item)
+
+		return output
+
 	def team_filter(complete_list):
 
 		filtered_contracts = {}
@@ -475,9 +493,12 @@ class FileHandler(object):
 
 	def create_action_list(generator):
 
-	    with open('./static/action_items.csv', 'w') as csvFile:
-	        writer = csv.writer(csvFile)
-	        writer.writerows(generator)
+		file_name = input('Enter a file name: ')
+		output_path = './static/' + file_name + '.csv'
+
+		with open(output_path, 'w') as csvFile:
+			writer = csv.writer(csvFile)
+			writer.writerows(generator)
 
 
 	def __init__(self, arg):
