@@ -30,11 +30,11 @@ class FileHandler(object):
 		return user_list
 
 	def get_active_users(file_location):
+	
+		user_list = FileHandler.create_dict(file_location)
 
 		a = FileHandler.complete_list
 		b = FileHandler.complete_list_counter
-
-		user_list = FileHandler.create_dict(file_location)
 
 		all_data = {}
 		user_detail_counter = 0
@@ -386,53 +386,53 @@ class FileHandler(object):
 
 		# Output
 
-		print('There are ', len(active_contracts), ' active contracts.\n')
-		if len(action_items) == 1:
-			print('There is 1 action item.\n')
-		else:
-			print('There are ', len(action_items), ' action items.\n')
-		total_expired = 0
-		total_expiring_today = 0
-		total_expiring_next_14 = 0
+		# print('There are ', len(active_contracts), ' active contracts.\n')
+		# if len(action_items) == 1:
+		# 	print('There is 1 action item.\n')
+		# else:
+		# 	print('There are ', len(action_items), ' action items.\n')
+		# total_expired = 0
+		# total_expiring_today = 0
+		# total_expiring_next_14 = 0
 
-		for item in action_items:
-			if action_items[item]['Expired'] == 'Yes':
-				total_expired += 1
-			if action_items[item]['Expires Today'] == 'Yes':
-				total_expiring_today += 1
-			if action_items[item]['Expired'] == 'No' and action_items[item]['Expires Today'] == 'No':
-				total_expiring_next_14 += 1
+		# for item in action_items:
+		# 	if action_items[item]['Expired'] == 'Yes':
+		# 		total_expired += 1
+		# 	if action_items[item]['Expires Today'] == 'Yes':
+		# 		total_expiring_today += 1
+		# 	if action_items[item]['Expired'] == 'No' and action_items[item]['Expires Today'] == 'No':
+		# 		total_expiring_next_14 += 1
 
-		if total_expired == 1:
-			print(total_expired, ' contract is expired.\n')
-		else:
-			print(total_expired, ' contracts are expired.\n' )
+		# if total_expired == 1:
+		# 	print(total_expired, ' contract is expired.\n')
+		# else:
+		# 	print(total_expired, ' contracts are expired.\n' )
 
-		for item in action_items:
-			if action_items[item]['Expired'] == 'Yes':
-				print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
-		print()
+		# for item in action_items:
+		# 	if action_items[item]['Expired'] == 'Yes':
+		# 		print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
+		# print()
 
-		if total_expiring_today == 1:
-			print(total_expiring_today, ' contract is expiring today.\n')
-		else:
-			print(total_expiring_today, ' contracts are expiring today.\n' )
+		# if total_expiring_today == 1:
+		# 	print(total_expiring_today, ' contract is expiring today.\n')
+		# else:
+		# 	print(total_expiring_today, ' contracts are expiring today.\n' )
 
-		for item in action_items:
-			if action_items[item]['Expires Today'] == 'Yes':
-				print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
-		print()
+		# for item in action_items:
+		# 	if action_items[item]['Expires Today'] == 'Yes':
+		# 		print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
+		# print()
 
-		if total_expiring_next_14 == 1:
-			print('1 contract is expiring in the next 14 days.\n')
-		else:
-			print(total_expiring_next_14, ' contracts are expiring in the next 14 days.\n')
+		# if total_expiring_next_14 == 1:
+		# 	print('1 contract is expiring in the next 14 days.\n')
+		# else:
+		# 	print(total_expiring_next_14, ' contracts are expiring in the next 14 days.\n')
 
 
-		for item in action_items:
-			if action_items[item]['Expires Today'] == 'No' and action_items[item]['Expired'] == 'No':
-				print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
-		print()
+		# for item in action_items:
+		# 	if action_items[item]['Expires Today'] == 'No' and action_items[item]['Expired'] == 'No':
+		# 		print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
+		# print()
 
 		output = [['Contract ID','Freelancer Name','End Date']]
 
@@ -491,10 +491,16 @@ class FileHandler(object):
 		# for u in user_list:
 		return users_without_contract
 
-	def create_action_list(generator):
+	def create_action_list(generator, audit_type):
+		file_name = ''
 
-		file_name = input('Enter a file name: ')
-		output_path = './static/' + file_name + '.csv'
+		if audit_type == 1:
+			file_name = 'active_users_no_contract'
+		if audit_type == 2:
+			file_name = 'end_dates'
+
+
+		output_path = '/Users/jeffstock/Desktop/' + file_name + '.csv'
 
 		with open(output_path, 'w') as csvFile:
 			writer = csv.writer(csvFile)
