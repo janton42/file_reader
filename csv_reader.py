@@ -290,7 +290,7 @@ class FileHandler(object):
 
 			# Expired contracts
 
-			if end_year == now.year -1 or end_year == now.year -2 or end_year == now.year and end_month == now.month and end_day < now.day:
+			if end_year == now.year -1 or end_year == now.year -2 or end_year == now.year and end_month == now.month and end_day < now.day or end_year == now.year and end_month < now.month:
 				action_items_counter += 1
 				expired['Contract ID'] = active_contracts[c]['Contract ID']
 				expired['Freelancer Name'] = active_contracts[c]['Freelancer Name']
@@ -318,7 +318,7 @@ class FileHandler(object):
 
 			# Contracts ending this month in the next 14 days (starting tomorrow)
 
-			elif end_year == now.year and end_month == now.month and end_day > now.day and end_day < (now.day + 14):
+			elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 				action_items_counter += 1
 				next_14['Contract ID'] = active_contracts[c]['Contract ID']
 				next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
@@ -329,7 +329,7 @@ class FileHandler(object):
 
 				action_items[c] = next_14
 
-			# Untest contingincies (months with 30 days, February, December)
+			# Untested contingincies (months with 30 days, February, December)
 
 			# Months with 30 days (April, June, September, November)
 
