@@ -231,8 +231,8 @@ class FileHandler(object):
 			uids_users.append(auwa[u]['worker_user_id'])
 			names_users.append(auwa[u]['full_name'])
 
-		filtered_by_uid = FileHandler.list_compare(uids_contracts,uids_users)
-		filtered_by_name = FileHandler.list_compare(names_contracts,names_users)
+		filtered_by_uid = FileHandler.find_missing_from_list(uids_contracts,uids_users)
+		filtered_by_name = FileHandler.find_missing_from_list(names_contracts,names_users)
 
 		details = {}
 		details_counter = 0
@@ -383,57 +383,6 @@ class FileHandler(object):
 
 					action_items[c] = next_14
 
-
-		# Output
-
-		# print('There are ', len(active_contracts), ' active contracts.\n')
-		# if len(action_items) == 1:
-		# 	print('There is 1 action item.\n')
-		# else:
-		# 	print('There are ', len(action_items), ' action items.\n')
-		# total_expired = 0
-		# total_expiring_today = 0
-		# total_expiring_next_14 = 0
-
-		# for item in action_items:
-		# 	if action_items[item]['Expired'] == 'Yes':
-		# 		total_expired += 1
-		# 	if action_items[item]['Expires Today'] == 'Yes':
-		# 		total_expiring_today += 1
-		# 	if action_items[item]['Expired'] == 'No' and action_items[item]['Expires Today'] == 'No':
-		# 		total_expiring_next_14 += 1
-
-		# if total_expired == 1:
-		# 	print(total_expired, ' contract is expired.\n')
-		# else:
-		# 	print(total_expired, ' contracts are expired.\n' )
-
-		# for item in action_items:
-		# 	if action_items[item]['Expired'] == 'Yes':
-		# 		print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
-		# print()
-
-		# if total_expiring_today == 1:
-		# 	print(total_expiring_today, ' contract is expiring today.\n')
-		# else:
-		# 	print(total_expiring_today, ' contracts are expiring today.\n' )
-
-		# for item in action_items:
-		# 	if action_items[item]['Expires Today'] == 'Yes':
-		# 		print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
-		# print()
-
-		# if total_expiring_next_14 == 1:
-		# 	print('1 contract is expiring in the next 14 days.\n')
-		# else:
-		# 	print(total_expiring_next_14, ' contracts are expiring in the next 14 days.\n')
-
-
-		# for item in action_items:
-		# 	if action_items[item]['Expires Today'] == 'No' and action_items[item]['Expired'] == 'No':
-		# 		print(action_items[item]['Contract ID'], action_items[item]['Freelancer Name'], action_items[item]['End Date'])
-		# print()
-
 		output = [['Contract ID','Freelancer Name','End Date']]
 
 		for i in action_items:
@@ -445,7 +394,42 @@ class FileHandler(object):
 
 		return output
 
-	def team_filter(complete_list):
+	def find_l3_countries(active_contracts):
+		action_items = {}
+		action_items_counter = 0
+		l3_countries_list = ['Australia','Austria','Canada',
+								'Denmark','Finland','France',
+								'Germany','Ireland','Italy',
+								'Liechtenstein','Luxembourg',
+								'Monaco','Netherlands','Norway',
+								'Portugal','Spain','Sweden','Switzerland',
+								'United Kingdom','United States',
+								'American Samoa','Guam', 'Puerto Rico',
+								'U.S. Virgin Islands',
+								'Northern Mariana Islands']
+
+		for c in active_contracts:
+			location = active_contracts[c]['Freelancer location'].split(',')
+			country = location[0]
+	
+			if country in l3_countries_list:
+				action_items_counter += 1
+				action_items[action_items_counter] = active_contracts[c]
+ 
+
+		output = [['Contract ID','Freelancer Name','Location','Agency']]
+
+		for i in action_items:
+			action_item = []
+			action_item.append(action_items[i]['Contract ID'])
+			action_item.append(action_items[i]['Freelancer Name'])
+			action_item.append(action_items[i]['Freelancer location'])
+			action_item.append(action_items[i]['Agency Name'])
+			output.append(action_item)
+
+		return output
+
+	def gtnp_filter(complete_list):
 
 		filtered_contracts = {}
 		filter_counter = 0
@@ -480,16 +464,50 @@ class FileHandler(object):
 
 		return filtered_users
 
-	def list_compare(contract_list, user_list):
-		users_without_contract = []
+	def payroll_filter(complete_list):
+		filtered_contracts = {}
+		filter_counter = 0
 		
-		for u in user_list:
-			if u not in contract_list:
-				users_without_contract.append(u)
+		for c in complete_list:
+			agency = complete_list[c]['Agency Name']
+			if agency != 'Upwork Payroll - iWorkGlobal' and agency != 'EOR-IWG-INTL':
+				filter_counter += 1
+				filtered_contracts[filter_counter] = complete_list[c]
+
+		return filtered_contracts
+
+	def fixed_price_filter(complete_list):
+		filtered_contracts = {}
+		filter_counter = 0
+		
+		for c in complete_list:
+			structure = complete_list[c]['Contract type']
+			if structure == 'Hourly':
+				filter_counter += 1
+				filtered_contracts[filter_counter] = complete_list[c]
+
+		return filtered_contracts	
 
 
-		# for u in user_list:
-		return users_without_contract
+	def find_missing_from_list(list_1, list_2):
+		missing_from_list = []
+		
+		for i in list_2:
+			if i not in list_1:
+				missing_from_list.append(i)
+
+		return missing_from_list
+
+	def find_common_between_lists(list_1,list_2):
+		common_items = []
+
+		for i in list_1:
+			if i in list_2:
+				common_items.append(i)
+
+		return common_items
+
+
 
 	def create_action_list(generator, audit_type):
 		file_name = ''
@@ -498,6 +516,8 @@ class FileHandler(object):
 			file_name = 'active_users_no_contract'
 		if audit_type == 2:
 			file_name = 'end_dates'
+		if audit_type == 3:
+			file_name = 'ICs_in_L3_locations'
 
 
 		output_path = '/Users/jeffstock/Desktop/' + file_name + '.csv'
