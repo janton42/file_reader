@@ -104,10 +104,6 @@ class FileHandler(object):
 		
 		headers = all_data[1]['User Details']
 		del headers[-1]
-		
-		# headers.append('Audited')
-
-		
 
 		for data in all_data:
 			pair = {}
@@ -154,66 +150,6 @@ class FileHandler(object):
 
 		return a
 
-	def audit(output):
-	
-		test_group = {}
-		test_group_counter_raw = input("Enter group number to audit (1-8): ")
-		test_group_counter = int(test_group_counter_raw)
-
-		if test_group_counter > 8:
-			print('Please enter a number between 1 and 8')
-		else:	
-			for contract in output:
-				if test_group_counter == 1:
-					test_group_counter += 1	
-					while test_group_counter < 7:
-						test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
-						test_group_counter += 1
-					test_group_counter += 4
-				elif test_group_counter == 2:
-					test_group_counter = 6
-					while test_group_counter <= 10:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 3:
-					test_group_counter = 11
-					while test_group_counter <= 15:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 4:
-					test_group_counter = 16
-					while test_group_counter <= 20:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 5:
-					test_group_counter = 21
-					while test_group_counter <= 25:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 6:
-					test_group_counter = 26
-					while test_group_counter <= 30:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 7:
-					test_group_counter = 31
-					while test_group_counter <= 35:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 8:
-					test_group_counter = 36
-					while test_group_counter <= 40:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-
-
-			print(test_group)
-
-		for contract in test_group:
-			contract_id = test_group[contract]
-
-			url = url_builder(contract_id)
-			open_url(url)
 
 	def find_users_without_contracts(active_contracts, auwa):
 
@@ -287,9 +223,7 @@ class FileHandler(object):
 				end_day_raw = active_contracts[c]['End Date'][8:10]
 				end_day = int(end_day_raw)
 
-
 			# Expired contracts
-
 			if end_year == now.year -1 or end_year == now.year -2 or end_year == now.year and end_month == now.month and end_day < now.day or end_year == now.year and end_month < now.month:
 				action_items_counter += 1
 				expired['Contract ID'] = active_contracts[c]['Contract ID']
@@ -302,9 +236,7 @@ class FileHandler(object):
 			
 				action_items[c] = expired
 
-
 			# Contracts ending today
-
 			elif end_year == now.year and end_month == now.month and end_day == now.day:
 				action_items_counter += 1
 				expires_today['Contract ID'] = active_contracts[c]['Contract ID']
@@ -316,11 +248,10 @@ class FileHandler(object):
 
 				action_items[c] = expires_today
 
-			# February
+			# Contracts expiring next month when end dates are within 14 days of today
 			if now.day > 17:
 
 				#December
-
 				if now.month == 12:
 					if end_year == now.year + 1 and end_month == 1 and end_day < (now.day + 14 - 31):
 						action_items_counter += 1
@@ -333,6 +264,7 @@ class FileHandler(object):
 
 						action_items[c] = next_14
 
+				#February
 				elif now.month == 2:
 					if now.year == 2020 or now.year == 2024:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
@@ -356,7 +288,6 @@ class FileHandler(object):
 						action_items[c] = next_14
 
 				# Months with 30 days (April, June, September, November)
-
 				elif now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11:
 					if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 30):
 						action_items_counter += 1
@@ -370,7 +301,6 @@ class FileHandler(object):
 						action_items[c] = next_14
 
 				# Contracts expiring this month within the next 14 days
-
 				elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 					action_items_counter += 1
 					next_14['Contract ID'] = active_contracts[c]['Contract ID']
@@ -383,7 +313,6 @@ class FileHandler(object):
 					action_items[c] = next_14
 
 				# Contracts expiring next month within 14 days for months with 31 days and end_day == (now.day + 14 - 31)
-
 				if end_year == now.year and end_month == (now.month + 1) and end_day <= now.day + 14 - 31:
 					action_items_counter += 1
 					next_14['Contract ID'] = active_contracts[c]['Contract ID']
@@ -421,7 +350,7 @@ class FileHandler(object):
 				# Months with 30 days (April, June, September, November)
 
 				elif now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11:
-					if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 30):
+					if end_year == now.year and end_month == (now.month +1) and end_day <= (now.day + 14 - 30):
 						action_items_counter += 1
 						next_14['Contract ID'] = active_contracts[c]['Contract ID']
 						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
@@ -445,6 +374,7 @@ class FileHandler(object):
 
 				# Contracts ending this month in the next 14 days (starting tomorrow)
 
+			# Contracts expiring this month within the next 14 days
 			elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 				action_items_counter += 1
 				next_14['Contract ID'] = active_contracts[c]['Contract ID']
@@ -562,7 +492,6 @@ class FileHandler(object):
 
 		return filtered_contracts	
 
-
 	def find_missing_from_list(list_1, list_2):
 		missing_from_list = []
 		
@@ -581,8 +510,6 @@ class FileHandler(object):
 
 		return common_items
 
-
-
 	def create_action_list(generator, audit_type):
 		file_name = ''
 
@@ -600,6 +527,66 @@ class FileHandler(object):
 			writer = csv.writer(csvFile)
 			writer.writerows(generator)
 
+	def audit(output):
+	
+		test_group = {}
+		test_group_counter_raw = input("Enter group number to audit (1-8): ")
+		test_group_counter = int(test_group_counter_raw)
+
+		if test_group_counter > 8:
+			print('Please enter a number between 1 and 8')
+		else:	
+			for contract in output:
+				if test_group_counter == 1:
+					test_group_counter += 1	
+					while test_group_counter < 7:
+						test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
+						test_group_counter += 1
+					test_group_counter += 4
+				elif test_group_counter == 2:
+					test_group_counter = 6
+					while test_group_counter <= 10:
+						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+						test_group_counter += 1
+				elif test_group_counter == 3:
+					test_group_counter = 11
+					while test_group_counter <= 15:
+						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+						test_group_counter += 1
+				elif test_group_counter == 4:
+					test_group_counter = 16
+					while test_group_counter <= 20:
+						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+						test_group_counter += 1
+				elif test_group_counter == 5:
+					test_group_counter = 21
+					while test_group_counter <= 25:
+						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+						test_group_counter += 1
+				elif test_group_counter == 6:
+					test_group_counter = 26
+					while test_group_counter <= 30:
+						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+						test_group_counter += 1
+				elif test_group_counter == 7:
+					test_group_counter = 31
+					while test_group_counter <= 35:
+						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+						test_group_counter += 1
+				elif test_group_counter == 8:
+					test_group_counter = 36
+					while test_group_counter <= 40:
+						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
+						test_group_counter += 1
+
+
+			print(test_group)
+
+		for contract in test_group:
+			contract_id = test_group[contract]
+
+			url = url_builder(contract_id)
+			open_url(url)
 
 	def __init__(self, arg):
 		super(FileHandler, self).__init__()
