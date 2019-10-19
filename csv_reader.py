@@ -317,7 +317,7 @@ class FileHandler(object):
 				action_items[c] = expires_today
 
 			# February
-			elif now.day > 17:
+			if now.day > 17:
 
 				#December
 
@@ -382,9 +382,9 @@ class FileHandler(object):
 
 					action_items[c] = next_14
 
-				# Contracts expiring next month within 14 days for months with 31 days
+				# Contracts expiring next month within 14 days for months with 31 days and end_day == (now.day + 14 - 31)
 
-				elif end_year == now.year and end_month == (now.month + 1) and end_day == (now.day + 14 - 31):
+				if end_year == now.year and end_month == (now.month + 1) and end_day <= now.day + 14 - 31:
 					action_items_counter += 1
 					next_14['Contract ID'] = active_contracts[c]['Contract ID']
 					next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
