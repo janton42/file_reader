@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from csv_reader import FileHandler
+from vars import FilterLists
 
 class Auditor(object):
 	"""docstring for Auditor"""
@@ -36,11 +37,13 @@ class Auditor(object):
 
 		audit_type = 3
 
+		l3_countries_list = FilterLists.l3_countries
+
 		contracts_file_name = 'contracts'
 		
 		active_contracts = FileHandler.fixed_price_filter(FileHandler.payroll_filter(FileHandler.gtnp_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))))
 
-		output = FileHandler.find_l3_countries(active_contracts)
+		output = FileHandler.find_l3_countries(active_contracts, l3_countries_list)
 
 		FileHandler.create_action_list(output, audit_type)
 

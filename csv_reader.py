@@ -2,6 +2,7 @@
 
 import csv
 from url_opener import open_url, url_builder
+
 import datetime
 
 # class Reader(object):
@@ -248,6 +249,18 @@ class FileHandler(object):
 
 				action_items[c] = expires_today
 
+			# Contracts expiring this month within the next 14 days
+			elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
+				action_items_counter += 1
+				next_14['Contract ID'] = active_contracts[c]['Contract ID']
+				next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
+				next_14['End Date'] = active_contracts[c]['End Date'][0:10]
+				next_14['Contract Status'] = active_contracts[c]['Status']
+				next_14['Expired'] = 'No'
+				next_14['Expires Today'] = 'No'
+
+				action_items[c] = next_14
+
 			# Contracts expiring next month when end dates are within 14 days of today
 			if now.day > 17:
 
@@ -374,19 +387,6 @@ class FileHandler(object):
 
 				# Contracts ending this month in the next 14 days (starting tomorrow)
 
-			# Contracts expiring this month within the next 14 days
-			elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
-				action_items_counter += 1
-				next_14['Contract ID'] = active_contracts[c]['Contract ID']
-				next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-				next_14['Contract Status'] = active_contracts[c]['Status']
-				next_14['Expired'] = 'No'
-				next_14['Expires Today'] = 'No'
-
-				action_items[c] = next_14
-
-
 		output = [['Contract ID','Freelancer Name','End Date']]
 
 		for i in action_items:
@@ -398,19 +398,9 @@ class FileHandler(object):
 
 		return output
 
-	def find_l3_countries(active_contracts):
+	def find_l3_countries(active_contracts, l3_countries_list):
 		action_items = {}
 		action_items_counter = 0
-		l3_countries_list = ['Australia','Austria','Canada',
-								'Denmark','Finland','France',
-								'Germany','Ireland','Italy',
-								'Liechtenstein','Luxembourg',
-								'Monaco','Netherlands','Norway',
-								'Portugal','Spain','Sweden','Switzerland',
-								'United Kingdom','United States',
-								'American Samoa','Guam', 'Puerto Rico',
-								'U.S. Virgin Islands',
-								'Northern Mariana Islands']
 
 		for c in active_contracts:
 			location = active_contracts[c]['Freelancer location'].split(',')
