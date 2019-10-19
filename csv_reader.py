@@ -403,15 +403,16 @@ class FileHandler(object):
 		action_items_counter = 0
 
 		for c in active_contracts:
-			location = active_contracts[c]['Freelancer location'].split(',')
-			country = location[0]
-	
-			if country in l3_countries_list:
-				action_items_counter += 1
-				action_items[action_items_counter] = active_contracts[c]
+			freelancer_name = active_contracts[c]['Freelancer Name']
+			if freelancer_name != 'Upwork Managed Services' and freelancer_name != 'Professionals Agency P':
+				location = active_contracts[c]['Freelancer location'].split(',')
+				country = location[0]
+				if country in l3_countries_list:
+					action_items_counter += 1
+					action_items[action_items_counter] = active_contracts[c]
  
 
-		output = [['Contract ID','Freelancer Name','Location','Agency']]
+		output = [['Contract ID','Freelancer Name','Location','Agency','Weekly Limit','Contract End Date']]
 
 		for i in action_items:
 			action_item = []
@@ -419,6 +420,8 @@ class FileHandler(object):
 			action_item.append(action_items[i]['Freelancer Name'])
 			action_item.append(action_items[i]['Freelancer location'])
 			action_item.append(action_items[i]['Agency Name'])
+			action_item.append(action_items[i]['Weekly Limit'])
+			action_item.append(action_items[i]['End Date'][0:10])
 			output.append(action_item)
 
 		return output
