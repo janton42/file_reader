@@ -151,7 +151,6 @@ class FileHandler(object):
 
 		return a
 
-
 	def find_users_without_contracts(active_contracts, auwa):
 
 		uids_contracts = []
@@ -398,13 +397,14 @@ class FileHandler(object):
 
 		return output
 
-	def find_l3_countries(active_contracts, l3_countries_list):
+	def find_l3_countries(active_contracts, l3_countries_list, whitelist):
 		action_items = {}
 		action_items_counter = 0
 
 		for c in active_contracts:
 			freelancer_name = active_contracts[c]['Freelancer Name']
-			if freelancer_name != 'Upwork Managed Services' and freelancer_name != 'Professionals Agency P':
+			contract_id = active_contracts[c]['Contract ID']
+			if contract_id not in whitelist and freelancer_name != 'Upwork Managed Services' and freelancer_name != 'Professionals Agency P':
 				location = active_contracts[c]['Freelancer location'].split(',')
 				country = location[0]
 				if country in l3_countries_list:
@@ -416,12 +416,18 @@ class FileHandler(object):
 
 		for i in action_items:
 			action_item = []
+			
 			action_item.append(action_items[i]['Contract ID'])
 			action_item.append(action_items[i]['Freelancer Name'])
 			action_item.append(action_items[i]['Freelancer location'])
 			action_item.append(action_items[i]['Agency Name'])
 			action_item.append(action_items[i]['Weekly Limit'])
 			action_item.append(action_items[i]['End Date'][0:10])
+			
+			# if contract_id in whitelist:
+			# 	action_item.append('Yes')
+			# else:
+			# 	action_item.append('No')
 			output.append(action_item)
 
 		return output
@@ -584,7 +590,6 @@ class FileHandler(object):
 	def __init__(self, arg):
 		super(FileHandler, self).__init__()
 		self.arg = arg
-		
-		
+				
 
 

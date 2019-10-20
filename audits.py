@@ -39,16 +39,17 @@ class Auditor(object):
 
 		l3_countries_list = FilterLists.l3_countries
 
+		l3_whitelist = FilterLists.l3_whitelist
+
 		contracts_file_name = 'contracts'
 		
 		active_contracts = FileHandler.fixed_price_filter(FileHandler.payroll_filter(FileHandler.gtnp_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))))
 
-		output = FileHandler.find_l3_countries(active_contracts, l3_countries_list)
+		output = FileHandler.find_l3_countries(active_contracts, l3_countries_list, l3_whitelist)
 
 		FileHandler.create_action_list(output, audit_type)
 
 		print('Audit complete. Type: ICs in L3 Countries\n')
-			
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()
