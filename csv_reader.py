@@ -403,8 +403,9 @@ class FileHandler(object):
 
 		for c in active_contracts:
 			freelancer_name = active_contracts[c]['Freelancer Name']
+			access = active_contracts[c]['Systems Access']
 			contract_id = active_contracts[c]['Contract ID']
-			if contract_id not in whitelist and freelancer_name != 'Upwork Managed Services' and freelancer_name != 'Professionals Agency P':
+			if contract_id not in whitelist and freelancer_name != 'Upwork Managed Services' and freelancer_name != 'Professionals Agency P' and access != 'Domestic Staffing Vendor Employee':
 				location = active_contracts[c]['Freelancer location'].split(',')
 				country = location[0]
 				if country in l3_countries_list:
@@ -412,7 +413,7 @@ class FileHandler(object):
 					action_items[action_items_counter] = active_contracts[c]
  
 
-		output = [['Contract ID','Freelancer Name','Location','Agency','Weekly Limit','Contract End Date']]
+		output = [['Contract ID','Freelancer Name','Location','Agency','Weekly Limit','Contact Person','Contract End Date','Notes']]
 
 		for i in action_items:
 			action_item = []
@@ -422,6 +423,7 @@ class FileHandler(object):
 			action_item.append(action_items[i]['Freelancer location'])
 			action_item.append(action_items[i]['Agency Name'])
 			action_item.append(action_items[i]['Weekly Limit'])
+			action_item.append(action_items[i]['Contact person'])
 			action_item.append(action_items[i]['End Date'][0:10])
 			
 			# if contract_id in whitelist:
