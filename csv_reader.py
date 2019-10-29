@@ -230,6 +230,9 @@ class FileHandler(object):
 				expired['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 				expired['End Date'] = active_contracts[c]['End Date'][0:10]
 				expired['Contract Status'] = active_contracts[c]['Status']
+				expired['User ID'] = active_contracts[c]['Freelancer User ID']
+				expired['Team Name'] = active_contracts[c]['Team Name']
+				expired['Contact Person'] = active_contracts[c]['Contact person']
 				expired['Expired'] = 'Yes'
 				expired['Expires Today'] = 'No'
 
@@ -243,6 +246,9 @@ class FileHandler(object):
 				expires_today['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 				expires_today['End Date'] = active_contracts[c]['End Date'][0:10]
 				expires_today['Contract Status'] = active_contracts[c]['Status']
+				expires_today['User ID'] = active_contracts[c]['Freelancer User ID']
+				expires_today['Team Name'] = active_contracts[c]['Team Name']
+				expires_today['Contact Person'] = active_contracts[c]['Contact person']
 				expires_today['Expired'] = 'No'
 				expires_today['Expires Today'] = 'Yes'
 
@@ -255,6 +261,9 @@ class FileHandler(object):
 				next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 				next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 				next_14['Contract Status'] = active_contracts[c]['Status']
+				next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+				next_14['Team Name'] = active_contracts[c]['Team Name']
+				next_14['Contact Person'] = active_contracts[c]['Contact person']
 				next_14['Expired'] = 'No'
 				next_14['Expires Today'] = 'No'
 
@@ -271,6 +280,9 @@ class FileHandler(object):
 						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 						next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 						next_14['Contract Status'] = active_contracts[c]['Status']
+						next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+						next_14['Team Name'] = active_contracts[c]['Team Name']
+						next_14['Contact Person'] = active_contracts[c]['Contact person']
 						next_14['Expired'] = 'No'
 						next_14['Expires Today'] = 'No'
 
@@ -285,6 +297,9 @@ class FileHandler(object):
 							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 							next_14['Contract Status'] = active_contracts[c]['Status']
+							next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+							next_14['Team Name'] = active_contracts[c]['Team Name']
+							next_14['Contact Person'] = active_contracts[c]['Contact person']
 							next_14['Expired'] = 'No'
 							next_14['Expires Today'] = 'No'
 					else:
@@ -294,6 +309,9 @@ class FileHandler(object):
 							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 							next_14['Contract Status'] = active_contracts[c]['Status']
+							next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+							next_14['Team Name'] = active_contracts[c]['Team Name']
+							next_14['Contact Person'] = active_contracts[c]['Contact person']
 							next_14['Expired'] = 'No'
 							next_14['Expires Today'] = 'No'
 
@@ -307,6 +325,9 @@ class FileHandler(object):
 						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 						next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 						next_14['Contract Status'] = active_contracts[c]['Status']
+						next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+						next_14['Team Name'] = active_contracts[c]['Team Name']
+						next_14['Contact Person'] = active_contracts[c]['Contact person']
 						next_14['Expired'] = 'No'
 						next_14['Expires Today'] = 'No'
 
@@ -319,6 +340,9 @@ class FileHandler(object):
 					next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 					next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 					next_14['Contract Status'] = active_contracts[c]['Status']
+					next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+					next_14['Team Name'] = active_contracts[c]['Team Name']
+					next_14['Contact Person'] = active_contracts[c]['Contact person']
 					next_14['Expired'] = 'No'
 					next_14['Expires Today'] = 'No'
 
@@ -331,6 +355,9 @@ class FileHandler(object):
 					next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 					next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 					next_14['Contract Status'] = active_contracts[c]['Status']
+					next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+					next_14['Team Name'] = active_contracts[c]['Team Name']
+					next_14['Contact Person'] = active_contracts[c]['Contact person']
 					next_14['Expired'] = 'No'
 					next_14['Expires Today'] = 'No'
 
@@ -345,6 +372,9 @@ class FileHandler(object):
 							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 							next_14['Contract Status'] = active_contracts[c]['Status']
+							next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+							next_14['Team Name'] = active_contracts[c]['Team Name']
+							next_14['Contact Person'] = active_contracts[c]['Contact person']
 							next_14['Expired'] = 'No'
 							next_14['Expires Today'] = 'No'
 					else:
@@ -354,6 +384,9 @@ class FileHandler(object):
 							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 							next_14['Contract Status'] = active_contracts[c]['Status']
+							next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+							next_14['Team Name'] = active_contracts[c]['Team Name']
+							next_14['Contact Person'] = active_contracts[c]['Contact person']
 							next_14['Expired'] = 'No'
 							next_14['Expires Today'] = 'No'
 
@@ -368,6 +401,9 @@ class FileHandler(object):
 						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 						next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 						next_14['Contract Status'] = active_contracts[c]['Status']
+						next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+						next_14['Team Name'] = active_contracts[c]['Team Name']
+						next_14['Contact Person'] = active_contracts[c]['Contact person']
 						next_14['Expired'] = 'No'
 						next_14['Expires Today'] = 'No'
 
@@ -379,6 +415,9 @@ class FileHandler(object):
 					next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
 					next_14['End Date'] = active_contracts[c]['End Date'][0:10]
 					next_14['Contract Status'] = active_contracts[c]['Status']
+					next_14['User ID'] = active_contracts[c]['Freelancer User ID']
+					next_14['Team Name'] = active_contracts[c]['Team Name']
+					next_14['Contact Person'] = active_contracts[c]['Contact person']
 					next_14['Expired'] = 'No'
 					next_14['Expires Today'] = 'No'
 
@@ -386,12 +425,15 @@ class FileHandler(object):
 
 				# Contracts ending this month in the next 14 days (starting tomorrow)
 
-		output = [['Contract ID','Freelancer Name','End Date']]
+		output = [['Contract ID','User ID','Freelancer Name','Contact Person','Team Name','End Date']]
 
 		for i in action_items:
 			action_item = []
 			action_item.append(action_items[i]['Contract ID'])
+			action_item.append(action_items[i]['User ID'])
 			action_item.append(action_items[i]['Freelancer Name'])
+			action_item.append(action_items[i]['Contact Person'])
+			action_item.append(action_items[i]['Team Name'])
 			action_item.append(action_items[i]['End Date'])
 			output.append(action_item)
 
