@@ -7,6 +7,7 @@ def main():
 	Auditor.active_users_without_contracts()
 	Auditor.end_dates()
 	Auditor.l3_locations()
+	Auditor.multiple_contracts()
 
 if __name__ == '__main__':
 	main()

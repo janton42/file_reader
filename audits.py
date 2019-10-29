@@ -49,7 +49,21 @@ class Auditor(object):
 
 		FileHandler.create_action_list(output, audit_type)
 
-		print('Audit complete. Type: ICs in L3 Countries\n')
+		print('Audit complete. Type: ICs in L3 Countries')
+
+	def multiple_contracts():
+
+		audit_type = 4
+
+		contracts_file_name = 'contracts'
+
+		active_contracts = FileHandler.gtnp_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))
+
+		output = FileHandler.find_multiple_contracts(active_contracts)
+
+		FileHandler.create_action_list(output, audit_type)
+
+		print('Audit complete. Type: users with multiple contracts\n')
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()

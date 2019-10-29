@@ -476,6 +476,36 @@ class FileHandler(object):
 
 		return output
 
+	def find_multiple_contracts(active_contracts):
+
+		output = [['Contract ID','User ID','Freelancer Name','Contact Person','Team Name','End Date']]
+		uids_all = []
+		repeats = []
+		for i in active_contracts:
+			uid = active_contracts[i]['Freelancer User ID']
+			if uid != 'odesk_managed':
+				uids_all.append(uid)
+
+		for c in active_contracts:
+			uid = active_contracts[c]['Freelancer User ID']
+			x = uids_all.count(uid)
+			if x > 1 and uid not in repeats:
+				repeats.append(uid)
+
+		for a in active_contracts:
+			action_item = []
+			uid = active_contracts[a]['Freelancer User ID']
+			if uid in repeats:
+				action_item.append(active_contracts[a]['Contract ID'])
+				action_item.append(active_contracts[a]['Freelancer User ID'])
+				action_item.append(active_contracts[a]['Freelancer Name'])
+				action_item.append(active_contracts[a]['Contact person'])
+				action_item.append(active_contracts[a]['Team Name'])
+				action_item.append(active_contracts[a]['End Date'][0:10])
+				output.append(action_item)
+
+		return output
+
 	def gtnp_filter(complete_list):
 
 		filtered_contracts = {}
@@ -562,6 +592,8 @@ class FileHandler(object):
 			file_name = 'end_dates'
 		if audit_type == 3:
 			file_name = 'ICs_in_L3_locations'
+		if audit_type == 4:
+			file_name = 'multiple_contracts'
 
 
 		output_path = '/Users/jeffstock/Desktop/' + file_name + '.csv'
