@@ -1,9 +1,28 @@
 #!/usr/bin/env python3
 from csv_reader import FileHandler
-from vars import FilterLists
 
 class Auditor(object):
 	"""docstring for Auditor"""
+
+	def l3_locations():
+
+		audit_type = 3
+
+		raw_whitelist = FileHandler.get_raw_whitelist('./static/whitelist.csv')
+
+		l3_countries_list = FileHandler.filter_whitelist(raw_whitelist, 'L3_country')
+
+		l3_contracts_whitelist = FileHandler.filter_whitelist(raw_whitelist, 'Contract')
+
+		contracts_file_name = 'contracts'
+		
+		active_contracts = FileHandler.fixed_price_filter(FileHandler.payroll_filter(FileHandler.gtnp_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))))
+
+		output = FileHandler.find_hourly_contracts_l3_countries(active_contracts, l3_countries_list, l3_contracts_whitelist)
+
+		FileHandler.create_action_list(output, audit_type)
+
+		print('Audit complete. Type: ICs in L3 Countries')
 
 	def active_users_without_contracts():
 		audit_type = 1
@@ -33,24 +52,6 @@ class Auditor(object):
 
 		print('Audit complete. Type: End dates')
 
-	def l3_locations():
-
-		audit_type = 3
-
-		l3_countries_list = FilterLists.l3_countries
-
-		l3_whitelist = FilterLists.l3_whitelist
-
-		contracts_file_name = 'contracts'
-		
-		active_contracts = FileHandler.fixed_price_filter(FileHandler.payroll_filter(FileHandler.gtnp_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))))
-
-		output = FileHandler.find_l3_countries(active_contracts, l3_countries_list, l3_whitelist)
-
-		FileHandler.create_action_list(output, audit_type)
-
-		print('Audit complete. Type: ICs in L3 Countries')
-
 	def multiple_contracts():
 
 		audit_type = 4
@@ -68,3 +69,4 @@ class Auditor(object):
 	def __init__(self, arg):
 		super(Auditor, self).__init__()
 		self.arg = arg
+		

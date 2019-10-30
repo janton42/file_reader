@@ -14,28 +14,27 @@ import datetime
 class FileHandler(object):
 	now = datetime.datetime.now()
 	"""docstring for FileHandler"""
-	complete_list = {}
-	complete_list_counter = 0	
+	
 	
 
 	def create_dict(file_location):
 		compiled_list = csv.reader(open(file_location, 'r'))
 
-		user_list = {}
+		dict_list = {}
 		key = 0
 		
 		for v in compiled_list:
-		   user_list[key] = v
+		   dict_list[key] = v
 		   key += 1
 
-		return user_list
+		return dict_list
 
 	def get_active_users(file_location):
 	
 		user_list = FileHandler.create_dict(file_location)
 
-		a = FileHandler.complete_list
-		b = FileHandler.complete_list_counter
+		a = {}
+		b = 0
 
 		all_data = {}
 		user_detail_counter = 0
@@ -80,8 +79,8 @@ class FileHandler(object):
 
 	def get_audit_users(file_location):
 
-		a = FileHandler.complete_list
-		b = FileHandler.complete_list_counter
+		a = {}
+		b = 0
 
 		user_list = FileHandler.create_dict(file_location)
 
@@ -127,18 +126,18 @@ class FileHandler(object):
 		# complete_list = {}
 		# complete_list_counter = 0
 
-		user_list = FileHandler.create_dict(file_location)
+		contract_list = FileHandler.create_dict(file_location)
 
-		headers = user_list[0]
+		headers = contract_list[0]
 
-		a = FileHandler.complete_list
-		b = FileHandler.complete_list_counter
+		a = {}
+		b = 0
 		
 
-		for data in user_list:
+		for data in contract_list:
 			pair = {}
 			i = 1
-			tester = user_list[data]
+			tester = contract_list[data]
 
 			while i < len(tester):
 				k = headers[i-1]
@@ -150,6 +149,44 @@ class FileHandler(object):
 
 
 		return a
+
+	def get_raw_whitelist(file_location):
+		info_list = FileHandler.create_dict(file_location)
+
+		headers = info_list[0]
+
+		a = {}
+		b = 0
+		
+
+		for data in info_list:
+			pair = {}
+			i = 0
+			tester = {}
+			if data != 0:
+				tester = info_list[data]
+			
+			if len(tester) > 0:
+				while i < len(tester):
+					k = headers[i]
+					v = tester[i]
+					i += 1
+					pair[k] = v
+				b += 1
+				a[b] = pair
+
+
+		return a
+
+	def filter_whitelist(whitelist, list_type):
+		filtered_list = []
+
+		for i in whitelist:
+			if whitelist[i]['Type'] == list_type:
+				filtered_list.append(whitelist[i]['Name'])
+
+		return filtered_list
+
 
 	def find_users_without_contracts(active_contracts, auwa):
 
@@ -439,7 +476,7 @@ class FileHandler(object):
 
 		return output
 
-	def find_l3_countries(active_contracts, l3_countries_list, whitelist):
+	def find_hourly_contracts_l3_countries(active_contracts, l3_countries_list, whitelist):
 		action_items = {}
 		action_items_counter = 0
 
