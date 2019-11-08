@@ -14,8 +14,6 @@ import datetime
 class FileHandler(object):
 	now = datetime.datetime.now()
 	"""docstring for FileHandler"""
-	
-	
 
 	def create_dict(file_location):
 		compiled_list = csv.reader(open(file_location, 'r'))
@@ -28,6 +26,17 @@ class FileHandler(object):
 		   key += 1
 
 		return dict_list
+
+	def combiner(base, additional):
+
+		key = len(base) + 1
+
+		for i in additional:
+			base[key] = additional[i]
+			key += 1
+
+		return base
+
 
 	def get_active_users(file_location):
 	
@@ -631,6 +640,8 @@ class FileHandler(object):
 			file_name = 'ICs_in_L3_locations'
 		if audit_type == 4:
 			file_name = 'multiple_contracts'
+		if audit_type == 5:
+			file_name = 'fls_with_assets'
 
 
 		output_path = '/Users/jeffstock/Desktop/' + file_name + '.csv'

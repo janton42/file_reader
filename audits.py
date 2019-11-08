@@ -64,7 +64,23 @@ class Auditor(object):
 
 		FileHandler.create_action_list(output, audit_type)
 
-		print('Audit complete. Type: users with multiple contracts\n')
+		print('Audit complete. Type: users with multiple contracts')
+
+	def fls_with_assets():
+
+		audit_type = 5
+
+		fl_pc_file_name = 'flr_pc'
+		rem_pc_file_name = 'rem_pc'
+
+		fl_mac_file_name = 'fl_mac'
+		rem_mac_file_name = 'rem_mac'
+
+		output = 'Yep'
+
+		FileHandler.create_action_list(output, audit_type)
+
+		print('Audit complete. Type: freelancers with Upwork assets\n')
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()
