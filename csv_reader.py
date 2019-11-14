@@ -564,33 +564,42 @@ class FileHandler(object):
 
 		return output
 
-	def find_fl_with_assets(email_list, access_dict, contract_dict):
-		output = [['Full Name','User ID','Email Address','Agency Name','Location']]
-		access_uids = []
-		contract_uids = []
-		
-
-		for c in contract_dict:
-			contract_uids.append(contract_dict[c]['Freelancer User ID'])
+	def find_fl_with_assets(email_list, access_dict):
+		output = {}
+		counter = 0
 
 		for i in access_dict:
-			single = []
+			single = {}
 			full_name = access_dict[i]['full_name']
 			email = access_dict[i]['upwork_email']
 			uid = access_dict[i]['worker_user_id']
+
 			for k in email_list:
 				if email in k:
-					access_uids.append(uid)
+					counter += 1
+					single['Full Name'] = full_name
+					single['User ID'] = uid
+					single['Email Address'] = email
 
-					single.append(full_name)
-					single.append(uid)
-					single.append(email)
-
-		for a in access_uids:
-
-			output.append(single)
-
+					output[counter] = single
 		
+		return output
+
+	def find_location_and_agency(user_dict, contract_dict):
+		output = [['Full Name','User ID','Email Address','Agency Name','Location']]
+
+		for c in contract_dict:
+			single = []
+			for u in user_dict:
+				if user_dict[u]['User ID'] == contract_dict[c]['Freelancer User ID']:
+					single.append(user_dict[u]['Full Name'])
+					single.append(user_dict[u]['User ID'])
+					single.append(user_dict[u]['Email Address'])
+					single.append(contract_dict[c]['Agency Name'])
+					single.append(contract_dict[c]['Freelancer location'])
+
+					output.append(single)
+
 		return output
 
 	def find_multiple_contracts(active_contracts):

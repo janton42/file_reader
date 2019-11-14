@@ -81,24 +81,16 @@ class Auditor(object):
 		active_contracts = FileHandler.gtnp_filter(FileHandler.get_active_contracts(contracts_file_name))
 		combined_mac_list = FileHandler.fte_filter_assets(FileHandler.get_users_with_assets(rem_mac, fl_mac))
 
+		output = FileHandler.find_location_and_agency(FileHandler.find_fl_with_assets(combined_mac_list, auwa), active_contracts)
 
+		# print(output)
 
-		output = FileHandler.find_fl_with_assets(combined_mac_list, auwa, active_contracts)
+		FileHandler.create_action_list(output, audit_type)
 
-		# print('auwa type: ', type(auwa))
-		# print(auwa[1].keys())
-		# print()
-		# print('active_contracts type: ', type(active_contracts))
-		# print(active_contracts[1].keys())
-		# print()
-		# print(type(combined_mac_list[1]))
-		print(output)
-
-		# FileHandler.create_action_list(output, audit_type)
-
-		# print('Audit complete. Type: freelancers with Upwork assets\n')
+		print('Audit complete. Type: freelancers with Upwork assets\n')
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()
 		self.arg = arg
+		
 		
