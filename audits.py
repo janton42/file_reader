@@ -29,7 +29,7 @@ class Auditor(object):
 		users_file_name = './static/user_data.csv'
 		contracts_file_name = './static/contracts.csv'
 
-		auwa = FileHandler.fte_filter(FileHandler.get_active_users(users_file_name))
+		auwa = FileHandler.fte_filter_user_list(FileHandler.get_active_users(users_file_name))
 		active_contracts = FileHandler.gtnp_filter(FileHandler.get_active_contracts(contracts_file_name))
 
 		output = FileHandler.find_users_without_contracts(active_contracts,auwa)
@@ -70,13 +70,29 @@ class Auditor(object):
 
 		audit_type = 5
 
-		fl_pc_file_name = 'flr_pc'
-		rem_pc_file_name = 'rem_pc'
+		fl_pc = './static/flr_pc.csv'
+		rem_pc = './static/rem_pc.csv'
+		fl_mac = './static/flr_mac.csv'
+		rem_mac = './static/rem_mac.csv'
+		users_file_name = './static/user_data.csv'
+		contracts_file_name = './static/contracts.csv'
 
-		fl_mac_file_name = 'fl_mac'
-		rem_mac_file_name = 'rem_mac'
+		auwa = FileHandler.fte_filter_user_list(FileHandler.get_active_users(users_file_name))
+		active_contracts = FileHandler.gtnp_filter(FileHandler.get_active_contracts(contracts_file_name))
+		combined_mac_list = FileHandler.fte_filter_assets(FileHandler.get_users_with_assets(rem_mac, fl_mac))
 
-		output = 'Yep'
+
+
+		output = FileHandler.find_fl_with_assets(combined_mac_list, auwa, active_contracts)
+
+		# print('auwa type: ', type(auwa))
+		# print(auwa[1].keys())
+		# print()
+		# print('active_contracts type: ', type(active_contracts))
+		# print(active_contracts[1].keys())
+		# print()
+		print(type(combined_mac_list[1]))
+
 
 		FileHandler.create_action_list(output, audit_type)
 

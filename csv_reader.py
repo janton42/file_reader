@@ -37,6 +37,48 @@ class FileHandler(object):
 
 		return base
 
+	def get_users_with_assets(rem_pc, fl_pc):
+
+		rem_dict = FileHandler.create_dict(rem_pc)
+		fl_dict = FileHandler.create_dict(fl_pc)
+
+		combined_pc = FileHandler.combiner(rem_dict, fl_dict)
+
+		a = {}
+		b = 0
+
+		all_data = {}
+		user_detail_counter = 0
+
+		for user in combined_pc:
+
+			user_details = {}
+
+			ind_user_detail = combined_pc.get(user)
+
+			user_details['User Details'] = ind_user_detail
+
+			user_detail_counter += 1
+
+			all_data[user_detail_counter] = user_details
+		
+		headers = all_data[1]['User Details']
+
+		for data in all_data:
+			pair = {}
+			i = 0
+			tester = all_data[data]['User Details']
+
+			while i < len(tester):
+				k = headers[i]
+				v = tester[i]
+				i += 1
+				pair[k] = v
+			b += 1
+			a[b] = pair
+
+		return a
+
 
 	def get_active_users(file_location):
 	
@@ -522,6 +564,25 @@ class FileHandler(object):
 
 		return output
 
+	def find_fl_with_assets(email_list, access_dict, contract_dict):
+		output = [['Full Name','Email Address','User ID']]
+
+		for i in access_dict:
+			single = []
+			full_name = access_dict[i]['full_name']
+			email = access_dict[i]['upwork_email']
+			uid = access_dict[i]['worker_user_id']
+			for k in email_list:
+				if email in k:
+					single.append(full_name)
+					single.append(email)
+					single.append(uid)
+
+					output.append(single)
+
+		
+		return output
+
 	def find_multiple_contracts(active_contracts):
 
 		output = [['Contract ID','User ID','Freelancer Name','Contact Person','Team Name','End Date']]
@@ -570,7 +631,31 @@ class FileHandler(object):
 
 		return filtered_contracts
 
-	def fte_filter(complete_list):
+	def fte_filter_assets(user_list):
+		email_address_list = []
+
+		fl_with_assets = {}
+		counter = 0
+
+		for u in user_list:
+			domain = user_list[u]['Username'].split('@')
+			email = user_list[u]['Username']
+			if len(domain) > 1 and domain[1] == 'cloud.upwork.com':
+				counter += 1
+				fl_with_assets[counter] = email
+
+		output = []
+
+		for i in fl_with_assets:
+			single = []
+
+			single.append(fl_with_assets[i])
+
+			output.append(single)
+
+		return output
+
+	def fte_filter_user_list(complete_list):
 		filtered_users = {}
 		filtered_counter = 0
 
@@ -586,6 +671,15 @@ class FileHandler(object):
 			filtered_users[filtered_counter] = 'Empty'
 
 		return filtered_users
+
+	# def fte_filter_assets(complete_list):
+	# 	filtered_users = {}
+	# 	filtered_counter = 0
+
+	# 	if len(complete_list) > 0:
+
+	# 	else:
+	# 		filtered_users[filtered_counter] = ['Empty']
 
 	def payroll_filter(complete_list):
 		filtered_contracts = {}
