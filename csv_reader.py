@@ -565,7 +565,13 @@ class FileHandler(object):
 		return output
 
 	def find_fl_with_assets(email_list, access_dict, contract_dict):
-		output = [['Full Name','Email Address','User ID']]
+		output = [['Full Name','User ID','Email Address','Agency Name','Location']]
+		access_uids = []
+		contract_uids = []
+		
+
+		for c in contract_dict:
+			contract_uids.append(contract_dict[c]['Freelancer User ID'])
 
 		for i in access_dict:
 			single = []
@@ -574,11 +580,15 @@ class FileHandler(object):
 			uid = access_dict[i]['worker_user_id']
 			for k in email_list:
 				if email in k:
-					single.append(full_name)
-					single.append(email)
-					single.append(uid)
+					access_uids.append(uid)
 
-					output.append(single)
+					single.append(full_name)
+					single.append(uid)
+					single.append(email)
+
+		for a in access_uids:
+
+			output.append(single)
 
 		
 		return output

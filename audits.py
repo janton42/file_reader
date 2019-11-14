@@ -91,12 +91,12 @@ class Auditor(object):
 		# print('active_contracts type: ', type(active_contracts))
 		# print(active_contracts[1].keys())
 		# print()
-		print(type(combined_mac_list[1]))
+		# print(type(combined_mac_list[1]))
+		print(output)
 
+		# FileHandler.create_action_list(output, audit_type)
 
-		FileHandler.create_action_list(output, audit_type)
-
-		print('Audit complete. Type: freelancers with Upwork assets\n')
+		# print('Audit complete. Type: freelancers with Upwork assets\n')
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()
