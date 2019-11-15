@@ -27,7 +27,7 @@ class FileHandler(object):
 
 		return dict_list
 
-	def combiner(base, additional):
+	def dict_combiner(base, additional):
 
 		key = len(base) + 1
 
@@ -37,54 +37,12 @@ class FileHandler(object):
 
 		return base
 
-	# def get_users_with_mac_assets(rem_mac, fl_mac):
-
-	# 	rem_dict = FileHandler.create_dict(rem_mac)
-	# 	fl_dict = FileHandler.create_dict(fl_mac)
-
-	# 	combined_pc = FileHandler.combiner(rem_dict, fl_dict)
-
-	# 	a = {}
-	# 	b = 0
-
-	# 	all_data = {}
-	# 	user_detail_counter = 0
-
-	# 	for user in combined_pc:
-
-	# 		user_details = {}
-
-	# 		ind_user_detail = combined_pc.get(user)
-
-	# 		user_details['User Details'] = ind_user_detail
-
-	# 		user_detail_counter += 1
-
-	# 		all_data[user_detail_counter] = user_details
-		
-	# 	headers = all_data[1]['User Details']
-
-	# 	for data in all_data:
-	# 		pair = {}
-	# 		i = 0
-	# 		tester = all_data[data]['User Details']
-
-	# 		while i < len(headers):
-	# 			k = headers[i]
-	# 			v = tester[i]
-	# 			i += 1
-	# 			pair[k] = v
-	# 		b += 1
-	# 		a[b] = pair
-
-	# 	return a
-
 	def get_users_with_assets(rem, fl):
 
 		rem_dict = FileHandler.create_dict(rem)
 		fl_dict = FileHandler.create_dict(fl)
 
-		combined_pc = FileHandler.combiner(rem_dict, fl_dict)
+		combined_pc = FileHandler.dict_combiner(rem_dict, fl_dict)
 
 		a = {}
 		b = 0
