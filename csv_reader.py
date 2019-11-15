@@ -37,6 +37,13 @@ class FileHandler(object):
 
 		return base
 
+	def list_combiner(base, additional):
+
+		for i in additional:
+			base.append(i)
+
+		return base
+
 	def get_users_with_assets(rem, fl):
 
 		rem_dict = FileHandler.create_dict(rem)
@@ -674,7 +681,7 @@ class FileHandler(object):
 
 		return output
 
-	def fte_filter_pc_assets(user_list, contract_dict):
+	def fte_filter_pc_assets(user_list, contract_dict, user_dict):
 		full_name_list = []
 		output = []
 		
@@ -688,9 +695,27 @@ class FileHandler(object):
 			match = []
 			for c in contract_dict:
 				fl_name = contract_dict[c]['Freelancer Name']
+				uid = contract_dict[c]['Freelancer User ID']
+				email = ''
+				agency = contract_dict[c]['Agency Name']
+				location = contract_dict[c]['Freelancer location']
 				if u == fl_name:
 					match.append(u)
+					match.append(uid)
+					match.append(email)
+					match.append(agency)
+					match.append(location)
+					
 					output.append(match)
+
+		for a in output:
+			match = []
+			name = a[1]
+			for b in user_dict:
+				fl_name = user_dict[b]['full_name']
+				email = user_dict[b]['upwork_email']
+				if name == fl_name:
+					a[2] = email
 
 		return output
 
