@@ -37,10 +37,52 @@ class FileHandler(object):
 
 		return base
 
-	def get_users_with_assets(rem_pc, fl_pc):
+	# def get_users_with_mac_assets(rem_mac, fl_mac):
 
-		rem_dict = FileHandler.create_dict(rem_pc)
-		fl_dict = FileHandler.create_dict(fl_pc)
+	# 	rem_dict = FileHandler.create_dict(rem_mac)
+	# 	fl_dict = FileHandler.create_dict(fl_mac)
+
+	# 	combined_pc = FileHandler.combiner(rem_dict, fl_dict)
+
+	# 	a = {}
+	# 	b = 0
+
+	# 	all_data = {}
+	# 	user_detail_counter = 0
+
+	# 	for user in combined_pc:
+
+	# 		user_details = {}
+
+	# 		ind_user_detail = combined_pc.get(user)
+
+	# 		user_details['User Details'] = ind_user_detail
+
+	# 		user_detail_counter += 1
+
+	# 		all_data[user_detail_counter] = user_details
+		
+	# 	headers = all_data[1]['User Details']
+
+	# 	for data in all_data:
+	# 		pair = {}
+	# 		i = 0
+	# 		tester = all_data[data]['User Details']
+
+	# 		while i < len(headers):
+	# 			k = headers[i]
+	# 			v = tester[i]
+	# 			i += 1
+	# 			pair[k] = v
+	# 		b += 1
+	# 		a[b] = pair
+
+	# 	return a
+
+	def get_users_with_assets(rem, fl):
+
+		rem_dict = FileHandler.create_dict(rem)
+		fl_dict = FileHandler.create_dict(fl)
 
 		combined_pc = FileHandler.combiner(rem_dict, fl_dict)
 
@@ -69,7 +111,7 @@ class FileHandler(object):
 			i = 0
 			tester = all_data[data]['User Details']
 
-			while i < len(tester):
+			while i < len(headers):
 				k = headers[i]
 				v = tester[i]
 				i += 1
@@ -650,7 +692,7 @@ class FileHandler(object):
 
 		return filtered_contracts
 
-	def fte_filter_assets(user_list):
+	def fte_filter_mac_assets(user_list):
 		email_address_list = []
 
 		fl_with_assets = {}
@@ -671,6 +713,26 @@ class FileHandler(object):
 			single.append(fl_with_assets[i])
 
 			output.append(single)
+
+		return output
+
+	def fte_filter_pc_assets(user_list, contract_dict):
+		full_name_list = []
+		output = []
+		
+		for i in user_list:
+			description = user_list[i]['Description']
+			if description != '-' and description != 'False' and description != 'Description' and description != 'User Account Control':
+				full_name = description.split(',')[0]
+				full_name_list.append(full_name)
+
+		for u in full_name_list:
+			match = []
+			for c in contract_dict:
+				fl_name = contract_dict[c]['Freelancer Name']
+				if u == fl_name:
+					match.append(u)
+					output.append(match)
 
 		return output
 
