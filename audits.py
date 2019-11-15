@@ -16,7 +16,7 @@ class Auditor(object):
 
 		contracts_file_name = 'contracts'
 		
-		active_contracts = FileHandler.fixed_price_filter(FileHandler.payroll_filter(FileHandler.gtnp_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))))
+		active_contracts = FileHandler.fixed_price_filter(FileHandler.payroll_filter(FileHandler.gtnp_filter(FileHandler.get_contracts('./static/' + contracts_file_name + '.csv'))))
 
 		output = FileHandler.find_hourly_contracts_l3_countries(active_contracts, l3_countries_list, l3_contracts_whitelist)
 
@@ -30,7 +30,7 @@ class Auditor(object):
 		contracts_file_name = './static/contracts.csv'
 
 		auwa = FileHandler.fte_filter_user_list(FileHandler.get_active_users(users_file_name))
-		active_contracts = FileHandler.gtnp_filter(FileHandler.get_active_contracts(contracts_file_name))
+		active_contracts = FileHandler.gtnp_filter(FileHandler.get_contracts(contracts_file_name))
 
 		output = FileHandler.find_users_without_contracts(active_contracts,auwa)
 
@@ -44,7 +44,7 @@ class Auditor(object):
 
 		contracts_file_name = 'contracts'
 
-		active_contracts = FileHandler.gtnp_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))
+		active_contracts = FileHandler.gtnp_filter(FileHandler.get_contracts('./static/' + contracts_file_name + '.csv'))
 
 		output = FileHandler.find_end_dates(active_contracts)
 
@@ -58,7 +58,7 @@ class Auditor(object):
 
 		contracts_file_name = 'contracts'
 
-		active_contracts = FileHandler.gtnp_filter(FileHandler.get_active_contracts('./static/' + contracts_file_name + '.csv'))
+		active_contracts = FileHandler.gtnp_filter(FileHandler.get_contracts('./static/' + contracts_file_name + '.csv'))
 
 		output = FileHandler.find_multiple_contracts(active_contracts)
 
@@ -75,23 +75,31 @@ class Auditor(object):
 		fl_mac = './static/flr_mac.csv'
 		rem_mac = './static/rem_mac.csv'
 		users_file_name = './static/user_data.csv'
-		contracts_file_name = './static/contracts.csv'
+		active_contracts_file_name = './static/contracts.csv'
+		ended_contracts_file_name = './static/ended_contracts.csv'
 
 		auwa = FileHandler.fte_filter_user_list(FileHandler.get_active_users(users_file_name))
-		active_contracts = FileHandler.gtnp_filter(FileHandler.get_active_contracts(contracts_file_name))
-		
+		active_contracts = FileHandler.gtnp_filter(FileHandler.get_contracts(active_contracts_file_name))
+
+		ended_contracts = FileHandler.gtnp_filter(FileHandler.get_contracts(ended_contracts_file_name))
+
 		combined_mac_list = FileHandler.fte_filter_mac_assets(FileHandler.get_users_with_assets(rem_mac, fl_mac))
 
-		complete_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_assets(combined_mac_list, auwa), active_contracts)		
+		active_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_assets(combined_mac_list, auwa), active_contracts)
+
+		ended_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_assets(combined_mac_list, auwa), ended_contracts)
+
+		ended_with_assets_list = FileHandler.find_missing_from_list(active_mac_list, ended_mac_list)	
+
+		print(ended_mac_list)
 
 		complete_pc_list = FileHandler.fte_filter_pc_assets(FileHandler.get_users_with_assets(rem_pc, fl_pc), active_contracts, auwa)
 
+		# output = FileHandler.list_combiner(complete_mac_list, complete_pc_list)
 
-		output = FileHandler.list_combiner(complete_mac_list, complete_pc_list)
+		# FileHandler.create_action_list(output, audit_type)
 
-		FileHandler.create_action_list(output, audit_type)
-
-		print('Audit complete. Type: freelancers with Upwork assets\n')
+		# print('Audit complete. Type: freelancers with Upwork assets\n')
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()

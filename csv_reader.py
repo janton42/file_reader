@@ -179,7 +179,7 @@ class FileHandler(object):
 
 		return a
 
-	def get_active_contracts(file_location):
+	def get_contracts(file_location):
 
 		# complete_list = {}
 		# complete_list_counter = 0
