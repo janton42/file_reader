@@ -44,7 +44,7 @@ class FileHandler(object):
 
 		return base
 
-	def get_users_with_assets(rem, fl):
+	def get_users_with_mac_assets(rem, fl):
 
 		rem_dict = FileHandler.create_dict(rem)
 		fl_dict = FileHandler.create_dict(fl)
@@ -85,6 +85,43 @@ class FileHandler(object):
 			a[b] = pair
 
 		return a
+
+	def get_users_with_pc_assets(rem, fl):
+		output = []
+		combined_list = []
+		long_desc = []
+		rough_list = []
+
+		rem_dict = FileHandler.create_dict(rem)
+		fl_dict = FileHandler.create_dict(fl)
+
+		for i in rem_dict:
+			test = rem_dict[i][len(rem_dict[i])-1]
+			combined_list.append(test)
+
+		for a in fl_dict:
+			test = fl_dict[a][len(fl_dict[a])-1]
+			combined_list.append(test)
+
+		for b in combined_list:
+			parts_1 = b.split(',')
+			parts_2 = b.split('-')
+			if len(parts_1) > 1:
+				long_desc.append(parts_1)
+			elif len(parts_2) > 2:
+				long_desc.append(parts_2)
+			else:
+				rough_list.append(b)
+
+		for c in long_desc:
+			name = c[0].strip()
+			rough_list.append(name)
+
+		for d in rough_list:
+			if d != '-' and d != 'Description':
+				output.append(d)
+
+		return output
 
 
 	def get_active_users(file_location):
@@ -687,9 +724,17 @@ class FileHandler(object):
 		
 		for i in user_list:
 			description = user_list[i]['Description']
-			if description != '-' and description != 'False' and description != 'Description' and description != 'User Account Control':
-				full_name = description.split(',')[0]
-				full_name_list.append(full_name)
+			full_name = description[0]
+			length = len(description)
+			full_name_list.append(description)
+			# full_name_list.append(length)
+			# if full_name == 'False' and len(description) > 1:
+			# 	full_name = description[1]
+			# 	if full_name != '-':
+			# 		full_name_list.append(full_name)
+			# elif full_name != '-' and full_name != 'Description' and full_name != 'User Account Control':
+			# 	full_name_list.append(full_name)
+
 
 		for u in full_name_list:
 			match = []
@@ -717,7 +762,7 @@ class FileHandler(object):
 				if name == fl_name:
 					a[2] = email
 
-		return output
+		return full_name_list
 
 	def fte_filter_user_list(complete_list):
 		filtered_users = {}

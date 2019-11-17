@@ -83,7 +83,7 @@ class Auditor(object):
 
 		ended_contracts = FileHandler.gtnp_filter(FileHandler.get_contracts(ended_contracts_file_name))
 
-		combined_mac_list = FileHandler.fte_filter_mac_assets(FileHandler.get_users_with_assets(rem_mac, fl_mac))
+		combined_mac_list = FileHandler.fte_filter_mac_assets(FileHandler.get_users_with_mac_assets(rem_mac, fl_mac))
 
 		active_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_assets(combined_mac_list, auwa), active_contracts)
 
@@ -91,9 +91,13 @@ class Auditor(object):
 
 		ended_with_assets_list = FileHandler.find_missing_from_list(active_mac_list, ended_mac_list)	
 
-		print(ended_mac_list)
+		# print(active_mac_list)
 
-		complete_pc_list = FileHandler.fte_filter_pc_assets(FileHandler.get_users_with_assets(rem_pc, fl_pc), active_contracts, auwa)
+		# complete_pc_list = FileHandler.fte_filter_pc_assets(FileHandler.get_users_with_assets(rem_pc, fl_pc), active_contracts, auwa)
+
+		complete_pc_list = FileHandler.get_users_with_pc_assets(fl_pc, rem_pc)
+
+		print(complete_pc_list)
 
 		# output = FileHandler.list_combiner(complete_mac_list, complete_pc_list)
 
