@@ -40,7 +40,8 @@ class FileHandler(object):
 	def list_combiner(base, additional):
 
 		for i in additional:
-			base.append(i)
+			if i not in base:
+				base.append(i)
 
 		return base
 
@@ -608,7 +609,7 @@ class FileHandler(object):
 
 		return output
 
-	def find_fl_with_assets(email_list, access_dict):
+	def find_fl_with_mac_assets(email_list, access_dict):
 		output = {}
 		counter = 0
 
@@ -627,6 +628,27 @@ class FileHandler(object):
 
 					output[counter] = single
 		
+		return output
+
+	def find_fl_with_pc_assets(names_list, access_dict):
+		output = {}
+		counter = 0
+
+		for i in access_dict:
+			single = {}
+			full_name = access_dict[i]['full_name']
+			email = access_dict[i]['upwork_email']
+			uid = access_dict[i]['worker_user_id']
+
+			for a in names_list:
+				if full_name == a:
+					counter += 1
+					single['Full Name'] = full_name
+					single['User ID'] = uid
+					single['Email Address'] = email
+
+					output[counter] = single
+
 		return output
 
 	def find_location_and_agency(user_dict, contract_dict):
@@ -813,6 +835,18 @@ class FileHandler(object):
 				filtered_contracts[filter_counter] = complete_list[c]
 
 		return filtered_contracts	
+
+	def remove_duplicates_from_nested_list(nested_list):
+		output = []
+		tester = []
+
+		for i in nested_list:
+			name = i[0]
+			if name not in tester:
+				tester.append(name)
+				output.append(i)
+
+		return output
 
 	def find_missing_from_list(list_1, list_2):
 		missing_from_list = []

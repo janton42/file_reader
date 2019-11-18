@@ -85,25 +85,27 @@ class Auditor(object):
 
 		combined_mac_list = FileHandler.fte_filter_mac_assets(FileHandler.get_users_with_mac_assets(rem_mac, fl_mac))
 
-		active_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_assets(combined_mac_list, auwa), active_contracts)
+		complete_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_mac_assets(combined_mac_list, auwa), active_contracts)
 
-		ended_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_assets(combined_mac_list, auwa), ended_contracts)
+		# ended_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_mac_assets(combined_mac_list, auwa), ended_contracts)
 
-		ended_with_assets_list = FileHandler.find_missing_from_list(active_mac_list, ended_mac_list)	
+		# ended_with_assets_list = FileHandler.find_missing_from_list(active_mac_list, ended_mac_list)	
 
 		# print(active_mac_list)
 
 		# complete_pc_list = FileHandler.fte_filter_pc_assets(FileHandler.get_users_with_assets(rem_pc, fl_pc), active_contracts, auwa)
 
-		complete_pc_list = FileHandler.get_users_with_pc_assets(fl_pc, rem_pc)
+		complete_pc_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_pc_assets(FileHandler.get_users_with_pc_assets(fl_pc, rem_pc), auwa), active_contracts)
 
-		print(complete_pc_list)
 
-		# output = FileHandler.list_combiner(complete_mac_list, complete_pc_list)
 
-		# FileHandler.create_action_list(output, audit_type)
+		# print(complete_pc_list)
 
-		# print('Audit complete. Type: freelancers with Upwork assets\n')
+		output = FileHandler.remove_duplicates_from_nested_list(FileHandler.list_combiner(complete_mac_list, complete_pc_list))
+
+		FileHandler.create_action_list(output, audit_type)
+
+		print('Audit complete. Type: freelancers with Upwork assets\n')
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()
