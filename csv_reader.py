@@ -716,6 +716,30 @@ class FileHandler(object):
 
 		return filtered_contracts
 
+	def team_filter(contract_dict):
+
+		team = input('Please enter a team prefix: ').strip()
+		output = [['Contract ID', 'Freelancer User ID', 'Freelancer Name', 'Contact Person']]
+
+		for c in contract_dict:
+			i = contract_dict[c]
+			t = i['Team Name'][0:2]
+			contract = i['Contract ID']
+			u = i['Freelancer User ID']
+			n = i['Freelancer Name']
+			person = i['Contact person']
+			if t == team:
+				single = []
+				single.append(contract)
+				single.append(u)
+				single.append(n)
+				single.append(person)
+				single.append(i['Team Name'])
+				output.append(single)
+
+		return output
+
+
 	def fte_filter_mac_assets(user_list):
 		email_address_list = []
 
@@ -871,14 +895,16 @@ class FileHandler(object):
 
 		if audit_type == 1:
 			file_name = 'active_users_no_contract'
-		if audit_type == 2:
+		elif audit_type == 2:
 			file_name = 'end_dates'
-		if audit_type == 3:
+		elif audit_type == 3:
 			file_name = 'ICs_in_L3_locations'
-		if audit_type == 4:
+		elif audit_type == 4:
 			file_name = 'multiple_contracts'
-		if audit_type == 5:
+		elif audit_type == 5:
 			file_name = 'fls_with_assets'
+		elif audit_type == 'adhoc':
+			file_name = input("Please enter an output file name: ").strip()
 
 
 		output_path = '/Users/jeffstock/Desktop/' + file_name + '.csv'
