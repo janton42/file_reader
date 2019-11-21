@@ -32,7 +32,7 @@ class Auditor(object):
 		auwa = ListHandler.fte_filter_user_list(Getters.get_active_users(users_file_name))
 		active_contracts = ListHandler.gtnp_filter(Getters.get_contracts(contracts_file_name))
 
-		output = FileHandler.find_users_without_contracts(active_contracts,auwa)
+		output = Finders.find_users_without_contracts(active_contracts,auwa)
 
 		FileHandler.create_action_list(output, audit_type)
 
