@@ -50,30 +50,6 @@ class FileHandler(object):
 			writer = csv.writer(csvFile)
 			writer.writerows(generator)
 
-	def dict_combiner(base, additional):
-
-		key = len(base) + 1
-
-		for i in additional:
-			base[key] = additional[i]
-			key += 1
-
-		return base
-
-	def create_end_date_dict(base_item):
-		output = {}
-
-		output['Contract ID'] = base_item['Contract ID']
-		output['Freelancer Name'] = base_item['Freelancer Name']
-		output['End Date'] = base_item['End Date'][0:10]
-		output['Contract Status'] = base_item['Status']
-		output['User ID'] = base_item['Freelancer User ID']
-		output['Team Name'] = base_item['Team Name']
-		output['Contact Person'] = base_item['Contact person']
-		output['Contract Type'] = base_item['Contract type']
-
-		return output
-
 	def __init__(self, arg):
 		super(FileHandler, self).__init__()
 		self.arg = arg
@@ -86,7 +62,7 @@ class Getters(object):
 		rem_dict = FileHandler.create_dict(rem)
 		fl_dict = FileHandler.create_dict(fl)
 
-		combined_pc = FileHandler.dict_combiner(rem_dict, fl_dict)
+		combined_pc = DictHandler.dict_combiner(rem_dict, fl_dict)
 
 		a = {}
 		b = 0
@@ -346,21 +322,21 @@ class Finders(object):
 			# Expired contracts
 			if end_year == now.year -1 or end_year == now.year -2 or end_year == now.year and end_month == now.month and end_day < now.day or end_year == now.year and end_month < now.month:
 				
-				expired = FileHandler.create_end_date_dict(active_contracts[c])
+				expired = DictHandler.create_end_date_dict(active_contracts[c])
 
 				action_items[c] = expired
 
 			# Contracts ending today
 			elif end_year == now.year and end_month == now.month and end_day == now.day:
 				
-				expires_today = FileHandler.create_end_date_dict(active_contracts[c])
+				expires_today = DictHandler.create_end_date_dict(active_contracts[c])
 
 				action_items[c] = expires_today
 
 			# Contracts expiring this month within the next 14 days
 			elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 				action_items_counter += 1
-				next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+				next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 				action_items[c] = next_14
 
@@ -371,7 +347,7 @@ class Finders(object):
 				if now.month == 12:
 					if end_year == now.year + 1 and end_month == 1 and end_day < (now.day + 14 - 31):
 
-						next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+						next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 
@@ -380,11 +356,11 @@ class Finders(object):
 					if now.year == 2020 or now.year == 2024:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
 						
-							next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+							next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 					else:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
 
-							next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+							next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 
@@ -394,7 +370,7 @@ class Finders(object):
 				elif now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11:
 					if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 30):
 
-						next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+						next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 
@@ -404,14 +380,14 @@ class Finders(object):
 				elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 					action_items_counter += 1
 
-					next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+					next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 					action_items[c] = next_14
 
 				# Contracts expiring next month within 14 days for months with 31 days and end_day == (now.day + 14 - 31)
 				if end_year == now.year and end_month == (now.month + 1) and end_day <= now.day + 14 - 31:
 
-					next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+					next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 					action_items[c] = next_14
 
@@ -420,11 +396,11 @@ class Finders(object):
 					if now.year == 2020 or now.year == 2024:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
 							
-							next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+							next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 					else:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
 
-							next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+							next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 
@@ -433,13 +409,13 @@ class Finders(object):
 				elif now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11:
 					if end_year == now.year and end_month == (now.month +1) and end_day <= (now.day + 14 - 30):
 
-						next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+						next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 				
 				elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 
-					next_14 = FileHandler.create_end_date_dict(active_contracts[c])
+					next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
 					action_items[c] = next_14
 
@@ -726,6 +702,38 @@ class ListHandler(object):
 	def __init__(self, arg):
 		super(ListHandler, self).__init__()
 		self.arg = arg
+
+class DictHandler(object):
+	"""docstring for DictHandler"""
+	
+	def dict_combiner(base, additional):
+
+		key = len(base) + 1
+
+		for i in additional:
+			base[key] = additional[i]
+			key += 1
+
+		return base
+
+	def create_end_date_dict(base_item):
+		output = {}
+
+		output['Contract ID'] = base_item['Contract ID']
+		output['Freelancer Name'] = base_item['Freelancer Name']
+		output['End Date'] = base_item['End Date'][0:10]
+		output['Contract Status'] = base_item['Status']
+		output['User ID'] = base_item['Freelancer User ID']
+		output['Team Name'] = base_item['Team Name']
+		output['Contact Person'] = base_item['Contact person']
+		output['Contract Type'] = base_item['Contract type']
+
+		return output
+
+	def __init__(self, arg):
+		super(DictHandler, self).__init__()
+		self.arg = arg
+		
 
 class Adhoc(object):
 	"""docstring for Adhoc"""
