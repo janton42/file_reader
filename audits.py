@@ -18,7 +18,7 @@ class Auditor(object):
 		
 		active_contracts = ListHandler.fixed_price_filter(ListHandler.payroll_filter(ListHandler.gtnp_filter(Getters.get_contracts('./static/' + contracts_file_name + '.csv'))))
 
-		output = FileHandler.find_hourly_contracts_l3_countries(active_contracts, l3_countries_list, l3_contracts_whitelist)
+		output = Finders.find_hourly_contracts_l3_countries(active_contracts, l3_countries_list, l3_contracts_whitelist)
 
 		FileHandler.create_action_list(output, audit_type)
 
@@ -46,7 +46,7 @@ class Auditor(object):
 
 		active_contracts = ListHandler.gtnp_filter(Getters.get_contracts('./static/' + contracts_file_name + '.csv'))
 
-		output = FileHandler.find_end_dates(active_contracts)
+		output = Finders.find_end_dates(active_contracts)
 
 		FileHandler.create_action_list(output, audit_type)
 
@@ -60,7 +60,7 @@ class Auditor(object):
 
 		active_contracts = ListHandler.gtnp_filter(Getters.get_contracts('./static/' + contracts_file_name + '.csv'))
 
-		output = FileHandler.find_multiple_contracts(active_contracts)
+		output = Finders.find_multiple_contracts(active_contracts)
 
 		FileHandler.create_action_list(output, audit_type)
 
@@ -85,9 +85,9 @@ class Auditor(object):
 
 		combined_mac_list = ListHandler.fte_filter_mac_assets(Getters.get_users_with_mac_assets(rem_mac, fl_mac))
 
-		complete_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_mac_assets(combined_mac_list, auwa), active_contracts)
+		complete_mac_list = Finders.find_location_and_agency(Finders.find_fl_with_mac_assets(combined_mac_list, auwa), active_contracts)
 
-		complete_pc_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_pc_assets(Getters.get_users_with_pc_assets(fl_pc, rem_pc), auwa), active_contracts)
+		complete_pc_list = Finders.find_location_and_agency(Finders.find_fl_with_pc_assets(Getters.get_users_with_pc_assets(fl_pc, rem_pc), auwa), active_contracts)
 
 		output = ListHandler.remove_duplicates_from_nested_list(ListHandler.list_combiner(complete_mac_list, complete_pc_list))
 
