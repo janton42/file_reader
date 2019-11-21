@@ -27,6 +27,29 @@ class FileHandler(object):
 
 		return dict_list
 
+	def create_action_list(generator, audit_type):
+		file_name = ''
+
+		if audit_type == 1:
+			file_name = 'active_users_no_contract'
+		elif audit_type == 2:
+			file_name = 'end_dates'
+		elif audit_type == 3:
+			file_name = 'ICs_in_L3_locations'
+		elif audit_type == 4:
+			file_name = 'multiple_contracts'
+		elif audit_type == 5:
+			file_name = 'fls_with_assets'
+		elif audit_type == 'adhoc':
+			file_name = input("Please enter an output file name: ").strip()
+
+
+		output_path = '/Users/jeffstock/Desktop/' + file_name + '.csv'
+
+		with open(output_path, 'w') as csvFile:
+			writer = csv.writer(csvFile)
+			writer.writerows(generator)
+
 	def dict_combiner(base, additional):
 
 		key = len(base) + 1
@@ -34,14 +57,6 @@ class FileHandler(object):
 		for i in additional:
 			base[key] = additional[i]
 			key += 1
-
-		return base
-
-	def list_combiner(base, additional):
-
-		for i in additional:
-			if i not in base:
-				base.append(i)
 
 		return base
 
@@ -613,23 +628,7 @@ class FileHandler(object):
 
 		return output
 
-	def gtnp_filter(complete_list):
-
-		filtered_contracts = {}
-		filter_counter = 0
-		
-		for c in complete_list:	
-			
-			parts = complete_list[c]['Team Name'].split('::')
-
-			if len(parts) > 1:
-				subteam = parts[1]
-				if len(subteam) > 3:
-					if subteam[0:4] != 'GTNP':
-						filter_counter += 1
-						filtered_contracts[filter_counter] = complete_list[c]
-
-		return filtered_contracts
+# Adhoc team filter
 
 	def team_filter(contract_dict):
 
@@ -805,29 +804,6 @@ class FileHandler(object):
 
 		return common_items
 
-	def create_action_list(generator, audit_type):
-		file_name = ''
-
-		if audit_type == 1:
-			file_name = 'active_users_no_contract'
-		elif audit_type == 2:
-			file_name = 'end_dates'
-		elif audit_type == 3:
-			file_name = 'ICs_in_L3_locations'
-		elif audit_type == 4:
-			file_name = 'multiple_contracts'
-		elif audit_type == 5:
-			file_name = 'fls_with_assets'
-		elif audit_type == 'adhoc':
-			file_name = input("Please enter an output file name: ").strip()
-
-
-		output_path = '/Users/jeffstock/Desktop/' + file_name + '.csv'
-
-		with open(output_path, 'w') as csvFile:
-			writer = csv.writer(csvFile)
-			writer.writerows(generator)
-
 	def audit(output):
 	
 		test_group = {}
@@ -893,5 +869,36 @@ class FileHandler(object):
 		super(FileHandler, self).__init__()
 		self.arg = arg
 				
+class ListHandler(object):
+	"""docstring for ListHandler"""
 
+	def list_combiner(base, additional):
+
+		for i in additional:
+			if i not in base:
+				base.append(i)
+
+		return base
+
+	def gtnp_filter(complete_list):
+
+		filtered_contracts = {}
+		filter_counter = 0
+		
+		for c in complete_list:	
+			
+			parts = complete_list[c]['Team Name'].split('::')
+
+			if len(parts) > 1:
+				subteam = parts[1]
+				if len(subteam) > 3:
+					if subteam[0:4] != 'GTNP':
+						filter_counter += 1
+						filtered_contracts[filter_counter] = complete_list[c]
+
+		return filtered_contracts
+	
+	def __init__(self, arg):
+		super(ListHandler, self).__init__()
+		self.arg = arg
 
