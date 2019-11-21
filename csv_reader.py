@@ -60,245 +60,6 @@ class FileHandler(object):
 
 		return base
 
-	def get_users_with_mac_assets(rem, fl):
-
-		rem_dict = FileHandler.create_dict(rem)
-		fl_dict = FileHandler.create_dict(fl)
-
-		combined_pc = FileHandler.dict_combiner(rem_dict, fl_dict)
-
-		a = {}
-		b = 0
-
-		all_data = {}
-		user_detail_counter = 0
-
-		for user in combined_pc:
-
-			user_details = {}
-
-			ind_user_detail = combined_pc.get(user)
-
-			user_details['User Details'] = ind_user_detail
-
-			user_detail_counter += 1
-
-			all_data[user_detail_counter] = user_details
-		
-		headers = all_data[1]['User Details']
-
-		for data in all_data:
-			pair = {}
-			i = 0
-			tester = all_data[data]['User Details']
-
-			while i < len(headers):
-				k = headers[i]
-				v = tester[i]
-				i += 1
-				pair[k] = v
-			b += 1
-			a[b] = pair
-
-		return a
-
-	def get_users_with_pc_assets(rem, fl):
-		output = []
-		combined_list = []
-		long_desc = []
-		rough_list = []
-
-		rem_dict = FileHandler.create_dict(rem)
-		fl_dict = FileHandler.create_dict(fl)
-
-		for i in rem_dict:
-			test = rem_dict[i][len(rem_dict[i])-1]
-			combined_list.append(test)
-
-		for a in fl_dict:
-			test = fl_dict[a][len(fl_dict[a])-1]
-			combined_list.append(test)
-
-		for b in combined_list:
-			parts_1 = b.split(',')
-			parts_2 = b.split('-')
-			if len(parts_1) > 1:
-				long_desc.append(parts_1)
-			elif len(parts_2) > 2:
-				long_desc.append(parts_2)
-			else:
-				rough_list.append(b)
-
-		for c in long_desc:
-			name = c[0].strip()
-			rough_list.append(name)
-
-		for d in rough_list:
-			if d != '-' and d != 'Description':
-				output.append(d)
-
-		return output
-
-
-	def get_active_users(file_location):
-	
-		user_list = FileHandler.create_dict(file_location)
-
-		a = {}
-		b = 0
-
-		all_data = {}
-		user_detail_counter = 0
-
-
-		for user in user_list:
-
-			user_details = {}
-
-			ind_user_detail = user_list.get(user)[0]
-			detail_list = ind_user_detail.split(';')
-
-			user_details['User Details'] = detail_list
-
-			user_detail_counter += 1
-
-			all_data[user_detail_counter] = user_details
-		
-		# the length of the headers list is always 24
-		headers = all_data[1]['User Details']
-
-		
-
-		for data in all_data:
-			pair = {}
-			i = 1
-			tester = all_data[data]['User Details']
-
-			while i < len(headers):
-				k = headers[i-1]
-				if i < len(tester):
-					v = tester[i-1]
-				else:
-					v = ''
-				i += 1
-				pair[k] = v
-			b += 1
-			a[b] = pair
-
-
-		return a
-
-	def get_audit_users(file_location):
-
-		a = {}
-		b = 0
-
-		user_list = FileHandler.create_dict(file_location)
-
-		all_data = {}
-		user_detail_counter = 0
-
-
-		for user in user_list:
-
-			user_details = {}
-
-			ind_user_detail = user_list.get(user)
-			ind_user_detail.append(False)
-
-			user_details['User Details'] = ind_user_detail
-
-			user_detail_counter += 1
-
-			all_data[user_detail_counter] = user_details
-		
-		
-		headers = all_data[1]['User Details']
-		del headers[-1]
-
-		for data in all_data:
-			pair = {}
-			i = 0
-			tester = all_data[data]['User Details']
-
-			while i < len(tester):
-				k = headers[i]
-				v = tester[i]
-				i += 1
-				pair[k] = v
-			b += 1
-			a[b] = pair
-
-
-		return a
-
-	def get_contracts(file_location):
-
-		# complete_list = {}
-		# complete_list_counter = 0
-
-		contract_list = FileHandler.create_dict(file_location)
-
-		headers = contract_list[0]
-
-		a = {}
-		b = 0
-		
-
-		for data in contract_list:
-			pair = {}
-			i = 1
-			tester = contract_list[data]
-
-			while i < len(tester):
-				k = headers[i-1]
-				v = tester[i-1]
-				i += 1
-				pair[k] = v
-			b += 1
-			a[b] = pair
-
-
-		return a
-
-	def get_raw_whitelist(file_location):
-		info_list = FileHandler.create_dict(file_location)
-
-		headers = info_list[0]
-
-		a = {}
-		b = 0
-		
-
-		for data in info_list:
-			pair = {}
-			i = 0
-			tester = {}
-			if data != 0:
-				tester = info_list[data]
-			
-			if len(tester) > 0:
-				while i < len(tester):
-					k = headers[i]
-					v = tester[i]
-					i += 1
-					pair[k] = v
-				b += 1
-				a[b] = pair
-
-
-		return a
-
-	def filter_whitelist(whitelist, list_type):
-		filtered_list = []
-
-		for i in whitelist:
-			if whitelist[i]['Type'] == list_type:
-				filtered_list.append(whitelist[i]['Name'])
-
-		return filtered_list
-
-
 	def find_users_without_contracts(active_contracts, auwa):
 
 		uids_contracts = []
@@ -628,70 +389,203 @@ class FileHandler(object):
 
 		return output
 
-	def audit(output):
-	
-		test_group = {}
-		test_group_counter_raw = input("Enter group number to audit (1-8): ")
-		test_group_counter = int(test_group_counter_raw)
-
-		if test_group_counter > 8:
-			print('Please enter a number between 1 and 8')
-		else:	
-			for contract in output:
-				if test_group_counter == 1:
-					test_group_counter += 1	
-					while test_group_counter < 7:
-						test_group[test_group_counter-1] = output[test_group_counter]['Contract ID']
-						test_group_counter += 1
-					test_group_counter += 4
-				elif test_group_counter == 2:
-					test_group_counter = 6
-					while test_group_counter <= 10:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 3:
-					test_group_counter = 11
-					while test_group_counter <= 15:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 4:
-					test_group_counter = 16
-					while test_group_counter <= 20:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 5:
-					test_group_counter = 21
-					while test_group_counter <= 25:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 6:
-					test_group_counter = 26
-					while test_group_counter <= 30:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 7:
-					test_group_counter = 31
-					while test_group_counter <= 35:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-				elif test_group_counter == 8:
-					test_group_counter = 36
-					while test_group_counter <= 40:
-						test_group[test_group_counter] = output[test_group_counter+1]['Contract ID']
-						test_group_counter += 1
-
-
-			print(test_group)
-
-		for contract in test_group:
-			contract_id = test_group[contract]
-
-			url = url_builder(contract_id)
-			open_url(url)
-
 	def __init__(self, arg):
 		super(FileHandler, self).__init__()
 		self.arg = arg
+
+class Getters(object):
+	"""docstring for Getters"""
+
+	def get_users_with_mac_assets(rem, fl):
+
+		rem_dict = FileHandler.create_dict(rem)
+		fl_dict = FileHandler.create_dict(fl)
+
+		combined_pc = FileHandler.dict_combiner(rem_dict, fl_dict)
+
+		a = {}
+		b = 0
+
+		all_data = {}
+		user_detail_counter = 0
+
+		for user in combined_pc:
+
+			user_details = {}
+
+			ind_user_detail = combined_pc.get(user)
+
+			user_details['User Details'] = ind_user_detail
+
+			user_detail_counter += 1
+
+			all_data[user_detail_counter] = user_details
+		
+		headers = all_data[1]['User Details']
+
+		for data in all_data:
+			pair = {}
+			i = 0
+			tester = all_data[data]['User Details']
+
+			while i < len(headers):
+				k = headers[i]
+				v = tester[i]
+				i += 1
+				pair[k] = v
+			b += 1
+			a[b] = pair
+
+		return a
+
+	def get_users_with_pc_assets(rem, fl):
+		output = []
+		combined_list = []
+		long_desc = []
+		rough_list = []
+
+		rem_dict = FileHandler.create_dict(rem)
+		fl_dict = FileHandler.create_dict(fl)
+
+		for i in rem_dict:
+			test = rem_dict[i][len(rem_dict[i])-1]
+			combined_list.append(test)
+
+		for a in fl_dict:
+			test = fl_dict[a][len(fl_dict[a])-1]
+			combined_list.append(test)
+
+		for b in combined_list:
+			parts_1 = b.split(',')
+			parts_2 = b.split('-')
+			if len(parts_1) > 1:
+				long_desc.append(parts_1)
+			elif len(parts_2) > 2:
+				long_desc.append(parts_2)
+			else:
+				rough_list.append(b)
+
+		for c in long_desc:
+			name = c[0].strip()
+			rough_list.append(name)
+
+		for d in rough_list:
+			if d != '-' and d != 'Description':
+				output.append(d)
+
+		return output
+
+	def get_active_users(file_location):
+	
+		user_list = FileHandler.create_dict(file_location)
+
+		a = {}
+		b = 0
+
+		all_data = {}
+		user_detail_counter = 0
+
+
+		for user in user_list:
+
+			user_details = {}
+
+			ind_user_detail = user_list.get(user)[0]
+			detail_list = ind_user_detail.split(';')
+
+			user_details['User Details'] = detail_list
+
+			user_detail_counter += 1
+
+			all_data[user_detail_counter] = user_details
+		
+		# the length of the headers list is always 24
+		headers = all_data[1]['User Details']
+
+		
+
+		for data in all_data:
+			pair = {}
+			i = 1
+			tester = all_data[data]['User Details']
+
+			while i < len(headers):
+				k = headers[i-1]
+				if i < len(tester):
+					v = tester[i-1]
+				else:
+					v = ''
+				i += 1
+				pair[k] = v
+			b += 1
+			a[b] = pair
+
+
+		return a
+
+	def get_contracts(file_location):
+
+		# complete_list = {}
+		# complete_list_counter = 0
+
+		contract_list = FileHandler.create_dict(file_location)
+
+		headers = contract_list[0]
+
+		a = {}
+		b = 0
+		
+
+		for data in contract_list:
+			pair = {}
+			i = 1
+			tester = contract_list[data]
+
+			while i < len(tester):
+				k = headers[i-1]
+				v = tester[i-1]
+				i += 1
+				pair[k] = v
+			b += 1
+			a[b] = pair
+
+
+		return a
+
+	def get_raw_whitelist(file_location):
+		info_list = FileHandler.create_dict(file_location)
+
+		headers = info_list[0]
+
+		a = {}
+		b = 0
+		
+
+		for data in info_list:
+			pair = {}
+			i = 0
+			tester = {}
+			if data != 0:
+				tester = info_list[data]
+			
+			if len(tester) > 0:
+				while i < len(tester):
+					k = headers[i]
+					v = tester[i]
+					i += 1
+					pair[k] = v
+				b += 1
+				a[b] = pair
+
+
+		return a
+
+	def __init__(self, arg):
+		super(Getters, self).__init__()
+		self.arg = arg
+		
+
+
 				
 class ListHandler(object):
 	"""docstring for ListHandler"""
@@ -816,10 +710,21 @@ class ListHandler(object):
 				common_items.append(i)
 
 		return common_items
+
+	def filter_whitelist(whitelist, list_type):
+		filtered_list = []
+
+		for i in whitelist:
+			if whitelist[i]['Type'] == list_type:
+				filtered_list.append(whitelist[i]['Name'])
+
+		return filtered_list
 	
 	def __init__(self, arg):
 		super(ListHandler, self).__init__()
 		self.arg = arg
+
+
 
 class Adhoc(object):
 	"""docstring for Adhoc"""
