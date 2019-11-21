@@ -334,6 +334,20 @@ class FileHandler(object):
 
 		return output
 
+	def create_end_date_dict(base_item):
+		output = {}
+
+		output['Contract ID'] = base_item['Contract ID']
+		output['Freelancer Name'] = base_item['Freelancer Name']
+		output['End Date'] = base_item['End Date'][0:10]
+		output['Contract Status'] = base_item['Status']
+		output['User ID'] = base_item['Freelancer User ID']
+		output['Team Name'] = base_item['Team Name']
+		output['Contact Person'] = base_item['Contact person']
+		output['Contract Type'] = base_item['Contract type']
+
+		return output
+
 	def find_end_dates(active_contracts):
 		action_items = {}
 		action_items_counter = 0
@@ -358,50 +372,22 @@ class FileHandler(object):
 
 			# Expired contracts
 			if end_year == now.year -1 or end_year == now.year -2 or end_year == now.year and end_month == now.month and end_day < now.day or end_year == now.year and end_month < now.month:
-				action_items_counter += 1
-				expired['Contract ID'] = active_contracts[c]['Contract ID']
-				expired['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				expired['End Date'] = active_contracts[c]['End Date'][0:10]
-				expired['Contract Status'] = active_contracts[c]['Status']
-				expired['User ID'] = active_contracts[c]['Freelancer User ID']
-				expired['Team Name'] = active_contracts[c]['Team Name']
-				expired['Contact Person'] = active_contracts[c]['Contact person']
-				expired['Expired'] = 'Yes'
-				expired['Expires Today'] = 'No'
-				expired['Contract Type'] = active_contracts[c]['Contract type']
+				
+				expired = FileHandler.create_end_date_dict(active_contracts[c])
 
-			
 				action_items[c] = expired
 
 			# Contracts ending today
 			elif end_year == now.year and end_month == now.month and end_day == now.day:
-				action_items_counter += 1
-				expires_today['Contract ID'] = active_contracts[c]['Contract ID']
-				expires_today['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				expires_today['End Date'] = active_contracts[c]['End Date'][0:10]
-				expires_today['Contract Status'] = active_contracts[c]['Status']
-				expires_today['User ID'] = active_contracts[c]['Freelancer User ID']
-				expires_today['Team Name'] = active_contracts[c]['Team Name']
-				expires_today['Contact Person'] = active_contracts[c]['Contact person']
-				expires_today['Expired'] = 'No'
-				expires_today['Expires Today'] = 'Yes'
-				expires_today['Contract Type'] = active_contracts[c]['Contract type']
+				
+				expires_today = FileHandler.create_end_date_dict(active_contracts[c])
 
 				action_items[c] = expires_today
 
 			# Contracts expiring this month within the next 14 days
 			elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 				action_items_counter += 1
-				next_14['Contract ID'] = active_contracts[c]['Contract ID']
-				next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-				next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-				next_14['Contract Status'] = active_contracts[c]['Status']
-				next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-				next_14['Team Name'] = active_contracts[c]['Team Name']
-				next_14['Contact Person'] = active_contracts[c]['Contact person']
-				next_14['Expired'] = 'No'
-				next_14['Expires Today'] = 'No'
-				next_14['Contract Type'] = active_contracts[c]['Contract type']
+				next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 				action_items[c] = next_14
 
@@ -411,17 +397,8 @@ class FileHandler(object):
 				#December
 				if now.month == 12:
 					if end_year == now.year + 1 and end_month == 1 and end_day < (now.day + 14 - 31):
-						action_items_counter += 1
-						next_14['Contract ID'] = active_contracts[c]['Contract ID']
-						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-						next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-						next_14['Contract Status'] = active_contracts[c]['Status']
-						next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-						next_14['Team Name'] = active_contracts[c]['Team Name']
-						next_14['Contact Person'] = active_contracts[c]['Contact person']
-						next_14['Expired'] = 'No'
-						next_14['Expires Today'] = 'No'
-						next_14['Contract Type'] = active_contracts[c]['Contract type']
+
+						next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 
@@ -429,79 +406,39 @@ class FileHandler(object):
 				elif now.month == 2:
 					if now.year == 2020 or now.year == 2024:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
-							action_items_counter += 1
-							next_14['Contract ID'] = active_contracts[c]['Contract ID']
-							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-							next_14['Contract Status'] = active_contracts[c]['Status']
-							next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-							next_14['Team Name'] = active_contracts[c]['Team Name']
-							next_14['Contact Person'] = active_contracts[c]['Contact person']
-							next_14['Expired'] = 'No'
-							next_14['Expires Today'] = 'No'
-							next_14['Contract Type'] = active_contracts[c]['Contract type']
+						
+							next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 					else:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
-							action_items_counter += 1
-							next_14['Contract ID'] = active_contracts[c]['Contract ID']
-							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-							next_14['Contract Status'] = active_contracts[c]['Status']
-							next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-							next_14['Team Name'] = active_contracts[c]['Team Name']
-							next_14['Contact Person'] = active_contracts[c]['Contact person']
-							next_14['Expired'] = 'No'
-							next_14['Expires Today'] = 'No'
-							next_14['Contract Type'] = active_contracts[c]['Contract type']
+
+							next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 
 				# Months with 30 days (April, June, September, November)
+				# TODO
+				# USE THIS FOR TESTING
 				elif now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11:
 					if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 30):
-						action_items_counter += 1
-						next_14['Contract ID'] = active_contracts[c]['Contract ID']
-						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-						next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-						next_14['Contract Status'] = active_contracts[c]['Status']
-						next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-						next_14['Team Name'] = active_contracts[c]['Team Name']
-						next_14['Contact Person'] = active_contracts[c]['Contact person']
-						next_14['Expired'] = 'No'
-						next_14['Expires Today'] = 'No'
-						next_14['Contract Type'] = active_contracts[c]['Contract type']
+
+						next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
+
+				# TEST ABOVE
 
 				# Contracts expiring this month within the next 14 days
 				elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 					action_items_counter += 1
-					next_14['Contract ID'] = active_contracts[c]['Contract ID']
-					next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-					next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-					next_14['Contract Status'] = active_contracts[c]['Status']
-					next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-					next_14['Team Name'] = active_contracts[c]['Team Name']
-					next_14['Contact Person'] = active_contracts[c]['Contact person']
-					next_14['Expired'] = 'No'
-					next_14['Expires Today'] = 'No'
-					next_14['Contract Type'] = active_contracts[c]['Contract type']
+
+					next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 					action_items[c] = next_14
 
 				# Contracts expiring next month within 14 days for months with 31 days and end_day == (now.day + 14 - 31)
 				if end_year == now.year and end_month == (now.month + 1) and end_day <= now.day + 14 - 31:
-					action_items_counter += 1
-					next_14['Contract ID'] = active_contracts[c]['Contract ID']
-					next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-					next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-					next_14['Contract Status'] = active_contracts[c]['Status']
-					next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-					next_14['Team Name'] = active_contracts[c]['Team Name']
-					next_14['Contact Person'] = active_contracts[c]['Contact person']
-					next_14['Expired'] = 'No'
-					next_14['Expires Today'] = 'No'
-					next_14['Contract Type'] = active_contracts[c]['Contract type']
+
+					next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 					action_items[c] = next_14
 
@@ -509,30 +446,12 @@ class FileHandler(object):
 				if now.month == 2:
 					if now.year == 2020 or now.year == 2024:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
-							action_items_counter += 1
-							next_14['Contract ID'] = active_contracts[c]['Contract ID']
-							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-							next_14['Contract Status'] = active_contracts[c]['Status']
-							next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-							next_14['Team Name'] = active_contracts[c]['Team Name']
-							next_14['Contact Person'] = active_contracts[c]['Contact person']
-							next_14['Expired'] = 'No'
-							next_14['Expires Today'] = 'No'
-							next_14['Contract Type'] = active_contracts[c]['Contract type']
+							
+							next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 					else:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
-							action_items_counter += 1
-							next_14['Contract ID'] = active_contracts[c]['Contract ID']
-							next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-							next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-							next_14['Contract Status'] = active_contracts[c]['Status']
-							next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-							next_14['Team Name'] = active_contracts[c]['Team Name']
-							next_14['Contact Person'] = active_contracts[c]['Contact person']
-							next_14['Expired'] = 'No'
-							next_14['Expires Today'] = 'No'
-							next_14['Contract Type'] = active_contracts[c]['Contract type']
+
+							next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 
@@ -540,32 +459,14 @@ class FileHandler(object):
 
 				elif now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11:
 					if end_year == now.year and end_month == (now.month +1) and end_day <= (now.day + 14 - 30):
-						action_items_counter += 1
-						next_14['Contract ID'] = active_contracts[c]['Contract ID']
-						next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-						next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-						next_14['Contract Status'] = active_contracts[c]['Status']
-						next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-						next_14['Team Name'] = active_contracts[c]['Team Name']
-						next_14['Contact Person'] = active_contracts[c]['Contact person']
-						next_14['Expired'] = 'No'
-						next_14['Expires Today'] = 'No'
-						next_14['Contract Type'] = active_contracts[c]['Contract type']
+
+						next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 						action_items[c] = next_14
 				
 				elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
-					action_items_counter += 1
-					next_14['Contract ID'] = active_contracts[c]['Contract ID']
-					next_14['Freelancer Name'] = active_contracts[c]['Freelancer Name']
-					next_14['End Date'] = active_contracts[c]['End Date'][0:10]
-					next_14['Contract Status'] = active_contracts[c]['Status']
-					next_14['User ID'] = active_contracts[c]['Freelancer User ID']
-					next_14['Team Name'] = active_contracts[c]['Team Name']
-					next_14['Contact Person'] = active_contracts[c]['Contact person']
-					next_14['Expired'] = 'No'
-					next_14['Expires Today'] = 'No'
-					next_14['Contract Type'] = active_contracts[c]['Contract type']
+
+					next_14 = FileHandler.create_end_date_dict(active_contracts[c])
 
 					action_items[c] = next_14
 
