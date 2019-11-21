@@ -4,11 +4,11 @@ from audits import Auditor
 
 def main():
 
-	Auditor.active_users_without_contracts()
-	Auditor.l3_locations()
+	# Auditor.active_users_without_contracts()
+	# Auditor.l3_locations()
 	Auditor.end_dates()
-	Auditor.multiple_contracts()
-	Auditor.fls_with_assets()
+	# Auditor.multiple_contracts()
+	# Auditor.fls_with_assets()
 
 
 	

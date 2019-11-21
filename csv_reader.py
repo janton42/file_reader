@@ -368,6 +368,7 @@ class FileHandler(object):
 				expired['Contact Person'] = active_contracts[c]['Contact person']
 				expired['Expired'] = 'Yes'
 				expired['Expires Today'] = 'No'
+				expired['Contract Type'] = active_contracts[c]['Contract type']
 
 			
 				action_items[c] = expired
@@ -384,6 +385,7 @@ class FileHandler(object):
 				expires_today['Contact Person'] = active_contracts[c]['Contact person']
 				expires_today['Expired'] = 'No'
 				expires_today['Expires Today'] = 'Yes'
+				expires_today['Contract Type'] = active_contracts[c]['Contract type']
 
 				action_items[c] = expires_today
 
@@ -399,6 +401,7 @@ class FileHandler(object):
 				next_14['Contact Person'] = active_contracts[c]['Contact person']
 				next_14['Expired'] = 'No'
 				next_14['Expires Today'] = 'No'
+				next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 				action_items[c] = next_14
 
@@ -418,6 +421,7 @@ class FileHandler(object):
 						next_14['Contact Person'] = active_contracts[c]['Contact person']
 						next_14['Expired'] = 'No'
 						next_14['Expires Today'] = 'No'
+						next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 						action_items[c] = next_14
 
@@ -435,6 +439,7 @@ class FileHandler(object):
 							next_14['Contact Person'] = active_contracts[c]['Contact person']
 							next_14['Expired'] = 'No'
 							next_14['Expires Today'] = 'No'
+							next_14['Contract Type'] = active_contracts[c]['Contract type']
 					else:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
 							action_items_counter += 1
@@ -447,6 +452,7 @@ class FileHandler(object):
 							next_14['Contact Person'] = active_contracts[c]['Contact person']
 							next_14['Expired'] = 'No'
 							next_14['Expires Today'] = 'No'
+							next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 						action_items[c] = next_14
 
@@ -463,6 +469,7 @@ class FileHandler(object):
 						next_14['Contact Person'] = active_contracts[c]['Contact person']
 						next_14['Expired'] = 'No'
 						next_14['Expires Today'] = 'No'
+						next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 						action_items[c] = next_14
 
@@ -478,6 +485,7 @@ class FileHandler(object):
 					next_14['Contact Person'] = active_contracts[c]['Contact person']
 					next_14['Expired'] = 'No'
 					next_14['Expires Today'] = 'No'
+					next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 					action_items[c] = next_14
 
@@ -493,6 +501,7 @@ class FileHandler(object):
 					next_14['Contact Person'] = active_contracts[c]['Contact person']
 					next_14['Expired'] = 'No'
 					next_14['Expires Today'] = 'No'
+					next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 					action_items[c] = next_14
 
@@ -510,6 +519,7 @@ class FileHandler(object):
 							next_14['Contact Person'] = active_contracts[c]['Contact person']
 							next_14['Expired'] = 'No'
 							next_14['Expires Today'] = 'No'
+							next_14['Contract Type'] = active_contracts[c]['Contract type']
 					else:
 						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
 							action_items_counter += 1
@@ -522,6 +532,7 @@ class FileHandler(object):
 							next_14['Contact Person'] = active_contracts[c]['Contact person']
 							next_14['Expired'] = 'No'
 							next_14['Expires Today'] = 'No'
+							next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 						action_items[c] = next_14
 
@@ -539,6 +550,7 @@ class FileHandler(object):
 						next_14['Contact Person'] = active_contracts[c]['Contact person']
 						next_14['Expired'] = 'No'
 						next_14['Expires Today'] = 'No'
+						next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 						action_items[c] = next_14
 				
@@ -553,12 +565,13 @@ class FileHandler(object):
 					next_14['Contact Person'] = active_contracts[c]['Contact person']
 					next_14['Expired'] = 'No'
 					next_14['Expires Today'] = 'No'
+					next_14['Contract Type'] = active_contracts[c]['Contract type']
 
 					action_items[c] = next_14
 
 				# Contracts ending this month in the next 14 days (starting tomorrow)
 
-		output = [['Contract ID','User ID','Freelancer Name','Contact Person','Team Name','End Date']]
+		output = [['Contract ID','User ID','Freelancer Name','Contact Person','Team Name','End Date','Payment Structure']]
 
 		for i in action_items:
 			action_item = []
@@ -568,6 +581,7 @@ class FileHandler(object):
 			action_item.append(action_items[i]['Contact Person'])
 			action_item.append(action_items[i]['Team Name'])
 			action_item.append(action_items[i]['End Date'])
+			action_item.append(action_items[i]['Contract Type'])
 			output.append(action_item)
 
 		return output
