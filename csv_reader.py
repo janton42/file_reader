@@ -628,31 +628,6 @@ class FileHandler(object):
 
 		return output
 
-# Adhoc team filter
-
-	def team_filter(contract_dict):
-
-		team = input('Please enter a team prefix: ').strip()
-		output = [['Contract ID', 'Freelancer User ID', 'Freelancer Name', 'Contact Person']]
-
-		for c in contract_dict:
-			i = contract_dict[c]
-			t = i['Team Name'][0:2]
-			contract = i['Contract ID']
-			u = i['Freelancer User ID']
-			n = i['Freelancer Name']
-			person = i['Contact person']
-			if t == team:
-				single = []
-				single.append(contract)
-				single.append(u)
-				single.append(n)
-				single.append(person)
-				single.append(i['Team Name'])
-				output.append(single)
-
-		return output
-
 	def audit(output):
 	
 		test_group = {}
@@ -845,4 +820,35 @@ class ListHandler(object):
 	def __init__(self, arg):
 		super(ListHandler, self).__init__()
 		self.arg = arg
+
+class Adhoc(object):
+	"""docstring for Adhoc"""
+
+	def team_filter(contract_dict):
+
+		team = input('Please enter a team prefix: ').strip()
+		output = [['Contract ID', 'Freelancer User ID', 'Freelancer Name', 'Contact Person']]
+
+		for c in contract_dict:
+			i = contract_dict[c]
+			t = i['Team Name'][0:2]
+			contract = i['Contract ID']
+			u = i['Freelancer User ID']
+			n = i['Freelancer Name']
+			person = i['Contact person']
+			if t == team:
+				single = []
+				single.append(contract)
+				single.append(u)
+				single.append(n)
+				single.append(person)
+				single.append(i['Team Name'])
+				output.append(single)
+
+		return output
+
+	def __init__(self, arg):
+		super(Adhoc, self).__init__()
+		self.arg = arg
+		
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from csv_reader import FileHandler, ListHandler
+from csv_reader import FileHandler, ListHandler, Adhoc
 
 class Auditor(object):
 	"""docstring for Auditor"""
