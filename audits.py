@@ -16,7 +16,7 @@ class Auditor(object):
 
 		contracts_file_name = 'contracts'
 		
-		active_contracts = FileHandler.fixed_price_filter(FileHandler.payroll_filter(ListHandler.gtnp_filter(FileHandler.get_contracts('./static/' + contracts_file_name + '.csv'))))
+		active_contracts = ListHandler.fixed_price_filter(ListHandler.payroll_filter(ListHandler.gtnp_filter(FileHandler.get_contracts('./static/' + contracts_file_name + '.csv'))))
 
 		output = FileHandler.find_hourly_contracts_l3_countries(active_contracts, l3_countries_list, l3_contracts_whitelist)
 
@@ -29,7 +29,7 @@ class Auditor(object):
 		users_file_name = './static/user_data.csv'
 		contracts_file_name = './static/contracts.csv'
 
-		auwa = FileHandler.fte_filter_user_list(FileHandler.get_active_users(users_file_name))
+		auwa = ListHandler.fte_filter_user_list(FileHandler.get_active_users(users_file_name))
 		active_contracts = ListHandler.gtnp_filter(FileHandler.get_contracts(contracts_file_name))
 
 		output = FileHandler.find_users_without_contracts(active_contracts,auwa)
@@ -78,30 +78,18 @@ class Auditor(object):
 		active_contracts_file_name = './static/contracts.csv'
 		ended_contracts_file_name = './static/ended_contracts.csv'
 
-		auwa = FileHandler.fte_filter_user_list(FileHandler.get_active_users(users_file_name))
+		auwa = ListHandler.fte_filter_user_list(FileHandler.get_active_users(users_file_name))
 		active_contracts = ListHandler.gtnp_filter(FileHandler.get_contracts(active_contracts_file_name))
 
 		ended_contracts = ListHandler.gtnp_filter(FileHandler.get_contracts(ended_contracts_file_name))
 
-		combined_mac_list = FileHandler.fte_filter_mac_assets(FileHandler.get_users_with_mac_assets(rem_mac, fl_mac))
+		combined_mac_list = ListHandler.fte_filter_mac_assets(FileHandler.get_users_with_mac_assets(rem_mac, fl_mac))
 
 		complete_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_mac_assets(combined_mac_list, auwa), active_contracts)
 
-		# ended_mac_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_mac_assets(combined_mac_list, auwa), ended_contracts)
-
-		# ended_with_assets_list = FileHandler.find_missing_from_list(active_mac_list, ended_mac_list)	
-
-		# print(active_mac_list)
-
-		# complete_pc_list = FileHandler.fte_filter_pc_assets(FileHandler.get_users_with_assets(rem_pc, fl_pc), active_contracts, auwa)
-
 		complete_pc_list = FileHandler.find_location_and_agency(FileHandler.find_fl_with_pc_assets(FileHandler.get_users_with_pc_assets(fl_pc, rem_pc), auwa), active_contracts)
 
-
-
-		# print(complete_pc_list)
-
-		output = FileHandler.remove_duplicates_from_nested_list(ListHandler.list_combiner(complete_mac_list, complete_pc_list))
+		output = ListHandler.remove_duplicates_from_nested_list(ListHandler.list_combiner(complete_mac_list, complete_pc_list))
 
 		FileHandler.create_action_list(output, audit_type)
 

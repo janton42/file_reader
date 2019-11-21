@@ -315,8 +315,8 @@ class FileHandler(object):
 			uids_users.append(auwa[u]['worker_user_id'])
 			names_users.append(auwa[u]['full_name'])
 
-		filtered_by_uid = FileHandler.find_missing_from_list(uids_contracts,uids_users)
-		filtered_by_name = FileHandler.find_missing_from_list(names_contracts,names_users)
+		filtered_by_uid = ListHandler.find_missing_from_list(uids_contracts,uids_users)
+		filtered_by_name = ListHandler.find_missing_from_list(names_contracts,names_users)
 
 		details = {}
 		details_counter = 0
@@ -653,157 +653,6 @@ class FileHandler(object):
 
 		return output
 
-
-	def fte_filter_mac_assets(user_list):
-		email_address_list = []
-
-		fl_with_assets = {}
-		counter = 0
-
-		for u in user_list:
-			domain = user_list[u]['Username'].split('@')
-			email = user_list[u]['Username']
-			if len(domain) > 1 and domain[1] == 'cloud.upwork.com':
-				counter += 1
-				fl_with_assets[counter] = email
-
-		output = []
-
-		for i in fl_with_assets:
-			single = []
-
-			single.append(fl_with_assets[i])
-
-			output.append(single)
-
-		return output
-
-	def fte_filter_pc_assets(user_list, contract_dict, user_dict):
-		full_name_list = []
-		output = []
-		
-		for i in user_list:
-			description = user_list[i]['Description']
-			full_name = description[0]
-			length = len(description)
-			full_name_list.append(description)
-			# full_name_list.append(length)
-			# if full_name == 'False' and len(description) > 1:
-			# 	full_name = description[1]
-			# 	if full_name != '-':
-			# 		full_name_list.append(full_name)
-			# elif full_name != '-' and full_name != 'Description' and full_name != 'User Account Control':
-			# 	full_name_list.append(full_name)
-
-
-		for u in full_name_list:
-			match = []
-			for c in contract_dict:
-				fl_name = contract_dict[c]['Freelancer Name']
-				uid = contract_dict[c]['Freelancer User ID']
-				email = ''
-				agency = contract_dict[c]['Agency Name']
-				location = contract_dict[c]['Freelancer location']
-				if u == fl_name:
-					match.append(u)
-					match.append(uid)
-					match.append(email)
-					match.append(agency)
-					match.append(location)
-					
-					output.append(match)
-
-		for a in output:
-			match = []
-			name = a[1]
-			for b in user_dict:
-				fl_name = user_dict[b]['full_name']
-				email = user_dict[b]['upwork_email']
-				if name == fl_name:
-					a[2] = email
-
-		return full_name_list
-
-	def fte_filter_user_list(complete_list):
-		filtered_users = {}
-		filtered_counter = 0
-
-		if len(complete_list) > 0:
-			for u in complete_list:
-				parts = complete_list[u]['upwork_email'].split('@')
-				if len(parts) > 1:
-					domain = parts[1]
-					if domain != 'upwork.com':
-						filtered_counter += 1
-						filtered_users[filtered_counter] = complete_list[u]
-		else:
-			filtered_users[filtered_counter] = 'Empty'
-
-		return filtered_users
-
-	# def fte_filter_assets(complete_list):
-	# 	filtered_users = {}
-	# 	filtered_counter = 0
-
-	# 	if len(complete_list) > 0:
-
-	# 	else:
-	# 		filtered_users[filtered_counter] = ['Empty']
-
-	def payroll_filter(complete_list):
-		filtered_contracts = {}
-		filter_counter = 0
-		
-		for c in complete_list:
-			agency = complete_list[c]['Agency Name']
-			if agency != 'Upwork Payroll - iWorkGlobal' and agency != 'EOR-IWG-INTL':
-				filter_counter += 1
-				filtered_contracts[filter_counter] = complete_list[c]
-
-		return filtered_contracts
-
-	def fixed_price_filter(complete_list):
-		filtered_contracts = {}
-		filter_counter = 0
-		
-		for c in complete_list:
-			structure = complete_list[c]['Contract type']
-			if structure == 'Hourly':
-				filter_counter += 1
-				filtered_contracts[filter_counter] = complete_list[c]
-
-		return filtered_contracts	
-
-	def remove_duplicates_from_nested_list(nested_list):
-		output = []
-		tester = []
-
-		for i in nested_list:
-			name = i[0]
-			if name not in tester:
-				tester.append(name)
-				output.append(i)
-
-		return output
-
-	def find_missing_from_list(list_1, list_2):
-		missing_from_list = []
-		
-		for i in list_2:
-			if i not in list_1:
-				missing_from_list.append(i)
-
-		return missing_from_list
-
-	def find_common_between_lists(list_1,list_2):
-		common_items = []
-
-		for i in list_1:
-			if i in list_2:
-				common_items.append(i)
-
-		return common_items
-
 	def audit(output):
 	
 		test_group = {}
@@ -897,6 +746,101 @@ class ListHandler(object):
 						filtered_contracts[filter_counter] = complete_list[c]
 
 		return filtered_contracts
+
+	def fte_filter_mac_assets(user_list):
+		email_address_list = []
+
+		fl_with_assets = {}
+		counter = 0
+
+		for u in user_list:
+			domain = user_list[u]['Username'].split('@')
+			email = user_list[u]['Username']
+			if len(domain) > 1 and domain[1] == 'cloud.upwork.com':
+				counter += 1
+				fl_with_assets[counter] = email
+
+		output = []
+
+		for i in fl_with_assets:
+			single = []
+
+			single.append(fl_with_assets[i])
+
+			output.append(single)
+
+		return output
+
+	def fte_filter_user_list(complete_list):
+		filtered_users = {}
+		filtered_counter = 0
+
+		if len(complete_list) > 0:
+			for u in complete_list:
+				parts = complete_list[u]['upwork_email'].split('@')
+				if len(parts) > 1:
+					domain = parts[1]
+					if domain != 'upwork.com':
+						filtered_counter += 1
+						filtered_users[filtered_counter] = complete_list[u]
+		else:
+			filtered_users[filtered_counter] = 'Empty'
+
+		return filtered_users
+
+	def payroll_filter(complete_list):
+		filtered_contracts = {}
+		filter_counter = 0
+		
+		for c in complete_list:
+			agency = complete_list[c]['Agency Name']
+			if agency != 'Upwork Payroll - iWorkGlobal' and agency != 'EOR-IWG-INTL':
+				filter_counter += 1
+				filtered_contracts[filter_counter] = complete_list[c]
+
+		return filtered_contracts
+
+	def fixed_price_filter(complete_list):
+		filtered_contracts = {}
+		filter_counter = 0
+		
+		for c in complete_list:
+			structure = complete_list[c]['Contract type']
+			if structure == 'Hourly':
+				filter_counter += 1
+				filtered_contracts[filter_counter] = complete_list[c]
+
+		return filtered_contracts	
+
+	def remove_duplicates_from_nested_list(nested_list):
+		output = []
+		tester = []
+
+		for i in nested_list:
+			name = i[0]
+			if name not in tester:
+				tester.append(name)
+				output.append(i)
+
+		return output
+
+	def find_missing_from_list(list_1, list_2):
+		missing_from_list = []
+		
+		for i in list_2:
+			if i not in list_1:
+				missing_from_list.append(i)
+
+		return missing_from_list
+
+	def find_common_between_lists(list_1,list_2):
+		common_items = []
+
+		for i in list_1:
+			if i in list_2:
+				common_items.append(i)
+
+		return common_items
 	
 	def __init__(self, arg):
 		super(ListHandler, self).__init__()
