@@ -10,7 +10,6 @@ def main():
 	Auditor.multiple_contracts()
 	Auditor.fls_with_assets()
 
-
 	
 	
 

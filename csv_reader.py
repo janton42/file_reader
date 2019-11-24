@@ -738,26 +738,43 @@ class DictHandler(object):
 class Adhoc(object):
 	"""docstring for Adhoc"""
 
+	c = Getters.get_contracts('./static/contracts.csv')
+
 	def team_filter(contract_dict):
 
-		team = input('Please enter a team prefix: ').strip()
-		output = [['Contract ID', 'Freelancer User ID', 'Freelancer Name', 'Contact Person']]
+		team = input('Please enter a team name: ').strip()
+		output = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
 
 		for c in contract_dict:
 			i = contract_dict[c]
-			t = i['Team Name'][0:2]
-			contract = i['Contract ID']
-			u = i['Freelancer User ID']
-			n = i['Freelancer Name']
-			person = i['Contact person']
+			t = i['Team Name']
 			if t == team:
 				single = []
-				single.append(contract)
-				single.append(u)
-				single.append(n)
-				single.append(person)
-				single.append(i['Team Name'])
+				for a in i:
+					single.append(i[a])
 				output.append(single)
+
+		return output
+
+	def contract_starts_by_year(contract_dict):
+
+		year_filter = input('Please enter a four-digit year: ').strip()
+
+
+		output = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
+
+		for c in contract_dict:
+			i = contract_dict[c]
+			start_date = i['Start Date'].split('-')[0]
+			if start_date == year_filter:
+				single = []
+				for a in i:
+					single.append(i[a])
+				output.append(single)
+
+
+
+
 
 		return output
 
