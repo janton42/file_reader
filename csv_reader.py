@@ -738,7 +738,14 @@ class DictHandler(object):
 class Adhoc(object):
 	"""docstring for Adhoc"""
 
-	c = Getters.get_contracts('./static/contracts.csv')
+	c = ListHandler.gtnp_filter(Getters.get_contracts('./static/contracts.csv'))
+	e = Getters.get_contracts('./static/ended_contracts.csv')
+
+	def report_maker(i):
+		
+		output.append(i)
+
+		return output
 
 	def team_filter(contract_dict):
 
@@ -759,22 +766,52 @@ class Adhoc(object):
 	def contract_starts_by_year(contract_dict):
 
 		year_filter = input('Please enter a four-digit year: ').strip()
-
-
 		output = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
+
+		filter_results = []
+
+		out = []
+
+		older = []
 
 		for c in contract_dict:
 			i = contract_dict[c]
 			start_date = i['Start Date'].split('-')[0]
 			if start_date == year_filter:
+				filter_results.append(i['Freelancer User ID'])
+			elif start_date < year_filter:
+				older.append(i['Freelancer User ID'])
+
+		p_users = Adhoc.create_filter_list(Adhoc.e,'Freelancer User ID')
+
+		current_older = []
+
+		for x in filter_results:
+			if x in older:
+				current_older.append(x)
+
+		for a in filter_results:
+			if a not in p_users and a not in older:
+				out.append(a)
+
+		for b in contract_dict:
+			i = contract_dict[b]
+			u = i['Freelancer User ID']
+			if u in out:
 				single = []
 				for a in i:
 					single.append(i[a])
 				output.append(single)
 
+		FileHandler.create_action_list(output,'adhoc')
 
+	def create_filter_list(dictionary, parameter):
+		output = []
 
-
+		for i in dictionary:
+			searched = dictionary[i][parameter]
+			if searched not in output:
+				output.append(searched)
 
 		return output
 
