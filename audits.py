@@ -93,7 +93,16 @@ class Auditor(object):
 
 		FileHandler.create_action_list(output, audit_type)
 
-		print('Audit complete. Type: freelancers with Upwork assets\n')
+		print('Audit complete. Type: freelancers with Upwork assets')
+
+	# def currently_whitelisted():
+
+	# 	audit_type = 6
+
+	# 	FileHandler.create_action_list(output, audit_type)
+
+	# 	pritn('Audit complete. Type: Currently Whitelisted')
+
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()

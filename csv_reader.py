@@ -40,6 +40,8 @@ class FileHandler(object):
 			file_name = 'multiple_contracts'
 		elif audit_type == 5:
 			file_name = 'fls_with_assets'
+		elif audit_type == 6:
+			file_name = 'current_whitelist'
 		elif audit_type == 'adhoc':
 			file_name = input("Please enter an output file name: ").strip()
 
@@ -734,7 +736,6 @@ class DictHandler(object):
 		super(DictHandler, self).__init__()
 		self.arg = arg
 		
-
 class Adhoc(object):
 	"""docstring for Adhoc"""
 
