@@ -42,6 +42,8 @@ class FileHandler(object):
 			file_name = 'fls_with_assets'
 		elif audit_type == 6:
 			file_name = 'current_whitelist'
+		elif audit_type == 7:
+			file_name = 'updated_whitlist'
 		elif audit_type == 'adhoc':
 			file_name = input("Please enter an output file name: ").strip()
 
@@ -735,7 +737,42 @@ class DictHandler(object):
 	def __init__(self, arg):
 		super(DictHandler, self).__init__()
 		self.arg = arg
+
+class WhitelistUpdater(object):
+	"""docstring for WhitelistUpdater"""
+	def current_whitelist(details, ended, contracts):
+
+		current = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
 		
+
+		for i in details:
+			cid = details[i]['Contract ID']
+			if cid in contracts:
+				single = []
+				for c in details[i]:
+					single.append(details[i][c])
+				current.append(single)
+
+		return current
+
+	def update(ended, contracts, whitelist):
+		updated = [['Type','Name']]
+
+		closed = []
+
+		for a in ended:
+			cid = ended[a]['Contract ID']
+			if cid in contracts:
+				closed.append(cid)
+
+		return updated
+
+
+	def __init__(self, arg):
+		super(WhitelistUpdater, self).__init__()
+		self.arg = arg
+		
+
 class Adhoc(object):
 	"""docstring for Adhoc"""
 
@@ -762,7 +799,7 @@ class Adhoc(object):
 					single.append(i[a])
 				output.append(single)
 
-		return output
+		FileHandler.create_action_list(output,'adhoc')
 
 	def contract_starts_by_year(contract_dict):
 

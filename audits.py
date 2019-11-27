@@ -95,13 +95,30 @@ class Auditor(object):
 
 		print('Audit complete. Type: freelancers with Upwork assets')
 
-	# def currently_whitelisted():
+	def currently_whitelisted():
 
-	# 	audit_type = 6
+		audit_type = 6
 
-	# 	FileHandler.create_action_list(output, audit_type)
+		details = ListHandler.gtnp_filter(Getters.get_contracts('./static/contracts.csv'))
 
-	# 	pritn('Audit complete. Type: Currently Whitelisted')
+		ended = ListHandler.gtnp_filter(Getters.get_contracts('./static/ended_contracts.csv'))
+
+		whitelist = Getters.get_raw_whitelist('./static/whitelist.csv')
+
+		contracts = ListHandler.filter_whitelist(whitelist, 'Contract')
+
+		FileHandler.create_action_list(WhitelistUpdater.current_whitelist(details, ended, contracts), audit_type)
+
+		print('Audit complete. Type: Currently Whitelisted\n')
+		
+		audit_type = 7
+
+		FileHandler.create_action_list(WhitelistUpdater.update(ended, contracts, whitelist),audit_type)
+
+		
+
+		
+		
 
 
 	def __init__(self, arg):
