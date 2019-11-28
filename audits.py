@@ -107,10 +107,10 @@ class Auditor(object):
 
 		contracts = ListHandler.filter_whitelist(whitelist, 'Contract')
 
-		FileHandler.create_action_list(WhitelistUpdater.current_whitelist(details, ended, contracts), audit_type)
+		FileHandler.create_action_list(WhitelistUpdater.current_whitelist(details, contracts), audit_type)
 
 		print('Audit complete. Type: Currently Whitelisted\n')
-		
+
 		audit_type = 7
 
 		FileHandler.create_action_list(WhitelistUpdater.update(ended, contracts, whitelist),audit_type)

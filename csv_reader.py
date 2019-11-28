@@ -740,7 +740,7 @@ class DictHandler(object):
 
 class WhitelistUpdater(object):
 	"""docstring for WhitelistUpdater"""
-	def current_whitelist(details, ended, contracts):
+	def current_whitelist(details, contracts):
 
 		current = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
 		
@@ -760,10 +760,28 @@ class WhitelistUpdater(object):
 
 		closed = []
 
+		active = []
 		for a in ended:
 			cid = ended[a]['Contract ID']
 			if cid in contracts:
+				
 				closed.append(cid)
+
+
+		for b in whitelist:
+			designation = whitelist[b]['Type']
+			if designation == 'Contract':
+				single = []
+				cid = whitelist[b]['Name']
+				if cid not in closed:
+					single.append(designation)
+					single.append(cid)
+					updated.append(single)
+			else:
+				single = []
+				for c in whitelist[b]:
+					single.append(whitelist[b][c])
+				updated.append(single)
 
 		return updated
 
