@@ -853,6 +853,24 @@ class Adhoc(object):
 
 		return output
 
+	def find_team_from_fl_name(name_list):
+
+		output = [['Timestamp','Nominee Name','Nominee Start Date','Nomination Details','Nominated by Email','Team']]
+
+		names = FileHandler.create_dict(name_list)
+
+		for a in Adhoc.c:
+			c_name = Adhoc.c[a]['Freelancer Name']
+			for b in names:
+				nom_name = names[b][1]
+				if c_name == nom_name:
+					names[b].append(Adhoc.c[a]['Team Name'].split('::')[0])
+					output.append(names[b])
+
+		FileHandler.create_action_list(output,'adhoc')
+
+		return output
+
 	def __init__(self, arg):
 		super(Adhoc, self).__init__()
 		self.arg = arg
