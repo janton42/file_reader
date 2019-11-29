@@ -43,7 +43,7 @@ class FileHandler(object):
 		elif audit_type == 6:
 			file_name = 'current_whitelist'
 		elif audit_type == 7:
-			file_name = 'updated_whitlist'
+			file_name = 'updated_whitelist'
 		elif audit_type == 'adhoc':
 			file_name = input("Please enter an output file name: ").strip()
 
@@ -825,7 +825,7 @@ class WhitelistUpdater(object):
 	def __init__(self, arg):
 		super(WhitelistUpdater, self).__init__()
 		self.arg = arg
-		
+
 class Adhoc(object):
 	"""docstring for Adhoc"""
 
