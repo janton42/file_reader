@@ -356,7 +356,7 @@ class Finders(object):
 
 
 
-# THE FOLLOWING LOGIC IS FOR FINDING CONTRACTS ENDING IN THE NEXT TWO WEEKS
+		# THE FOLLOWING LOGIC IS FOR FINDING CONTRACTS ENDING IN THE NEXT TWO WEEKS
 
 
 
@@ -826,7 +826,6 @@ class WhitelistUpdater(object):
 		super(WhitelistUpdater, self).__init__()
 		self.arg = arg
 		
-
 class Adhoc(object):
 	"""docstring for Adhoc"""
 
