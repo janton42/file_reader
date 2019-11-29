@@ -114,10 +114,6 @@ class Auditor(object):
 		audit_type = 7
 
 		FileHandler.create_action_list(WhitelistUpdater.update(ended, contracts, whitelist),audit_type)
-
-		
-
-		
 		
 
 
