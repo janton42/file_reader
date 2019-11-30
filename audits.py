@@ -10,8 +10,8 @@ class Auditor(object):
 	whitelist = Getters.get_raw_whitelist('./static/whitelist.csv')
 	contracts_whitelist = ListHandler.filter_whitelist(whitelist, 'Contract')
 	countries_whitelist = ListHandler.filter_whitelist(whitelist, 'L3_country')
-	complete_mac_list = Finders.find_location_and_agency(Finders.find_fl_with_mac_assets(ListHandler.fte_filter_mac_assets(Getters.get_users_with_mac_assets('./static/rem_mac.csv', './static/flr_mac.csv')), Auditor.auwa), Auditor.active_contracts)
-	complete_pc_list = Finders.find_location_and_agency(Finders.find_fl_with_pc_assets(Getters.get_users_with_pc_assets('./static/flr_pc.csv', './static/rem_pc.csv'), Auditor.auwa), Auditor.active_contracts)
+	complete_mac_list = Finders.find_location_and_agency(Finders.find_fl_with_mac_assets(ListHandler.fte_filter_mac_assets(Getters.get_users_with_mac_assets('./static/rem_mac.csv', './static/flr_mac.csv')), auwa), active_contracts)
+	complete_pc_list = Finders.find_location_and_agency(Finders.find_fl_with_pc_assets(Getters.get_users_with_pc_assets('./static/flr_pc.csv', './static/rem_pc.csv'), auwa), active_contracts)
 
 
 	def l3_locations():
@@ -29,20 +29,17 @@ class Auditor(object):
 
 	def end_dates():
 		audit_type = 2
-		output = Finders.find_end_dates(Auditor.active_contracts)
-		FileHandler.create_action_list(output, audit_type)
+		FileHandler.create_action_list(Finders.find_end_dates(Auditor.active_contracts), audit_type)
 		print('Audit complete. Type: End dates')
 
 	def multiple_contracts():
 		audit_type = 4
-		output = Finders.find_multiple_contracts(Auditor.active_contracts)
-		FileHandler.create_action_list(output, audit_type)
+		FileHandler.create_action_list(Finders.find_multiple_contracts(Auditor.active_contracts), audit_type)
 		print('Audit complete. Type: users with multiple contracts')
 
 	def fls_with_assets():
 		audit_type = 5
-		output = ListHandler.remove_duplicates_from_nested_list(ListHandler.list_combiner(Auditor.complete_mac_list, Auditor.complete_pc_list))
-		FileHandler.create_action_list(output, audit_type)
+		FileHandler.create_action_list(ListHandler.remove_duplicates_from_nested_list(ListHandler.list_combiner(Auditor.complete_mac_list, Auditor.complete_pc_list)), audit_type)
 		print('Audit complete. Type: freelancers with Upwork assets')
 
 	def currently_whitelisted():
