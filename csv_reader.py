@@ -11,7 +11,7 @@ import datetime
 # 		super(Reader, self).__init__()
 # 		self.arg = arg
 		
-class FileHandler(object):
+class FileHandler:
 	now = datetime.datetime.now()
 	"""docstring for FileHandler"""
 
@@ -58,7 +58,7 @@ class FileHandler(object):
 		super(FileHandler, self).__init__()
 		self.arg = arg
 
-class Getters(object):
+class Getters:
 	"""docstring for Getters"""
 
 	def get_users_with_mac_assets(rem, fl):
@@ -249,7 +249,7 @@ class Getters(object):
 		super(Getters, self).__init__()
 		self.arg = arg
 
-class Finders(object):
+class Finders:
 	"""docstring for Finders"""
 	def find_users_without_contracts(active_contracts, auwa):
 
@@ -595,7 +595,7 @@ class Finders(object):
 		super(Finders, self).__init__()
 		self.arg = arg
 				
-class ListHandler(object):
+class ListHandler:
 	"""docstring for ListHandler"""
 
 	def list_combiner(base, additional):
@@ -732,7 +732,7 @@ class ListHandler(object):
 		super(ListHandler, self).__init__()
 		self.arg = arg
 
-class DictHandler(object):
+class DictHandler:
 	"""docstring for DictHandler"""
 	
 	def dict_combiner(base, additional):
@@ -774,7 +774,7 @@ class DictHandler(object):
 		super(DictHandler, self).__init__()
 		self.arg = arg
 
-class WhitelistUpdater(object):
+class WhitelistUpdater:
 	"""docstring for WhitelistUpdater"""
 	def current_whitelist(details, contracts):
 
@@ -826,7 +826,7 @@ class WhitelistUpdater(object):
 		super(WhitelistUpdater, self).__init__()
 		self.arg = arg
 
-class Adhoc(object):
+class Adhoc:
 	"""docstring for Adhoc"""
 
 	c = ListHandler.gtnp_filter(Getters.get_contracts('./static/contracts.csv'))
@@ -927,5 +927,4 @@ class Adhoc(object):
 	def __init__(self, arg):
 		super(Adhoc, self).__init__()
 		self.arg = arg
-		
 
