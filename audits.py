@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from csv_reader import *
 
-class Auditor(object):
+class Auditor:
 	"""docstring for Auditor"""
 
 	e = './static/ended_contracts.csv'
@@ -22,8 +22,6 @@ class Auditor(object):
 
 	contracts_whitelist = ListHandler.filter_whitelist(whitelist, 'Contract')
 	countries_whitelist = ListHandler.filter_whitelist(whitelist, 'L3_country')
-	
-
 
 	def l3_locations():
 		audit_type = 3
