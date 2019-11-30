@@ -10,8 +10,7 @@ def main():
 	Auditor.multiple_contracts()
 	Auditor.fls_with_assets()
 	Auditor.currently_whitelisted()
-
-	
+	Auditor.survey_prep()
 	
 
 if __name__ == '__main__':

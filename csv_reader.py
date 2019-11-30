@@ -44,11 +44,12 @@ class FileHandler:
 			file_name = 'current_whitelist'
 		elif audit_type == 7:
 			file_name = 'updated_whitelist'
+		elif audit_type == 8:
+			file_name = 'survey'
 		elif audit_type == 'adhoc':
 			file_name = input("Please enter an output file name: ").strip()
 
-
-		output_path = '/Users/jeffstock/Desktop/' + file_name + '.csv'
+		output_path = '/Users/jeffstock/Desktop/Output Files/' + file_name + '.csv'
 
 		with open(output_path, 'w') as csvFile:
 			writer = csv.writer(csvFile)
@@ -727,6 +728,18 @@ class ListHandler:
 				filtered_list.append(whitelist[i]['Name'])
 
 		return filtered_list
+
+	def filter_contracts_by(contract_dict, k_param, v_param):
+		filtered_cid_list = []
+
+		for i in contract_dict:
+			cid = contract_dict[i]['Contract ID']
+			s_key = contract_dict[i][k_param]
+			if s_key == v_param:
+				filtered_cid_list.append(cid)
+
+		return filtered_cid_list
+
 	
 	def __init__(self, arg):
 		super(ListHandler, self).__init__()
@@ -831,6 +844,7 @@ class Adhoc:
 
 	c = ListHandler.gtnp_filter(Getters.get_contracts('./static/contracts.csv'))
 	e = Getters.get_contracts('./static/ended_contracts.csv')
+	u = ListHandler.fte_filter_user_list(Getters.get_active_users('./static/user_data.csv'))
 
 	def report_maker(i):
 		
@@ -928,3 +942,60 @@ class Adhoc:
 		super(Adhoc, self).__init__()
 		self.arg = arg
 
+class SurveyPreper:
+	"""docstring for SurveyPreper"""
+	def prepare(current_dict, access_dict, cc_list):
+		
+		prepared_list = [['Freelancer Name','Freelancer UID','Freelancer Email','Cost Center','Division','Section','Team','Contact Person Name']]
+
+		cids_without_access = ListHandler.filter_contracts_by(current_dict,'Systems Access','Possible IC - No Access')
+
+		unique_users = []
+
+		for a in current_dict:
+			c = current_dict[a]
+			cid = c['Contract ID']
+			if cid not in cids_without_access:
+				single = []
+				flname = c['Freelancer Name']
+				uid = c['Freelancer User ID']
+				if uid not in unique_users:
+					unique_users.append(uid)
+					email = 'BLANK'
+					cc = 'TODO'
+
+					team_name = c['Team Name'].split('::')
+					division = team_name[0]
+					section = team_name[1]
+					if len(team_name) == 3:
+						team = team_name[2]
+					else:
+						team = 'N/A'
+					c_person = c['Contact person']
+
+					single.append(flname)
+					single.append(uid)
+					single.append(email)
+					single.append(cc)
+					single.append(division)
+					single.append(section)
+					single.append(team)
+					single.append(c_person)
+
+					for u in access_dict:
+						if single[1] == access_dict[u]['worker_user_id'] or single[0] == access_dict[u]['full_name']:
+							single[2] = access_dict[u]['upwork_email']
+
+					for d in cc_list:
+						if c['Team Name'] == cc_list[d]['Team Name']:
+							single[3] = cc_list[d]['Cost Center'][0:3]
+
+					prepared_list.append(single)
+
+
+		return prepared_list
+
+	def __init__(self, arg):
+		super(SurveyPreper, self).__init__()
+		self.arg = arg
+		
