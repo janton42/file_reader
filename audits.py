@@ -98,7 +98,7 @@ class Auditor:
 		affected = Finders.find_disaster_affected(Auditor.active_with_GTNP, user_list, events, countries, cities)
 
 		if len(affected) == 1:
-			print('There are no matches for contractor locations and the following:')
+			print('There are no matches for contractors in the following locations:')
 			for e in events:
 				print(events[e])
 		else:
