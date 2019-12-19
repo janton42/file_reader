@@ -41,7 +41,8 @@ ttk.Label(mainframe, text='ICs with Upwork Assets').grid(column=5, row=1, sticky
 ttk.Button(mainframe, text='Run Report', command=Auditor.fls_with_assets).grid(column=6, row=1, sticky=N)
 ttk.Label(mainframe, text='Pulse Survey Prep').grid(column=5, row=2, sticky=W)
 ttk.Button(mainframe, text='Run Report', command=Auditor.survey_prep).grid(column=6, row=2, sticky=N)
-
+ttk.Label(mainframe, text='Disaster Tracker').grid(column=5, row=3, sticky=W)
+ttk.Button(mainframe, text='Run Report', command=Auditor.disaster_tracker).grid(column=6, row=3, sticky=N)
 
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)

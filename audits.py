@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from csv_reader import *
+from scraper import *
 
 class Auditor:
 	"""docstring for Auditor"""
@@ -14,7 +15,9 @@ class Auditor:
 	cc = './static/cost_centers.csv'
 	
 	ended_contracts = ListHandler.gtnp_filter(Getters.get_contracts(e))
-	active_contracts = ListHandler.gtnp_filter(Getters.get_contracts(a))
+	active_with_GTNP = Getters.get_contracts(a)
+	active_contracts = ListHandler.gtnp_filter(active_with_GTNP)
+
 	auwa = ListHandler.fte_filter_user_list(Getters.get_active_users(u))
 	whitelist = Getters.get_raw_whitelist(w)
 	cc_list = Getters.get_raw_whitelist(cc)
@@ -81,6 +84,26 @@ class Auditor:
 		FileHandler.create_action_list(survey, audit_type)
 		print('Survey Prep Complete.\n')
 
+	def disaster_tracker():
+		audit_type = 9
+
+		events = create_events_dict(scrape_gdacs())
+
+		countries = DictHandler.create_affected_country_list(events)
+
+		cities = DictHandler.create_affected_cities_list(events)
+
+		user_list = Finders.find_location(Auditor.active_with_GTNP)
+
+		affected = Finders.find_disaster_affected(Auditor.active_with_GTNP, user_list, events, countries, cities)
+
+		if len(affected) == 1:
+			print('There are no matches for contractor locations and the following:')
+			for e in events:
+				print(events[e])
+		else:
+			FileHandler.create_action_list(affected, audit_type)
+			print('Report complete')
 
 	def __init__(self, arg):
 		super(Auditor, self).__init__()

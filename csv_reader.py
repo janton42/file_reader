@@ -2,6 +2,7 @@
 
 import csv
 from url_opener import open_url, url_builder
+from scraper import *
 
 import datetime
 
@@ -46,6 +47,8 @@ class FileHandler:
 			file_name = 'updated_whitelist'
 		elif audit_type == 8:
 			file_name = 'survey'
+		elif audit_type == 9:
+			file_name = 'affected'
 		elif audit_type == 'adhoc':
 			file_name = input("Please enter an output file name: ").strip()
 
@@ -592,6 +595,70 @@ class Finders:
 
 		return output
 
+	def find_location(contract_dict):
+
+		users = {}
+		counter = 0
+
+		for c in contract_dict:
+			ind_user_detail = {}
+			loc = contract_dict[c]['Freelancer location'].split(',')
+			ind_user_detail['uid'] = contract_dict[c]['Freelancer User ID']
+			ind_user_detail['contact person'] = contract_dict[c]['Contact person']
+			ind_user_detail['team'] = contract_dict[c]['Team Name']
+			ind_user_detail['country'] = loc[0]
+			if len(loc) == 2 and loc[1] != ' ':
+				ind_user_detail['city'] = loc[1]
+			elif len(loc) == 3:
+				ind_user_detail['city'] = loc[2]
+				ind_user_detail['state'] = loc[1]
+			if len(ind_user_detail) > 0:
+				counter += 1
+				users[counter] = ind_user_detail
+
+
+		return users
+
+	# TODO:
+	def find_disaster_affected(contract_dict, users_dict, disaster_dict, countries_list, cities_list):
+
+		affected = [['User ID', 'Freelancer Name', 'Contact Person', 'Location', 'Disaster Type', 'Severity','Team']]
+				
+		for u in users_dict:
+			uid = users_dict[u]['uid']
+			if 'city' in users_dict[u]:
+				fl_city = users_dict[u]['city'].lower().strip()
+				fl_country = users_dict[u]['country'].lower().strip()
+				if users_dict[u]['country'] in countries_list:
+					for d in disaster_dict:
+						dis_city = disaster_dict[d][0].lower().strip()
+						dis_country = disaster_dict[d][1].lower().strip()
+
+						if dis_city == fl_city and dis_country == fl_country:
+							ind_affected = []
+							for c in contract_dict:
+								if contract_dict[c]['Freelancer User ID'] == uid:
+									fl_name = contract_dict[c]['Freelancer Name']
+									contact_person = contract_dict[c]['Contact person']
+									location = contract_dict[c]['Freelancer location']
+									team = contract_dict[c]['Team Name']
+									dis_type = disaster_dict[d][2]
+									severity = disaster_dict[d][3]
+
+									ind_affected.append(uid)
+									ind_affected.append(fl_name)
+									ind_affected.append(contact_person)
+									ind_affected.append(location)
+									ind_affected.append(dis_type)
+									ind_affected.append(severity)
+									ind_affected.append(team)
+							if len(ind_affected) > 0:
+								affected.append(ind_affected)
+
+
+		return ListHandler.remove_duplicates_from_nested_list(affected)
+
+
 	def __init__(self, arg):
 		super(Finders, self).__init__()
 		self.arg = arg
@@ -782,6 +849,28 @@ class DictHandler:
 
 
 		return output
+
+	def create_affected_country_list(disaster_details_dict):
+		# disaster_details_dict structure:
+		# {1:['City', 'Country', 'Type', 'Severity']}
+
+	  affected_countries_list = []
+	  
+	  for e in disaster_details_dict:
+	  	country = disaster_details_dict[e][1]
+	  	if country not in affected_countries_list:
+	  		affected_countries_list.append(country)
+
+	  return affected_countries_list
+
+	def create_affected_cities_list(disaster_details_dict):
+		affected_cities_list = []
+		for e in disaster_details_dict:
+			city = disaster_details_dict[e][0]
+			if city not in affected_cities_list:
+				affected_cities_list.append(city) 
+
+		return affected_cities_list
 
 	def __init__(self, arg):
 		super(DictHandler, self).__init__()
@@ -998,4 +1087,6 @@ class SurveyPreper:
 	def __init__(self, arg):
 		super(SurveyPreper, self).__init__()
 		self.arg = arg
+
+		
 		
