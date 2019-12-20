@@ -619,7 +619,7 @@ class Finders:
 
 		return users
 
-	# TODO:
+
 	def find_disaster_affected(contract_dict, users_dict, disaster_dict, countries_list, cities_list):
 
 		affected = [['User ID', 'Freelancer Name', 'Contact Person', 'Location', 'Disaster Type', 'Severity','Team']]
@@ -935,31 +935,74 @@ class Adhoc:
 	e = Getters.get_contracts('./static/ended_contracts.csv')
 	u = ListHandler.fte_filter_user_list(Getters.get_active_users('./static/user_data.csv'))
 
-	def report_maker(i):
-		
-		output.append(i)
 
-		return output
+	def view_check(func_name):
+		view = input('Do you want to view the results of ' + func_name +'?' )
+
+		return view
+
+	def returner(result):
+
+		output_choice = input('Would you like to print or make a csv?').strip().lower()
+		if output_choice == 'print':
+			print(result)
+		elif output_choice == 'make a csv':
+			FileHandler.create_action_list(result,'adhoc')
+		else:
+			print('INVALID CHOICE!')
 
 	def team_filter(contract_dict):
+		func_name = 'team_filter'
+		search_by = input('What would you like to search by? ').strip()
+		search_for = ''
+		loc_filter = 0
 
-		team = input('Please enter a team name: ').strip()
+		if search_by == 'Location':
+			loc_filter = input('Select a filter by number:\n1. Country\n2.State\n3. City\n')
+			if loc_filter == '1':
+				search_for = input('Enter country name: ').strip()
+			elif loc_filter == '2':
+				search_for = input('Enter a state abbrevieation: ').strip()
+		else:
+			search_for = input('What would you like to search for? ').strip()
 		output = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
+
+		
+
 
 		for c in contract_dict:
 			i = contract_dict[c]
-			t = i['Team Name']
-			if t == team:
+			t = ''
+			if search_by == 'Location':
+				loc = i['Freelancer location'].split(',')
+				if loc_filter == '1':
+					t = loc[0].strip()
+				elif loc_filter == '2':
+					t = loc[1].strip()
+				elif loc_filter == '3':
+					t = loc[2].strip()
+			else:
+				t = i[search_by]
+			print('PAIRS FOLLOW:')
+			print('"t" variable = ', t, 'type = ', type(t))
+			print('"search_for" variable = ', search_for, type(search_for))
+			if t == search_for:
 				single = []
 				for a in i:
 					single.append(i[a])
 				output.append(single)
 
-		FileHandler.create_action_list(output,'adhoc')
+		view = Adhoc.view_check(func_name)
+		if view == 'yes':
+			Adhoc.returner(output)
+		elif view == 'no':
+			return output
 
-	def contract_starts_by_year(contract_dict):
+	def contract_starts_or_ends_by_year(contract_dict):
 
+		func_name = 'contract_starts_or_ends_by_year'
 		year_filter = input('Please enter a four-digit year: ').strip()
+		parameter = input('Starts or ends?').strip().lower()
 		output = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
 
 		filter_results = []
@@ -970,13 +1013,18 @@ class Adhoc:
 
 		for c in contract_dict:
 			i = contract_dict[c]
-			start_date = i['Start Date'].split('-')[0]
-			if start_date == year_filter:
+			if parameter == 'starts':
+				param_date = i['Start Date'].split('-')[0]
+			elif parameter == 'ends':
+				param_date = i['End Date'].split('-')[0]
+			# TODO: account for other inputs, return some message.
+
+			if param_date == year_filter:
 				filter_results.append(i['Freelancer User ID'])
-			elif start_date < year_filter:
+			elif param_date < year_filter:
 				older.append(i['Freelancer User ID'])
 
-		p_users = Adhoc.create_filter_list(Adhoc.e,'Freelancer User ID')
+		# p_users = Adhoc.create_filter_list(Adhoc.e,'Freelancer User ID')
 
 		current_older = []
 
@@ -985,7 +1033,7 @@ class Adhoc:
 				current_older.append(x)
 
 		for a in filter_results:
-			if a not in p_users and a not in older:
+			if a not in  older:
 				out.append(a)
 
 		for b in contract_dict:
@@ -997,7 +1045,11 @@ class Adhoc:
 					single.append(i[a])
 				output.append(single)
 
-		FileHandler.create_action_list(output,'adhoc')
+		view = Adhoc.view_check(func_name)
+		if view == 'yes':
+			Adhoc.returner(output)
+		elif view == 'no':
+			return output
 
 	def create_filter_list(dictionary, parameter):
 		output = []
