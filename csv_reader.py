@@ -807,6 +807,29 @@ class ListHandler:
 
 		return filtered_cid_list
 
+	def dict_creator(formatted_list):
+		# INPUT: List of Lists; OUTPUT: Dictionary where key = column header, value = values
+		headers = formatted_list[0]
+
+		a = {}
+		b = 0
+
+		for x in formatted_list:
+			pair = {}
+			i = 0
+			while i < len(headers):
+				k = headers[i]
+				v = x[i]
+				i += 1
+				print(k)
+				print(v)
+				print(i)
+				pair[k] = v
+			b += 1
+			a[b] = pair
+
+		return a
+
 	
 	def __init__(self, arg):
 		super(ListHandler, self).__init__()
@@ -967,7 +990,10 @@ class Adhoc:
 			search_for = input('What would you like to search for? ').strip()
 		output = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
 
-		
+		# exclusions = input('Would you like to exclude anything?').strip()
+
+		# while exclusions == 'yes':
+
 
 
 		for c in contract_dict:
@@ -978,14 +1004,14 @@ class Adhoc:
 				if loc_filter == '1':
 					t = loc[0].strip()
 				elif loc_filter == '2':
-					t = loc[1].strip()
+					if len(loc) > 1:
+						t = loc[1].strip()
 				elif loc_filter == '3':
-					t = loc[2].strip()
+					if len(loc) > 1:
+						t = loc[2].strip()
 			else:
 				t = i[search_by]
-			print('PAIRS FOLLOW:')
-			print('"t" variable = ', t, 'type = ', type(t))
-			print('"search_for" variable = ', search_for, type(search_for))
+
 			if t == search_for:
 				single = []
 				for a in i:
