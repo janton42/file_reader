@@ -1102,6 +1102,11 @@ class Adhoc:
 
 		return output
 
+	#TODO: MAKE A UNIFIED FUNCTION FOR THIS:
+
+	# Adhoc.team_filter(ListHandler.dict_creator(Adhoc.contract_starts_or_ends_by_year(ListHandler.payroll_filter(Adhoc.e))))
+
+	# This will allow users to make a list of all contracts that either started or ended in a particular year filtered by user-selected parameter (currently only team name and location)
 	def __init__(self, arg):
 		super(Adhoc, self).__init__()
 		self.arg = arg
