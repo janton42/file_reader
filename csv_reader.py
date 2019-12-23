@@ -344,7 +344,7 @@ class Finders:
 
 			# CONTRACTS ENDING THIS AND NEXT MONTH:
 
-			if now.month == 11:
+			if now.month == 11 or now.month == 12:
 				if end_year == now.year + 1 and end_month == 1:
 
 					expires_this_month = DictHandler.create_end_date_dict(active_contracts[c])
@@ -679,16 +679,16 @@ class ListHandler:
 		filtered_contracts = {}
 		filter_counter = 0
 		
-		for c in complete_list:	
-			
-			parts = complete_list[c]['Team Name'].split('::')
+		for c in complete_list:
+			if 'Team Name' in complete_list[c]:
+				parts = complete_list[c]['Team Name'].split('::')
 
-			if len(parts) > 1:
-				subteam = parts[1]
-				if len(subteam) > 3:
-					if subteam[0:4] != 'GTNP':
-						filter_counter += 1
-						filtered_contracts[filter_counter] = complete_list[c]
+				if len(parts) > 1:
+					subteam = parts[1]
+					if len(subteam) > 3:
+						if subteam[0:4] != 'GTNP':
+							filter_counter += 1
+							filtered_contracts[filter_counter] = complete_list[c]
 
 		return filtered_contracts
 
@@ -974,6 +974,7 @@ class Adhoc:
 	def team_filter(contract_dict):
 		func_name = 'team_filter'
 		search_by = input('What would you like to search by? ').strip()
+
 		search_for = ''
 		loc_filter = 0
 
@@ -985,13 +986,8 @@ class Adhoc:
 				search_for = input('Enter a state abbrevieation: ').strip()
 		else:
 			search_for = input('What would you like to search for? ').strip()
+		
 		output = [['Contract ID','Offer ID','Company Name','Team Name','Freelancer User ID','Freelancer Name','Freelancer location','Agency Name','Title','Start Date','End Date','Status','Hourly Rate','Fixed Price Amount Agreed','Upfront Payment (%)','Weekly Salary','Weekly Limit','Contact person','Contract type','Milestone Status','Escrow Refund Status','Cost Center','Division','Systems Access','Geographic Zone','Level','Job Category','Imperative Team','isBYO']]
-
-		# exclusions = input('Would you like to exclude anything?').strip()
-
-		# while exclusions == 'yes':
-
-
 
 		for c in contract_dict:
 			i = contract_dict[c]
@@ -1107,6 +1103,7 @@ class Adhoc:
 	# Adhoc.team_filter(ListHandler.dict_creator(Adhoc.contract_starts_or_ends_by_year(ListHandler.payroll_filter(Adhoc.e))))
 
 	# This will allow users to make a list of all contracts that either started or ended in a particular year filtered by user-selected parameter (currently only team name and location)
+
 	def __init__(self, arg):
 		super(Adhoc, self).__init__()
 		self.arg = arg
