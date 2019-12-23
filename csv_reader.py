@@ -821,9 +821,6 @@ class ListHandler:
 				k = headers[i]
 				v = x[i]
 				i += 1
-				print(k)
-				print(v)
-				print(i)
 				pair[k] = v
 			b += 1
 			a[b] = pair
