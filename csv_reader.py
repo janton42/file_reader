@@ -971,8 +971,8 @@ class Adhoc:
 		else:
 			print('INVALID CHOICE!')
 
-	def team_filter(contract_dict):
-		func_name = 'team_filter'
+	def param_filter(contract_dict):
+		func_name = 'param_filter'
 		search_by = input('What would you like to search by? ').strip()
 
 		search_for = ''
@@ -1100,7 +1100,9 @@ class Adhoc:
 
 	#TODO: MAKE A UNIFIED FUNCTION FOR THIS:
 
-	# Adhoc.team_filter(ListHandler.dict_creator(Adhoc.contract_starts_or_ends_by_year(ListHandler.payroll_filter(Adhoc.e))))
+	def contracts_by_year_and_param(contract_dict):
+
+		Adhoc.param_filter(ListHandler.dict_creator(Adhoc.contract_starts_or_ends_by_year(ListHandler.payroll_filter(contract_dict))))
 
 	# This will allow users to make a list of all contracts that either started or ended in a particular year filtered by user-selected parameter (currently only team name and location)
 
