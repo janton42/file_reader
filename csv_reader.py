@@ -955,6 +955,37 @@ class Adhoc:
 	e = Getters.get_contracts('./static/ended_contracts.csv')
 	u = ListHandler.fte_filter_user_list(Getters.get_active_users('./static/user_data.csv'))
 
+	def file_explorer():
+		file_location = './static/' + input('Enter a file name: ') + '.csv'
+		f = Getters.get_contracts(file_location)
+
+		what = int(input('\nSELECTIONS:\n1. Column Headers\n2. Search by header\n\nPlease enter the number of your selection:\n'))
+
+		just_the_tip = input('Exclude non-TIP information?')
+
+		if just_the_tip == 'yes':
+			no_gtnp = ListHandler.gtnp_filter(f)
+			f = no_gtnp
+
+		more = 'no'
+
+		if what == 1:
+			keys = f[1].keys()
+			for k in keys:
+				print(k)
+		elif what == 2:
+			Adhoc.param_filter(f)
+
+		more = input('Would you like to explore further? ')
+
+		if more == 'yes':
+			Adhoc.file_explorer()
+		elif more == 'no':
+			print('\n Good Bye!\n')
+			quit()
+
+
+
 
 	def view_check(func_name):
 		view = input('Do you want to view the results of ' + func_name +'?' )
@@ -979,10 +1010,10 @@ class Adhoc:
 		loc_filter = 0
 
 		if search_by == 'Location':
-			loc_filter = input('Select a filter by number:\n1. Country\n2.State\n3. City\n')
-			if loc_filter == '1':
+			loc_filter = int(input('Select a filter by number:\n1. Country\n2.State\n3. City\n'))
+			if loc_filter == 1:
 				search_for = input('Enter country name: ').strip()
-			elif loc_filter == '2':
+			elif loc_filter == 2:
 				search_for = input('Enter a state abbrevieation: ').strip()
 		else:
 			search_for = input('What would you like to search for? ').strip()
@@ -991,25 +1022,33 @@ class Adhoc:
 
 		for c in contract_dict:
 			i = contract_dict[c]
-			t = ''
-			if search_by == 'Location':
-				loc = i['Freelancer location'].split(',')
-				if loc_filter == '1':
-					t = loc[0].strip()
-				elif loc_filter == '2':
-					if len(loc) > 1:
-						t = loc[1].strip()
-				elif loc_filter == '3':
-					if len(loc) > 1:
-						t = loc[2].strip()
-			else:
-				t = i[search_by]
+			if contract_dict[c]['Freelancer Name'] != 'Upwork Managed Services':
+				t = ''
+				if search_by == 'Location':
+					loc = i['Freelancer location'].split(',')
+					if loc_filter == 1:
+						t = loc[0].strip()
+					elif loc_filter == 2:
+						if len(loc) > 1:
+							t = loc[1].strip()
+					elif loc_filter == 3:
+						if len(loc) > 1:
+							t = loc[2].strip()
+				else:
+					t = i[search_by]
 
-			if t == search_for:
-				single = []
-				for a in i:
-					single.append(i[a])
-				output.append(single)
+				if search_for == '*' or search_for == 'all':
+					if t != '':
+						single_b = []
+						for b in i:
+							if i[b][t] not in single_b:
+								single_b.append(i[b])
+						output.append(single_b)
+				elif t == search_for:
+					single_a = []
+					for a in i:
+						single_a.append(i[a])
+					output.append(single_a)
 
 		view = Adhoc.view_check(func_name)
 		if view == 'yes':
