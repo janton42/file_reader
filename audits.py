@@ -87,6 +87,7 @@ class Auditor:
 	def disaster_tracker():
 		audit_type = 9
 
+		print('Seaching Worldwide Disaster Data...')
 		events = create_events_dict(scrape_gdacs())
 
 		countries = DictHandler.create_affected_country_list(events)
@@ -96,7 +97,7 @@ class Auditor:
 		user_list = Finders.find_location(Auditor.active_with_GTNP)
 
 		affected = Finders.find_disaster_affected(Auditor.active_with_GTNP, user_list, events, countries, cities)
-
+		print('\nSearch Complete\n\n\n')
 		if len(affected) == 1:
 			print('There are no matches for contractors in the following locations:')
 			for e in events:
