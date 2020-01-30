@@ -686,7 +686,7 @@ class ListHandler:
 				if len(parts) > 1:
 					subteam = parts[1]
 					if len(subteam) > 3:
-						if subteam[0:4] != 'GTNP':
+						if subteam[0:4] != 'GTNP' and subteam != 'NLP Pygmalion Contributor':
 							filter_counter += 1
 							filtered_contracts[filter_counter] = complete_list[c]
 
