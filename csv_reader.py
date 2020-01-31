@@ -342,7 +342,7 @@ class Finders:
 
 				action_items[c] = expires_today
 
-			# CONTRACTS ENDING THIS AND NEXT MONTH:
+			# CONTRACTS ENDING THIS AND NEXT MONTH (needed to capture contract ends further out in advance of annual shutdown):
 
 			if now.month == 11 or now.month == 12:
 				if end_year == now.year + 1 and end_month == 1:
@@ -351,49 +351,42 @@ class Finders:
 
 					action_items[c] = expires_this_month
 
-			elif end_year == now.year and end_month == now.month or end_year == now.year and end_month == now.month + 1:
-
-				expires_this_month = DictHandler.create_end_date_dict(active_contracts[c])
-
-				action_items[c] = expires_this_month
-
-
 
 
 		# THE FOLLOWING LOGIC IS FOR FINDING CONTRACTS ENDING IN THE NEXT TWO WEEKS
 
 
 
-			# # Contracts expiring this month within the next 14 days
-			# elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
-			# 	action_items_counter += 1
-			# 	next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+			# Contracts expiring this month within the next 14 days
+			elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
+				action_items_counter += 1
+				next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
-			# 	action_items[c] = next_14
+				action_items[c] = next_14
 
-			# # Contracts expiring next month when end dates are within 14 days of today
-			# if now.day > 17:
+			# Contracts expiring next month when end dates are within 14 days of today
+			if now.day > 17:
 
-			# 	#December
-			# 	if now.month == 12:
-			# 		if end_year == now.year + 1 and end_month == 1 and end_day < (now.day + 14 - 31):
+				#December
+				if now.month == 12:
+					if end_year == now.year + 1 and end_month == 1 and end_day < (now.day + 14 - 31):
 
-			# 			next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+						next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
-			# 			action_items[c] = next_14
+						action_items[c] = next_14
 
-			# 	#February
-			# 	elif now.month == 2:
-			# 		if now.year == 2020 or now.year == 2024:
-			# 			if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
+				#February
+				elif now.month == 2:
+					if now.year == 2020 or now.year == 2024:
+						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
 						
-			# 				next_14 = DictHandler.create_end_date_dict(active_contracts[c])
-			# 		else:
-			# 			if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
+							next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+					else:
+						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
 
-			# 				next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+							next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
-			# 			action_items[c] = next_14
+						action_items[c] = next_14
 
 			# 	# Months with 30 days (April, June, September, November)
 			# 	# TODO
@@ -407,48 +400,48 @@ class Finders:
 
 			# 	# TEST ABOVE
 
-			# 	# Contracts expiring this month within the next 14 days
-			# 	elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
-			# 		action_items_counter += 1
+				# Contracts expiring this month within the next 14 days
+				elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
+					action_items_counter += 1
 
-			# 		next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+					next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
-			# 		action_items[c] = next_14
+					action_items[c] = next_14
 
-			# 	# Contracts expiring next month within 14 days for months with 31 days and end_day == (now.day + 14 - 31)
-			# 	if end_year == now.year and end_month == (now.month + 1) and end_day <= now.day + 14 - 31:
+				# Contracts expiring next month within 14 days for months with 31 days and end_day == (now.day + 14 - 31)
+				if end_year == now.year and end_month == (now.month + 1) and end_day <= now.day + 14 - 31:
 
-			# 		next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+					next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
-			# 		action_items[c] = next_14
+					action_items[c] = next_14
 
-			# elif now.day > 16:
-			# 	if now.month == 2:
-			# 		if now.year == 2020 or now.year == 2024:
-			# 			if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
+			elif now.day > 16:
+				if now.month == 2:
+					if now.year == 2020 or now.year == 2024:
+						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 29):
 							
-			# 				next_14 = DictHandler.create_end_date_dict(active_contracts[c])
-			# 		else:
-			# 			if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
+							next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+					else:
+						if end_year == now.year and end_month == (now.month +1) and end_day < (now.day + 14 - 28):
 
-			# 				next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+							next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
-			# 			action_items[c] = next_14
+						action_items[c] = next_14
 
-			# 	# Months with 30 days (April, June, September, November)
+				# Months with 30 days (April, June, September; except November, which is captured above for annual shutdown)
 
-			# 	elif now.month == 4 or now.month == 6 or now.month == 9 or now.month == 11:
-			# 		if end_year == now.year and end_month == (now.month +1) and end_day <= (now.day + 14 - 30):
+				elif now.month == 4 or now.month == 6 or now.month == 9:
+					if end_year == now.year and end_month == (now.month +1) and end_day <= (now.day + 14 - 30):
 
-			# 			next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+						next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
-			# 			action_items[c] = next_14
+						action_items[c] = next_14
 				
-			# 	elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
+				elif end_year == now.year and end_month == now.month and end_day > now.day and end_day <= (now.day + 14):
 
-			# 		next_14 = DictHandler.create_end_date_dict(active_contracts[c])
+					next_14 = DictHandler.create_end_date_dict(active_contracts[c])
 
-			# 		action_items[c] = next_14
+					action_items[c] = next_14
 
 
 
