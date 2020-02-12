@@ -18,22 +18,22 @@ class Auditor:
 	active_with_GTNP = Getters.get_contracts(a)
 	active_contracts = ListHandler.gtnp_filter(active_with_GTNP)
 
-	auwa = ListHandler.fte_filter_user_list(Getters.get_active_users(u))
+	# auwa = ListHandler.fte_filter_user_list(Getters.get_active_users(u))
 	whitelist = Getters.get_raw_whitelist(w)
 	cc_list = Getters.get_raw_whitelist(cc)
 
-	complete_mac_list = Finders.find_location_and_agency(Finders.find_fl_with_mac_assets(ListHandler.fte_filter_mac_assets(Getters.get_users_with_mac_assets(rmac, flmac)), auwa), active_contracts)
-	complete_pc_list = Finders.find_location_and_agency(Finders.find_fl_with_pc_assets(Getters.get_users_with_pc_assets(flpc, mpc), auwa), active_contracts)
+	# complete_mac_list = Finders.find_location_and_agency(Finders.find_fl_with_mac_assets(ListHandler.fte_filter_mac_assets(Getters.get_users_with_mac_assets(rmac, flmac)), auwa), active_contracts)
+	# complete_pc_list = Finders.find_location_and_agency(Finders.find_fl_with_pc_assets(Getters.get_users_with_pc_assets(flpc, mpc), auwa), active_contracts)
 
 	contracts_whitelist = ListHandler.filter_whitelist(whitelist, 'Contract')
 	countries_whitelist = ListHandler.filter_whitelist(whitelist, 'L3_country')
 
-	def active_users_without_contracts():
-		audit_type = 1
-		users = Finders.find_users_without_contracts(Auditor.active_contracts, Auditor.auwa)
+	# def active_users_without_contracts():
+	# 	audit_type = 1
+	# 	users = Finders.find_users_without_contracts(Auditor.active_contracts, Auditor.auwa)
 
-		FileHandler.create_action_list(users, audit_type)
-		print('\nAudit complete. Type: Users with systems access, but no contract')
+	# 	FileHandler.create_action_list(users, audit_type)
+	# 	print('\nAudit complete. Type: Users with systems access, but no contract')
 
 	def end_dates():
 		audit_type = 2
@@ -57,12 +57,12 @@ class Auditor:
 		FileHandler.create_action_list(contracts_list, audit_type)
 		print('Audit complete. Type: users with multiple contracts')
 
-	def fls_with_assets():
-		audit_type = 5
-		users = ListHandler.remove_duplicates_from_nested_list(ListHandler.list_combiner(Auditor.complete_mac_list, Auditor.complete_pc_list))
+	# def fls_with_assets():
+	# 	audit_type = 5
+	# 	users = ListHandler.remove_duplicates_from_nested_list(ListHandler.list_combiner(Auditor.complete_mac_list, Auditor.complete_pc_list))
 
-		FileHandler.create_action_list(users, audit_type)
-		print('Audit complete. Type: freelancers with Upwork assets')
+	# 	FileHandler.create_action_list(users, audit_type)
+	# 	print('Audit complete. Type: freelancers with Upwork assets')
 
 	def currently_whitelisted():
 		audit_type = 6
@@ -76,13 +76,13 @@ class Auditor:
 
 		print('Audit complete. Type: Currently Whitelisted')
 
-	def survey_prep():
-		audit_type = 8
+	# def survey_prep():
+	# 	audit_type = 8
 
-		survey = SurveyPreper.prepare(Auditor.active_contracts, Auditor.auwa, Auditor.cc_list)
+	# 	survey = SurveyPreper.prepare(Auditor.active_contracts, Auditor.auwa, Auditor.cc_list)
 
-		FileHandler.create_action_list(survey, audit_type)
-		print('Survey Prep Complete.\n')
+	# 	FileHandler.create_action_list(survey, audit_type)
+	# 	print('Survey Prep Complete.\n')
 
 	def disaster_tracker():
 		audit_type = 9

@@ -946,7 +946,7 @@ class Adhoc:
 
 	c = ListHandler.gtnp_filter(Getters.get_contracts('./static/contracts.csv'))
 	e = Getters.get_contracts('./static/ended_contracts.csv')
-	u = ListHandler.fte_filter_user_list(Getters.get_active_users('./static/user_data.csv'))
+	# u = ListHandler.fte_filter_user_list(Getters.get_active_users('./static/user_data.csv'))
 
 	def file_explorer():
 		file_location = './static/' + input('Enter a file name: ') + '.csv'

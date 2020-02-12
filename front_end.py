@@ -8,7 +8,7 @@ root = Tk()
 root.title('TIP AUDITS')
 
 def all_audits():
-	Auditor.active_users_without_contracts()
+	# Auditor.active_users_without_contracts()
 	Auditor.l3_locations()
 	Auditor.end_dates()
 	Auditor.multiple_contracts()
@@ -24,8 +24,8 @@ ttk.Label(mainframe, text='Weekly Audits').grid(column=1, row=0, sticky=W)
 ttk.Button(mainframe, text='Run All', command=all_audits).grid(column=2, row=0, sticky=W)
 
 ttk.Label(mainframe, text='Individual Reports').grid(column=1, row=2, sticky=W)
-ttk.Label(mainframe, text='Active Users Without Contracts').grid(column=2, row=3, sticky=W)
-ttk.Button(mainframe, text='Run Report', command=Auditor.active_users_without_contracts).grid(column=3, row=3, sticky=N)
+# ttk.Label(mainframe, text='Active Users Without Contracts').grid(column=2, row=3, sticky=W)
+# ttk.Button(mainframe, text='Run Report', command=Auditor.active_users_without_contracts).grid(column=3, row=3, sticky=N)
 ttk.Label(mainframe, text='Unnapproved Hourly ICs in L3 Locations').grid(column=2, row=4, sticky=W)
 ttk.Button(mainframe, text='Run Report', command=Auditor.l3_locations).grid(column=3, row=4, sticky=N)
 ttk.Label(mainframe, text='End Dates').grid(column=2, row=5, sticky=W)
@@ -37,13 +37,15 @@ ttk.Button(mainframe, text='Run Report', command=Auditor.currently_whitelisted).
 
 ttk.Label(mainframe, text='Other Reports').grid(column=4, row=0)
 
-ttk.Label(mainframe, text='ICs with Upwork Assets').grid(column=5, row=1, sticky=W)
-ttk.Button(mainframe, text='Run Report', command=Auditor.fls_with_assets).grid(column=6, row=1, sticky=N)
-ttk.Label(mainframe, text='Pulse Survey Prep').grid(column=5, row=2, sticky=W)
-ttk.Button(mainframe, text='Run Report', command=Auditor.survey_prep).grid(column=6, row=2, sticky=N)
+# ttk.Label(mainframe, text='ICs with Upwork Assets').grid(column=5, row=1, sticky=W)
+# ttk.Button(mainframe, text='Run Report', command=Auditor.fls_with_assets).grid(column=6, row=1, sticky=N)
+# ttk.Label(mainframe, text='Pulse Survey Prep').grid(column=5, row=2, sticky=W)
+# ttk.Button(mainframe, text='Run Report', command=Auditor.survey_prep).grid(column=6, row=2, sticky=N)
 ttk.Label(mainframe, text='Disaster Tracker').grid(column=5, row=3, sticky=W)
 ttk.Button(mainframe, text='Run Report', command=Auditor.disaster_tracker).grid(column=6, row=3, sticky=N)
 
+
+# ttk.Button(mainframe, text='Quit', command=quit()).grid(column=6, row=6, sticky=N)
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
 
