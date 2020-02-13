@@ -11,6 +11,7 @@ response = requests.get(
 
 for i in response.json()['results']:
 	print('Title: ' + i['title'])
+	print(i['location'])
 
 
 
