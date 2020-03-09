@@ -977,6 +977,27 @@ class Adhoc:
 			print('\n Good Bye!\n')
 			quit()
 
+	def count_by_team():
+		file_location = './static/' + input('Enter a file name: ') + '.csv'
+		f = Getters.get_contracts(file_location)
+		team_count = {}
+		unique_teams = []
+		for i in f:
+			team = f[i]['Team Name']
+			if team != 'Team Name' and team not in unique_teams:
+				unique_teams.append(team)
+
+		for a in unique_teams:
+			count = 0
+			for b in f:
+				if f[b]['Team Name'] == a:
+					count += 1
+			team_count[a] = count
+
+		for c in team_count:
+			print(c, ' ;',team_count[c])
+
+		return team_count
 
 
 
