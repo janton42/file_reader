@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from csv_reader import *
 from scraper import *
+from population import *
 
 class Auditor:
 	"""docstring for Auditor"""
@@ -27,6 +28,15 @@ class Auditor:
 
 	contracts_whitelist = ListHandler.filter_whitelist(whitelist, 'Contract')
 	countries_whitelist = ListHandler.filter_whitelist(whitelist, 'L3_country')
+
+	def us_states_detail():
+		create_csv(PopulationTabulator.detail_states(PopulationTabulator.state_list()),'us_state_details_all')
+
+	def us_states_count():
+		create_csv(PopulationTabulator.state_count(PopulationTabulator.state_list()),'us_states_count')
+
+	def country_count():
+		create_csv(PopulationTabulator.country_count(),'country_count')
 
 	# def active_users_without_contracts():
 	# 	audit_type = 1
