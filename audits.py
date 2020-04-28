@@ -34,6 +34,7 @@ class Auditor:
 
 	def us_states_count():
 		create_csv(PopulationTabulator.state_count(PopulationTabulator.state_list()),'us_states_count')
+		create_csv(PopulationTabulator.no_state(), 'no_state')
 
 	def country_count():
 		create_csv(PopulationTabulator.country_count(),'country_count')

@@ -7,18 +7,22 @@ def tip_update():
 	contracts = create_working_dict('./static/contracts.csv')
 	costCenters = create_working_dict('./static/cost_centers.csv')
 	users = create_working_dict('./static/user_data.csv')
+	
 
 	tip = {}
 	tipCount = 0
 
+
 	for c in contracts:
 		loc = contracts[c]['Freelancer location'].split(',')
-		if contracts[c]['Team Name'] not in ('Ent::GTNP International Team','Ent::GTNP Leads Team','Ent::GTNP Program Manager','Ent::MS::Chrome'):
+		if contracts[c]['Team Name'] not in (''):
+			# Ent::GTNP International Team','Ent::GTNP Leads Team','Ent::GTNP Program Manager','Ent::MS::Chrome
 			ind = {}
 			ind['cid']=contracts[c]['Contract ID']
 			ind['team']=contracts[c]['Team Name']
 			ind['uid']=contracts[c]['Freelancer User ID']
 			ind['name']=contracts[c]['Freelancer Name']
+			ind['contract_title']=contracts[c]['Title']
 			ind['full_location']=contracts[c]['Freelancer location']
 			ind['country']=loc[0]
 			if len(loc) == 3:
@@ -29,7 +33,8 @@ def tip_update():
 				ind['city'] = loc[1]
 			else:
 				ind['state'] = ''
-				ind['city'] = '' 
+				ind['city'] = ''
+			ind['region'] = ''
 			ind['start']=contracts[c]['Start Date']
 			ind['end']=contracts[c]['End Date']
 			ind['status']=contracts[c]['Status']
@@ -50,6 +55,7 @@ def tip_update():
 
 	for u in tip:
 		tip[u]['zone_2020'] = find_zone(tip[u]['country'])
+
 		for cc in costCenters:
 			if costCenters[cc]['Team Name'] == tip[u]['team']:
 				tip[u]['cost_center'] = costCenters[cc]['Cost Center']
@@ -79,7 +85,10 @@ def missing(tip):
 	create_csv(noEmail,'missing_email')
 	create_csv(noCostCenter,'missing_cost_center')
 
-create_csv(tip_update(),'total_population')
+total_population = tip_update()
+
+create_csv(total_population,'total_population')
+
 
 
 

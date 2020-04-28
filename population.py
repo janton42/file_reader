@@ -81,6 +81,17 @@ class PopulationTabulator(object):
 
 		return states_details
 
+	def no_state():
+		no_state_all = {}
+		counter = 0
+	
+		for i in PopulationTabulator.updated_tip:
+			if PopulationTabulator.updated_tip[i]['country'] == 'United States' and PopulationTabulator.updated_tip[i]['state'] == '':
+				counter += 1
+				no_state_all[counter] = PopulationTabulator.updated_tip[i]
+
+		return no_state_all
+
 	
 	# usStatesDetail = create_csv(PopulationTabulator.detail_states(PopulationTabulator.state_list()),'us_state_details_all')
 	# usStatesCount=create_csv(PopulationTabulator.state_count(PopulationTabulator.state_list()),'us_states_count')
