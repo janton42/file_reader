@@ -61,8 +61,8 @@ def tip_update():
 				tip[u]['cost_center'] = costCenters[cc]['Cost Center']
 
 		for user in users:
-			if users[user]['platform_id'] == tip[u]['uid'] or users[user]['full_name'] == tip[u]['name']:
-				tip[u]['email'] = users[user]['upwork_email']
+			if users[user]['platformId'] == tip[u]['uid'] or users[user]['Name'] == tip[u]['name']:
+				tip[u]['email'] = users[user]['Email']
 
 	# create_csv(tip,'tip')
 		

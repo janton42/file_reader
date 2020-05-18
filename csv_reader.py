@@ -715,7 +715,7 @@ class ListHandler:
 
 		if len(complete_list) > 0:
 			for u in complete_list:
-				parts = complete_list[u]['upwork_email'].split('@')
+				parts = complete_list[u]['Email'].split('@')
 				if len(parts) > 1:
 					domain = parts[1]
 					if domain != 'upwork.com':
