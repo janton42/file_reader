@@ -2,7 +2,7 @@
 from csv_reader import *
 from scraper import *
 from population import *
-
+from csv_handler import create_working_dict
 class Auditor:
 	"""docstring for Auditor"""
 	e = './static/ended_contracts.csv'
@@ -19,7 +19,7 @@ class Auditor:
 	active_with_GTNP = Getters.get_contracts(a)
 	active_contracts = ListHandler.gtnp_filter(active_with_GTNP)
 
-	# auwa = ListHandler.fte_filter_user_list(Getters.get_active_users(u))
+	auwa = create_working_dict(u)
 	whitelist = Getters.get_raw_whitelist(w)
 	cc_list = Getters.get_raw_whitelist(cc)
 
@@ -39,12 +39,12 @@ class Auditor:
 	def country_count():
 		create_csv(PopulationTabulator.country_count(),'country_count')
 
-	# def active_users_without_contracts():
-	# 	audit_type = 1
-	# 	users = Finders.find_users_without_contracts(Auditor.active_contracts, Auditor.auwa)
+	def active_users_without_contracts():
+		audit_type = 1
+		users = Finders.find_users_without_contracts(Auditor.active_contracts, Auditor.auwa)
 
-	# 	FileHandler.create_action_list(users, audit_type)
-	# 	print('\nAudit complete. Type: Users with systems access, but no contract')
+		FileHandler.create_action_list(users, audit_type)
+		print('\nAudit complete. Type: Users with systems access, but no contract')
 
 	def end_dates():
 		audit_type = 2

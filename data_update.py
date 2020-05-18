@@ -7,7 +7,7 @@ def tip_update():
 	contracts = create_working_dict('./static/contracts.csv')
 	costCenters = create_working_dict('./static/cost_centers.csv')
 	users = create_working_dict('./static/user_data.csv')
-	
+
 
 	tip = {}
 	tipCount = 0
@@ -64,7 +64,7 @@ def tip_update():
 			if users[user]['platformId'] == tip[u]['uid'] or users[user]['Name'] == tip[u]['name']:
 				tip[u]['email'] = users[user]['Email']
 
-	# create_csv(tip,'tip')
+	create_csv(tip,'tip')
 		
 	return tip
 
@@ -87,7 +87,7 @@ def missing(tip):
 
 total_population = tip_update()
 
-create_csv(total_population,'total_population')
+# create_csv(total_population,'total_population')
 
 
 

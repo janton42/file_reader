@@ -10,7 +10,7 @@ root.title('TIP AUDITS')
 
 
 def all_audits():
-	# Auditor.active_users_without_contracts()
+	Auditor.active_users_without_contracts()
 	Auditor.l3_locations()
 	Auditor.end_dates()
 	Auditor.multiple_contracts()
@@ -29,8 +29,8 @@ ttk.Label(mainframe, text='Weekly Audits').grid(column=1, row=0, sticky=W)
 ttk.Button(mainframe, text='Run All', command=all_audits).grid(column=2, row=0, sticky=W)
 
 ttk.Label(mainframe, text='Individual Reports').grid(column=1, row=2, sticky=W)
-# ttk.Label(mainframe, text='Active Users Without Contracts').grid(column=2, row=3, sticky=W)
-# ttk.Button(mainframe, text='Run Report', command=Auditor.active_users_without_contracts).grid(column=3, row=3, sticky=N)
+ttk.Label(mainframe, text='Active Users Without Contracts').grid(column=2, row=3, sticky=W)
+ttk.Button(mainframe, text='Run Report', command=Auditor.active_users_without_contracts).grid(column=3, row=3, sticky=N)
 ttk.Label(mainframe, text='Unnapproved Hourly ICs in L3 Locations').grid(column=2, row=4, sticky=W)
 ttk.Button(mainframe, text='Run Report', command=Auditor.l3_locations).grid(column=3, row=4, sticky=N)
 

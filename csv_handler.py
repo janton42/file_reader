@@ -4,7 +4,7 @@ import csv
 import os
 
 def create_working_dict(fileLocation):
-	compiledList = csv.reader(open(fileLocation, 'r'))
+	compiledList = csv.reader(open(fileLocation, mode='r', encoding='utf-8-sig'))
 
 	dictList = {}
 	key = 0

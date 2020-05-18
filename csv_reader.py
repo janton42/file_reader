@@ -268,8 +268,12 @@ class Finders:
 			names_contracts.append(active_contracts[c]['Freelancer Name'])
 
 		for u in auwa:
-			uids_users.append(auwa[u]['worker_user_id'])
-			names_users.append(auwa[u]['full_name'])
+			uid = auwa[u]['platformId']
+			if uid != 'None':
+				uids_users.append(uid)
+				names_users.append(auwa[u]['Name'])
+
+			
 
 		filtered_by_uid = ListHandler.find_missing_from_list(uids_contracts,uids_users)
 		filtered_by_name = ListHandler.find_missing_from_list(names_contracts,names_users)
@@ -279,7 +283,7 @@ class Finders:
 
 		for u in filtered_by_uid:
 			for au in auwa:
-				uid = auwa[au]['worker_user_id']
+				uid = auwa[au]['platformId']
 				if u == uid:
 					details_counter += 1
 					details[details_counter] = auwa[au]
@@ -289,18 +293,18 @@ class Finders:
 
 		for u in filtered_by_name:
 			for au in details:
-				u_name = details[au]['full_name']
+				u_name = details[au]['Name']
 				if u == u_name:
 					filtered_by_name_and_cid_counter += 1
 					filtered_by_name_and_cid[filtered_by_name_and_cid_counter] = details[au]
 
-		output = [['worker_user_id','full_name','upwork_email']]
+		output = [['platformId','Name','Email']]
 
 		for i in filtered_by_name_and_cid:
 			action_item = []
-			action_item.append(filtered_by_name_and_cid[i]['worker_user_id'])
-			action_item.append(filtered_by_name_and_cid[i]['full_name'])
-			action_item.append(filtered_by_name_and_cid[i]['upwork_email'])
+			action_item.append(filtered_by_name_and_cid[i]['platformId'])
+			action_item.append(filtered_by_name_and_cid[i]['Name'])
+			action_item.append(filtered_by_name_and_cid[i]['Email'])
 			output.append(action_item)
 
 		return output
